@@ -77,7 +77,7 @@ const projects: Project[] = [
     metrics: ['Fully responsive design', 'Featured destinations and services', 'Integrated blog and newsletter', 'Client testimonials'],
     image: '/images/veritas-travels.png',
     github: 'https://github.com/Austinkuria/Veritas-Travels',
-    demo: '#',
+    demo: 'https://austinkuria.github.io/Veritas-Travels/',
   }
 ];
 
