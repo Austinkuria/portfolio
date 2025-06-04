@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://austinmaina.vercel.app/sitemap.xml
