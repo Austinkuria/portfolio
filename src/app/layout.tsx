@@ -15,6 +15,8 @@ export default function RootLayout({
 }>) {  return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Google Search Console verification */}
+        <meta name="google-site-verification" content="google771005efe7b937ff" />
         {/* Preload important routes */}
         <link rel="preload" as="fetch" href="/about" crossOrigin="anonymous" />
         <link rel="preload" as="fetch" href="/projects" crossOrigin="anonymous" />

@@ -591,7 +591,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
                       <FaTwitter className="text-lg" />
                     </div>
-                    <div className="min-w-0 flex-1">
+                    {/* <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-base">Twitter / X</h5>
                       <a 
                         href="https://twitter.com/AustinMaina_" 
@@ -601,7 +601,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                       >
                         Follow on X
                       </a>
-                    </div>
+                    </div> */}
                   </div>                </div>
               </div>
             </div>
