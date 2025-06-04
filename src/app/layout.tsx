@@ -18,6 +18,18 @@ export default function RootLayout({
       <head>
         {/* Google Search Console verification */}
         <meta name="google-site-verification" content="google771005efe7b937ff" />
+        {/* Google Tag Manager */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','GTM-P2G8NGPF');
+            `,
+          }}
+        />
         {/* Preload important routes */}
         <link rel="preload" as="fetch" href="/about" crossOrigin="anonymous" />
         <link rel="preload" as="fetch" href="/projects" crossOrigin="anonymous" />
@@ -55,15 +67,6 @@ export default function RootLayout({
             }, true);
           `
         }} />
-        
-        {/* Google Tag Manager */}
-        <Script id="gtm-head" strategy="afterInteractive">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-P2G8NGPF');`}
-        </Script>
       </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         {/* Google Tag Manager (noscript) */}
