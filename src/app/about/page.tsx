@@ -33,7 +33,7 @@ export default function About() {
                 src="/images/Passport_Photo_AustinMaina.jpg"
                 alt="Austin Maina"
                 fill
-                className="object-cover"
+                className="object-contain object-center bg-muted"
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
