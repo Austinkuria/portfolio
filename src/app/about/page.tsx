@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { FaCode, FaLaptopCode, FaMountain, FaBookReader, FaGamepad, FaDatabase } from 'react-icons/fa';
+import { FaCode, FaLaptopCode, FaMountain, FaBookReader, FaGamepad } from 'react-icons/fa';
 import { MotionDiv } from '@/lib/motion';
 
 export default function About() {
@@ -81,104 +81,6 @@ export default function About() {
             </div>
           </MotionDiv>
         </div>
-
-        <MotionDiv
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mt-16 bg-card rounded-xl p-8 shadow-lg"
-        >
-          <h3 className="text-2xl font-bold mb-6 text-center">Tech Toolbox</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-muted/50 p-6 rounded-lg">
-              <div className="flex items-center gap-2 mb-4">
-                <FaCode className="text-primary text-2xl" />
-                <h4 className="text-xl font-semibold">Frontend</h4>
-              </div>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Modern React with Hooks</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>TypeScript for type safety</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Next.js for SSR & routing</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Tailwind CSS for styling</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Framer Motion for animations</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="bg-muted/50 p-6 rounded-lg">
-              <div className="flex items-center gap-2 mb-4">
-                <FaLaptopCode className="text-primary text-2xl" />
-                <h4 className="text-xl font-semibold">Backend</h4>
-              </div>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Node.js & Express</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Python & FastAPI</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>RESTful API design</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>GraphQL</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Serverless Functions</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="bg-muted/50 p-6 rounded-lg">
-              <div className="flex items-center gap-2 mb-4">
-                <FaDatabase className="text-primary text-2xl" />
-                <h4 className="text-xl font-semibold">Database & DevOps</h4>
-              </div>
-              <ul className="space-y-2">
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>MongoDB & Mongoose</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>PostgreSQL</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Supabase</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Docker & CI/CD</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <span className="w-2 h-2 bg-primary rounded-full"></span>
-                  <span>Vercel & AWS</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </MotionDiv>
       </div>
     </section>
   );
