@@ -53,7 +53,7 @@ const projects: Project[] = [
     metrics: ['Fully responsive design', 'Secure user authentication', 'Admin dashboard for product and order management'],
     image: '/images/ecommerce-django.png',
     github: 'https://github.com/Austinkuria/E-commerce-Site',
-    demo: '#',
+    demo: 'https://austin125.pythonanywhere.com/',
   },
   {
     id: 5,
