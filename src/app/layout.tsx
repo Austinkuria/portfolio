@@ -4,6 +4,7 @@ import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import './globals.css';
 import Script from 'next/script';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -75,6 +76,7 @@ export default function RootLayout({
           <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
           <Footer />
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   );
