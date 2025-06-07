@@ -1,4 +1,4 @@
-import { Project } from '@/app/projects/page';
+import { Project } from '@/data/projects';
 
 export default function ProjectSchema({ project }: { project: Project }) {
     const schema = {

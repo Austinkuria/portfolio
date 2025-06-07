@@ -13,13 +13,13 @@ export async function GET() {
 
         // Submit individual URLs to Bing (which tends to be more accepting of direct submissions)
         const bingUrls = routes.map(route => `${baseUrl}${route}`);
-        const bingSubmissions = await Promise.all(
+        const _bingSubmissions = await Promise.all(
             bingUrls.map(url =>
                 fetch(`https://www.bing.com/ping?sitemap=${url}`, { method: 'GET' })
             )
         );
 
-        if (!response.ok) {
+        if (!sitemapResponse.ok) {
             throw new Error('Failed to ping Google');
         }
 
