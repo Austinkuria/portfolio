@@ -3,20 +3,27 @@ import { Project } from '@/data/projects';
 export default function ProjectSchema({ project }: { project: Project }) {
     const schema = {
         '@context': 'https://schema.org',
-        '@type': 'SoftwareApplication',
+        '@type': 'SoftwareSourceCode',
         name: project.title,
         description: project.description,
-        applicationCategory: 'WebApplication',
-        operatingSystem: 'Any',
         author: {
             '@type': 'Person',
             name: 'Austin Maina',
-            url: 'https://austinmaina.vercel.app'
+            url: 'https://austinmaina.vercel.app',
+            jobTitle: 'Full Stack Developer',
+            image: '/images/Passport_Photo_AustinMaina.jpg',
+            sameAs: [
+                'https://github.com/austinmaina',
+                'https://austinmaina.vercel.app'
+            ]
         },
-        screenshot: project.image,
-        softwareVersion: '1.0',
+        programmingLanguage: project.techStack.join(', '),
+        codeRepository: project.github,
         url: project.demo,
-        codeRepository: project.github
+        image: project.image,
+        applicationCategory: 'WebApplication',
+        abstract: project.problem,
+        text: project.solution
     };
 
     return (

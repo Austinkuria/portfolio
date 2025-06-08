@@ -1,6 +1,31 @@
 import Link from 'next/link';
-import { FaGithub, FaLinkedin, FaXTwitter, FaEnvelope, FaWhatsapp } from 'react-icons/fa6';
-import BackToTopLink from './BackToTopLink'; 
+import { FaGithub, FaLinkedin, FaDiscord, FaWhatsapp } from 'react-icons/fa6';
+import BackToTopLink from './BackToTopLink';
+import { socialLinks, SocialPlatform } from '@/data/socialLinks';
+
+const SocialIcon = ({ platform }: { platform: SocialPlatform }) => {
+  const icons = {
+    github: FaGithub,
+    linkedin: FaLinkedin,
+    discord: FaDiscord,
+    whatsapp: FaWhatsapp,
+  };
+  
+  const Icon = icons[platform];
+  const url = socialLinks[platform];
+  
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="bg-muted-foreground/10 p-2.5 rounded-full text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+      aria-label={platform.charAt(0).toUpperCase() + platform.slice(1)}
+    >
+      <Icon size={18} />
+    </a>
+  );
+};
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -20,42 +45,10 @@ export default function Footer() {
             </h3>
             <p className="text-muted-foreground mb-6 max-w-xs">
               Building scalable solutions with code & creativity. Let's create something amazing together.
-            </p>
-            <div className="flex space-x-3">
-              <a
-                href="https://github.com/Austinkuria"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-muted-foreground/10 p-2.5 rounded-full text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                aria-label="GitHub"
-              >
-                <FaGithub size={18} />
-              </a>
-              <a
-                href="https://linkedin.com/in/austin-maina"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-muted-foreground/10 p-2.5 rounded-full text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin size={18} />
-              </a>
-              <a
-                href="https://twitter.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-muted-foreground/10 p-2.5 rounded-full text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                aria-label="Twitter (X)"
-              >
-                <FaXTwitter size={18} />
-              </a>
-              <a
-                href="mailto:kuriaaustin125@gmail.com"
-                className="bg-muted-foreground/10 p-2.5 rounded-full text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all duration-300"
-                aria-label="Email"
-              >
-                <FaEnvelope size={18} />
-              </a>
+            </p>            <div className="flex space-x-3">
+              {(Object.keys(socialLinks) as SocialPlatform[]).map((platform) => (
+                <SocialIcon key={platform} platform={platform} />
+              ))}
             </div>
           </div>
 
@@ -105,18 +98,19 @@ export default function Footer() {
               <span className="w-6 h-0.5 bg-primary mr-2"></span>
               Get In Touch
             </h4>
-            <div className="space-y-4">
-              <div className="flex items-start group">
+            <div className="space-y-4">              <div className="flex items-start group">
                 <div className="bg-primary/10 p-2 rounded-lg text-primary transition-all duration-300 mr-3">
-                  <FaEnvelope size={16} />
+                  <FaDiscord size={16} />
                 </div>
                 <div>
-                  <h5 className="font-medium text-sm">Email</h5>
+                  <h5 className="font-medium text-sm">Discord</h5>
                   <a
-                    href="mailto:kuriaaustin125@gmail.com"
+                    href={socialLinks.discord}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
                   >
-                    Send Email
+                    Join Discord Server
                   </a>
                 </div>
               </div>
@@ -127,7 +121,7 @@ export default function Footer() {
                 <div>
                   <h5 className="font-medium text-sm">WhatsApp</h5>
                   <a
-                    href="https://wa.me/254792123456"
+                    href={socialLinks.whatsapp}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors"
