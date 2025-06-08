@@ -11,13 +11,17 @@ export default function Contact() {  const [formData, setFormData] = useState({
     email: '',
     subject: '',
     category: '',
-    message: ''
+    message: '',
+    file: null as File | null, // Added file property
+    phone: '', // Added phone property
+    preferredContactMethod: '' // Added preferred contact method property
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [captchaVerified, setCaptchaVerified] = useState(false); // Add CAPTCHA state
 
   // FAQ Data
   const faqData = [
@@ -83,14 +87,18 @@ export default function Contact() {  const [formData, setFormData] = useState({
     email: '',
     subject: '',
     category: '',
-    message: ''
+    message: '',
+    phone: '', // Added phone validation error
+    preferredContactMethod: '' // Added preferredContactMethod validation error
   });
   const [fieldTouched, setFieldTouched] = useState({
     name: false,
     email: false,
     subject: false,
     category: false,
-    message: false
+    message: false,
+    phone: false, // Added phone touched state
+    preferredContactMethod: false // Added preferredContactMethod touched state
   });
 
   // Real-time validation functions
@@ -98,9 +106,12 @@ export default function Contact() {  const [formData, setFormData] = useState({
     if (!name.trim()) return 'Name is required';
     if (name.length < 2) return 'Name must be at least 2 characters';
     if (name.length > 50) return 'Name must be less than 50 characters';
-    if (/[0-9!@#$%^&*()_+=[\]{}|;':",./<>?`~]/.test(name)) {
-      return 'Name should only contain letters and spaces';
+
+    // Adjust regex to allow valid names with spaces and hyphens
+    if (/[^a-zA-Z\s-]/.test(name)) {
+      return 'Name should only contain letters, spaces, and hyphens';
     }
+
     return '';
   };
 
@@ -181,6 +192,20 @@ export default function Contact() {  const [formData, setFormData] = useState({
     }
     
     return '';
+  };
+
+  const validatePhone = (phone: string): string => {
+    if (!phone.trim()) return 'Phone number is required';
+    const phoneRegex = /^\+?[1-9]\d{1,14}$/; // E.164 format
+    if (!phoneRegex.test(phone)) return 'Please enter a valid international phone number';
+    return '';
+  };
+
+  const validatePreferredContactMethod = (method: string): string => {
+    if (!method.trim()) return 'Preferred contact method is required';
+    const validMethods = ['email', 'phone', 'whatsapp'];
+    if (!validMethods.includes(method)) return 'Please select a valid contact method';
+    return '';
   };  // Check if form is valid for submission
   const isFormValid = () => {
     return formData.name.trim() && 
@@ -188,11 +213,15 @@ export default function Contact() {  const [formData, setFormData] = useState({
            formData.subject.trim() &&
            formData.category.trim() &&
            formData.message.trim() &&
+           formData.phone.trim() &&
+           formData.preferredContactMethod.trim() &&
            !validationErrors.name && 
            !validationErrors.email && 
            !validationErrors.subject &&
            !validationErrors.category &&
-           !validationErrors.message;
+           !validationErrors.message &&
+           !validationErrors.phone &&
+           !validationErrors.preferredContactMethod;
   };  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -215,6 +244,12 @@ export default function Contact() {  const [formData, setFormData] = useState({
       case 'message':
         error = validateMessage(value);
         break;
+      case 'phone':
+        error = validatePhone(value);
+        break;
+      case 'preferredContactMethod':
+        error = validatePreferredContactMethod(value);
+        break;
     }
 
     setValidationErrors(prev => ({ ...prev, [name]: error }));
@@ -225,7 +260,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
     setFieldTouched(prev => ({ ...prev, [name]: true }));
   };const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();    // Mark all fields as touched to show validation errors
-    setFieldTouched({ name: true, email: true, subject: true, category: true, message: true });
+    setFieldTouched({ name: true, email: true, subject: true, category: true, message: true, phone: true, preferredContactMethod: true });
     
     // Validate all fields
     const nameError = validateName(formData.name);
@@ -233,20 +268,29 @@ export default function Contact() {  const [formData, setFormData] = useState({
     const subjectError = validateSubject(formData.subject);
     const categoryError = validateCategory(formData.category);
     const messageError = validateMessage(formData.message);
+    const phoneError = validatePhone(formData.phone);
+    const preferredContactMethodError = validatePreferredContactMethod(formData.preferredContactMethod);
     
     setValidationErrors({
       name: nameError,
       email: emailError,
       subject: subjectError,
       category: categoryError,
-      message: messageError
+      message: messageError,
+      phone: phoneError,
+      preferredContactMethod: preferredContactMethodError
     });
     
     // If there are validation errors, don't submit
-    if (nameError || emailError || subjectError || categoryError || messageError) {
+    if (nameError || emailError || subjectError || categoryError || messageError || phoneError || preferredContactMethodError) {
       // Scroll to first error field
-      const firstErrorField = nameError ? 'name' : emailError ? 'email' : subjectError ? 'subject' : categoryError ? 'category' : 'message';
+      const firstErrorField = nameError ? 'name' : emailError ? 'email' : subjectError ? 'subject' : categoryError ? 'category' : messageError ? 'message' : phoneError ? 'phone' : 'preferredContactMethod';
       document.getElementById(firstErrorField)?.focus();
+      return;
+    }
+    
+    if (!captchaVerified) {
+      setErrorMessage('Please complete the CAPTCHA verification');
       return;
     }
     
@@ -282,9 +326,9 @@ export default function Contact() {  const [formData, setFormData] = useState({
           throw new Error(result.error || 'Failed to send message');
         }
       }      // Reset form on success
-      setFormData({ name: '', email: '', subject: '', category: '', message: '' });
-      setFieldTouched({ name: false, email: false, subject: false, category: false, message: false });
-      setValidationErrors({ name: '', email: '', subject: '', category: '', message: '' });
+      setFormData({ name: '', email: '', subject: '', category: '', message: '', file: null, phone: '', preferredContactMethod: '' });
+      setFieldTouched({ name: false, email: false, subject: false, category: false, message: false, phone: false, preferredContactMethod: false });
+      setValidationErrors({ name: '', email: '', subject: '', category: '', message: '', phone: '', preferredContactMethod: '' });
       setSubmitStatus('success');
       
       // Reset status after 10 seconds
@@ -306,6 +350,12 @@ export default function Contact() {  const [formData, setFormData] = useState({
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Add CAPTCHA verification logic
+  const verifyCaptcha = (response: string): boolean => {
+    // Simulate CAPTCHA verification logic
+    return response === 'verified';
   };
 
   return (
@@ -588,9 +638,9 @@ export default function Contact() {  const [formData, setFormData] = useState({
                   </div>
                   
                   <div className="flex items-start group transition-all">
-                    <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
+                    {/* <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
                       <FaTwitter className="text-lg" />
-                    </div>
+                    </div> */}
                     {/* <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-base">Twitter / X</h5>
                       <a 
@@ -622,6 +672,24 @@ export default function Contact() {  const [formData, setFormData] = useState({
                 Send Me a Message
               </h3>
                 <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+                {/* CAPTCHA Field */}
+                <div className="group">
+                  <label htmlFor="captcha" className="block text-sm font-medium text-gray-700">
+                    CAPTCHA Verification
+                  </label>
+                  <input
+                    type="text"
+                    id="captcha"
+                    name="captcha"
+                    onChange={(e) => setCaptchaVerified(verifyCaptcha(e.target.value))}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+                    placeholder="Enter CAPTCHA code"
+                  />
+                  {!captchaVerified && (
+                    <p className="mt-2 text-sm text-red-600">CAPTCHA verification required</p>
+                  )}
+                </div>
+
                 <div className="group">
                   <label htmlFor="name" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Your Name
@@ -902,6 +970,121 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     </span>
                   </div>
                 </div>
+                  <div className="group">
+                  <label htmlFor="file" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                    Upload File (Optional)
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="file"
+                      id="file"
+                      name="file"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        setFormData((prev) => ({ ...prev, file: file || null }));
+                      }}
+                      className="w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all cursor-pointer"
+                    />
+                  </div>
+                  {formData.file && (
+                    <p className="text-sm text-muted-foreground mt-1">Selected file: {formData.file.name}</p>
+                  )}
+                </div>
+                  <div className="group">
+                  <label htmlFor="phone" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                    Phone Number
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${
+                        validationErrors.phone ? 'border-red-500' : ''
+                      }`}
+                      placeholder="e.g., +254712345678"
+                    />
+                    {/* Validation indicator */}
+                    {fieldTouched.phone && (
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                        {validationErrors.phone ? (
+                          <FaExclamationTriangle className="text-red-500 w-4 h-4" />
+                        ) : formData.phone ? (
+                          <FaCheck className="text-green-500 w-4 h-4" />
+                        ) : null}
+                      </span>
+                    )}
+                  </div>
+                  {fieldTouched.phone && validationErrors.phone && (
+                    <p className="text-red-500 text-sm mt-1 flex items-center">
+                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                      {validationErrors.phone}
+                    </p>
+                  )}
+                </div>
+                  <div className="group">
+                  <label htmlFor="preferredContactMethod" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                    Preferred Contact Method
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="preferredContactMethod"
+                      name="preferredContactMethod"
+                      value={formData.preferredContactMethod}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
+                        validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
+                          ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
+                          : validationErrors.preferredContactMethod === '' && formData.preferredContactMethod && fieldTouched.preferredContactMethod
+                          ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                          : 'border-border focus:ring-primary/30 focus:border-primary'
+                      }`}
+                    >
+                      <option value="">Select a method...</option>
+                      <option value="email">Email</option>
+                      <option value="phone">Phone</option>
+                      <option value="whatsapp">WhatsApp</option>
+                    </select>
+                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
+                      validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
+                        ? 'text-red-500'
+                        : validationErrors.preferredContactMethod === '' && formData.preferredContactMethod && fieldTouched.preferredContactMethod
+                        ? 'text-green-500'
+                        : 'text-muted-foreground'
+                    }`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                    </span>
+                    {/* Dropdown arrow */}
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                    {/* Validation indicator */}
+                    {fieldTouched.preferredContactMethod && (
+                      <span className="absolute right-10 top-1/2 -translate-y-1/2">
+                        {validationErrors.preferredContactMethod ? (
+                          <FaExclamationTriangle className="text-red-500 w-4 h-4" />
+                        ) : formData.preferredContactMethod ? (
+                          <FaCheck className="text-green-500 w-4 h-4" />
+                        ) : null}
+                      </span>
+                    )}
+                  </div>
+                  {validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod && (
+                    <p className="text-red-500 text-sm mt-1 flex items-center">
+                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                      {validationErrors.preferredContactMethod}
+                    </p>
+                  )}
+                </div>
                   <m.button
                   type="submit"
                   disabled={isSubmitting || !isFormValid()}
@@ -928,7 +1111,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     </>
                   )}
                 </m.button>                {/* Form validation summary */}
-                {!isFormValid() && (fieldTouched.name || fieldTouched.email || fieldTouched.subject || fieldTouched.category || fieldTouched.message) && (
+                {!isFormValid() && (fieldTouched.name || fieldTouched.email || fieldTouched.subject || fieldTouched.category || fieldTouched.message || fieldTouched.phone || fieldTouched.preferredContactMethod) && (
                   <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
                     <p className="font-medium mb-1">Please complete the following:</p>
                     <ul className="space-y-1">
@@ -937,11 +1120,15 @@ export default function Contact() {  const [formData, setFormData] = useState({
                       {!formData.subject.trim() && <li>• Enter a subject</li>}
                       {!formData.category.trim() && <li>• Select a project category</li>}
                       {!formData.message.trim() && <li>• Write your message</li>}
+                      {!formData.phone.trim() && <li>• Enter your phone number</li>}
+                      {!formData.preferredContactMethod.trim() && <li>• Select a preferred contact method</li>}
                       {validationErrors.name && <li>• Fix name validation errors</li>}
                       {validationErrors.email && <li>• Fix email validation errors</li>}
                       {validationErrors.subject && <li>• Fix subject validation errors</li>}
                       {validationErrors.category && <li>• Fix category validation errors</li>}
                       {validationErrors.message && <li>• Fix message validation errors</li>}
+                      {validationErrors.phone && <li>• Fix phone validation errors</li>}
+                      {validationErrors.preferredContactMethod && <li>• Fix preferred contact method validation errors</li>}
                     </ul>
                   </div>
                 )}

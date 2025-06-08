@@ -32,316 +32,48 @@ function sanitizeInput(input: string): string {
     .substring(0, 2000); // Limit length
 }
 
-// Comprehensive spam detection system with enhanced malicious code injection detection
+// Refined spam detection function
 function detectSpam(name: string, email: string, subject: string, category: string, message: string): { isSpam: boolean; reason: string } {
   const combinedText = `${name} ${email} ${subject} ${category} ${message}`.toLowerCase();
 
-  // 1. Enhanced spam keywords (more comprehensive)
+  // Refined spam keywords
   const spamKeywords = [
-    // Financial scams
-    'viagra', 'casino', 'lottery', 'winner!', 'congratulations!', 'free money',
-    'nigerian prince', 'inheritance', 'bitcoin investment', 'crypto investment',
-    'get rich quick', 'make money fast', 'investment opportunity', 'roi guarantee',
-    'million dollars', 'unclaimed funds', 'beneficiary', 'transfer funds',
-    'forex trading', 'binary options', 'cryptocurrency', 'tax refund',
-    'loan approved', 'credit repair', 'debt consolidation', 'prize winner',
-
-    // Phishing attempts
-    'verify account', 'click here now', 'update payment', 'suspended account',
-    'confirm identity', 'urgent action required', 'limited time offer',
-    'act now', 'expires today', 'claim now', 'download attachment',
-    'security alert', 'account compromised', 'unusual activity', 'verify now',
-
-    // Adult content
-    'adult content', 'xxx', 'porn', 'escort', 'dating site', 'hookup',
-    'cam girl', 'adult webcam', 'sexy photos', 'nude pics',
-
-    // SEO/Marketing spam
-    'seo services', 'increase traffic', 'boost ranking', 'google ranking',
-    'backlinks', 'website promotion', 'guaranteed results', 'top position',
-    'cheap seo', 'rank higher', 'organic traffic', 'link building',
-
-    // Pharmacy/Health spam
-    'prescription drugs', 'pharmacy online', 'weight loss pills', 'male enhancement',
-    'cheap medication', 'no prescription needed', 'generic drugs'
-  ];    // 2. Enhanced suspicious patterns with comprehensive code injection detection
-  const suspiciousPatterns = [
-    // XSS and Script injection attempts
-    /<script[^>]*>[\s\S]*?<\/script>/gi,
-    /<iframe[^>]*>[\s\S]*?<\/iframe>/gi,
-    /<embed[^>]*>/gi,
-    /<object[^>]*>/gi,
-    /<applet[^>]*>/gi,
-    /<meta[^>]*>/gi,
-    /<link[^>]*>/gi,
-    /<form[^>]*>/gi,
-    /<input[^>]*>/gi,
-    /<textarea[^>]*>/gi,
-    /<select[^>]*>/gi,
-    /<button[^>]*>/gi,
-    /<svg[^>]*>/gi,
-    /<style[^>]*>/gi,
-
-    // JavaScript protocol and event handlers
-    /javascript\s*:/gi,
-    /vbscript\s*:/gi,
-    /data\s*:/gi,
-    /on\w+\s*=/gi, // onload, onclick, onerror, etc.
-    /eval\s*\(/gi,
-    /setTimeout\s*\(/gi,
-    /setInterval\s*\(/gi,
-    /document\.(write|cookie|location)/gi,
-    /window\.(location|open)/gi,
-    /alert\s*\(/gi,
-    /confirm\s*\(/gi,
-    /prompt\s*\(/gi,
-
-    // JSON/JavaScript code injection
-    /(?:function\s*\([^)]*\)|=>\s*{|var\s+\w+\s*=|let\s+\w+\s*=|const\s+\w+\s*=)/gi,
-    /(?:require\s*\(|import\s+.*from|export\s+.*)/gi,
-    /(?:JSON\.parse|JSON\.stringify|btoa|atob)\s*\(/gi,
-    /(?:localStorage|sessionStorage|indexedDB)\./gi,
-    /(?:fetch\s*\(|XMLHttpRequest|WebSocket)/gi,
-    // SQL injection patterns
-    /union\s+select/gi,
-    /drop\s+table/gi,
-    /delete\s+from/gi,
-    /insert\s+into/gi,
-    /update\s+set/gi,
-    /exec\s*\(/gi,
-    /execute\s*\(/gi,
-    /sp_\w+/gi,
-    /xp_\w+/gi,
-    /'\s*or\s*'1'\s*=\s*'1/gi,
-    /'\s*or\s*1\s*=\s*1/gi,
-    /--\s*$/gm,
-    /\/\*[\s\S]*?\*\//g,
-
-    // NoSQL injection patterns
-    /\$where/gi,
-    /\$ne/gi,
-    /\$gt/gi,
-    /\$lt/gi,
-    /\$regex/gi,
-    /\$or/gi,
-    /\$and/gi,
-
-    // Command injection patterns
-    /;\s*(cat|ls|pwd|whoami|id|uname)/gi,
-    /\|\s*(cat|ls|pwd|whoami|id|uname)/gi,
-    /&&\s*(cat|ls|pwd|whoami|id|uname)/gi,
-    /`[^`]*`/g, // Backticks for command execution
-    /\$\([^)]*\)/g, // Command substitution
-
-    // Path traversal attempts
-    /\.\.\//g,
-    /\.\.\\{1,2}/g,
-    /%2e%2e%2f/gi,
-    /%2e%2e\\{1,2}/gi,
-
-    // Template injection patterns
-    /\{\{[^}]*\}\}/g,
-    /\{%[^%]*%\}/g,
-    /\${[^}]*}/g,
-    /#\{[^}]*\}/g,
-
-    // LDAP injection
-    /\(\|\(/gi,
-    /\)&\(/gi,
-    /\*\)\(/gi,
-
-    // XML/XXE injection
-    /<!ENTITY/gi,
-    /<!DOCTYPE/gi,
-    /SYSTEM\s+"/gi,
-
-    // Advanced malicious patterns
-    /\{[^}]*"[^"]*"\s*:\s*"[^"]*"[^}]*\}/gi, // JSON injection attempts
-    /\{\{.*?\}\}/g, // Server-Side Template Injection (SSTI)
-    /\{%.*?%\}/g,   // Template engine syntax
-    /#\{.*?\}/g,    // Ruby/Java template injection
-
-    // CSRF attempts
-    /<form[^>]*action\s*=/gi,
-    /<input[^>]*type\s*=\s*"hidden"/gi,
-
-    // File inclusion attempts
-    /include\s*\(/gi,
-    /require\s*\(/gi,
-    /file_get_contents\s*\(/gi,
-    /readfile\s*\(/gi,
-    /fopen\s*\(/gi,
-
-    // Additional dangerous patterns
-    // URL shorteners and suspicious domains
-    /bit\.ly|tinyurl|t\.co|goo\.gl|ow\.ly|short\.link|rb\.gy|cutt\.ly/gi,    // Excessive special characters (potential obfuscation)
-    /[!@#$%^&*()_+=[\]{}|;':",./<>?`~]{10,}/g,    // Base64 encoded content (potential payload)
-    /[A-Za-z0-9+/]{50,}={0,2}/g,// Hex encoded content
-    /(?:\\x[0-9a-fA-F]{2}){10,}/g,
-    /(?:%[0-9a-fA-F]{2}){10,}/g,
-
-    // Unicode escapes (potential bypass attempts)
-    /(?:\\u[0-9a-fA-F]{4}){5,}/g,
-
-    // Multiple emails in content (spam indicator)
-    /(?:[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}){3,}/g,    // Excessive whitespace or control characters
-    /\s{50,}/g,
-    // Control characters (avoiding problematic chars in regex)
-
-    // Programming language patterns (potential code injection)
-    /(?:function|var|let|const|class|import|export|require)\s*\(/gi,
-    /(?:print|echo|console\.log|System\.out)\s*\(/gi,
-    /\b(SELECT|INSERT|UPDATE|DELETE|CREATE|DROP|ALTER)\b\s*/gi, // FIXED: Only match SQL keywords as whole words
-    // Serialized objects
-    /O:\d+:"[^"]*":\d+:\{/g, // PHP serialized objects
-    /rO0[A-Za-z0-9+/]+=*/g, // Java serialized objects
-
-    // Executable file extensions
-    /\.(exe|bat|cmd|com|pif|scr|vbs|js|jar|app|deb|pkg|dmg)(?:\s|$)/gi,
-
-    // Cryptocurrency addresses (scam indicator)
-    /[13][a-km-zA-HJ-NP-Z1-9]{25,34}/g, // Bitcoin
-    /0x[a-fA-F0-9]{40}/g, // Ethereum
-
-    // Additional advanced patterns
-    // Python code injection
-    /(?:import\s+|from\s+\w+\s+import|__import__|exec\s*\(|eval\s*\()/gi,
-
-    // PHP code injection
-    /(?:<\?php|<\?=|\$_GET|\$_POST|\$_REQUEST|\$_SESSION|\$_COOKIE)/gi,
-
-    // Ruby code injection
-    /(?:require\s+['"]|load\s+['"]|eval\s*\(|system\s*\(|`.*`)/gi,
-
-    // Java code injection
-    /(?:Runtime\.getRuntime|ProcessBuilder|Class\.forName)/gi,
-
-    // C# code injection
-    /(?:Process\.Start|Assembly\.Load|Type\.GetType)/gi,
-
-    // PowerShell injection
-    /(?:Invoke-Expression|IEX|powershell|cmd\.exe)/gi,
-
-    // Linux/Unix commands
-    /(?:rm\s+-rf|sudo\s+|chmod\s+|chown\s+|passwd\s+)/gi,
-
-    // Network reconnaissance
-    /(?:nmap\s+|netstat\s+|ss\s+|lsof\s+|tcpdump)/gi,
-
-    // Data exfiltration patterns
-    /(?:curl\s+.*\|.*sh|wget\s+.*\|.*sh|nc\s+-|netcat)/gi,
-
-    // Malicious URLs and domains
-    /(?:\.tk\b|\.ml\b|\.ga\b|\.cf\b|onion\b)/gi,
-
-    // Social engineering keywords
-    /(?:verify\s+your\s+account|suspended\s+account|click\s+here\s+immediately)/gi,
-
-    // Cryptocurrency mining
-    /(?:monero|mining\s+pool|hashrate|blockchain\s+wallet)/gi,
-
-    // Ransomware indicators
-    /(?:encrypt|decrypt|bitcoin\s+payment|ransom|restore\s+files)/gi
+    'viagra', 'casino', 'lottery', 'bitcoin investment', 'get rich quick', 'nigerian prince', 'free money'
   ];
 
-  // 3. Check for spam keywords
+  // Simplified suspicious patterns
+  const suspiciousPatterns = [
+    /<script[^>]*>/gi,
+    /javascript:/gi,
+    /eval\s*\(/gi,
+    /union\s+select/gi,
+    /drop\s+table/gi
+  ];
+
+  // Check for spam keywords
   for (const keyword of spamKeywords) {
     if (combinedText.includes(keyword)) {
       return { isSpam: true, reason: `Spam keyword detected: ${keyword}` };
     }
   }
 
-  // 4. Check for suspicious patterns
+  // Check for suspicious patterns
   for (const pattern of suspiciousPatterns) {
     if (pattern.test(combinedText)) {
       return { isSpam: true, reason: `Suspicious pattern detected: ${pattern.source}` };
     }
   }
 
-  // 5. Check for excessive repetition
-  const words = message.split(/\s+/);
-  const wordCount = words.length;
-  const uniqueWords = new Set(words.map(w => w.toLowerCase()));
-  const repetitionRatio = uniqueWords.size / wordCount;
-
-  if (wordCount > 10 && repetitionRatio < 0.3) {
-    return { isSpam: true, reason: 'Excessive word repetition detected' };
-  }
-
-  // 6. Check for excessive capitalization
+  // Check for excessive capitalization
   const capsRatio = (message.match(/[A-Z]/g) || []).length / message.length;
   if (message.length > 20 && capsRatio > 0.7) {
     return { isSpam: true, reason: 'Excessive capitalization detected' };
   }
 
-  // 7. Check for excessive URLs
+  // Check for excessive URLs
   const urlMatches = message.match(/https?:\/\/[^\s]+/g) || [];
   if (urlMatches.length > 3) {
     return { isSpam: true, reason: 'Too many URLs detected' };
-  }
-
-  // 8. Check for suspicious email patterns in message
-  const emailMatches = message.match(/\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b/g) || [];
-  if (emailMatches.length > 2) {
-    return { isSpam: true, reason: 'Multiple email addresses in message' };
-  }
-
-  // 9. Check for phone number patterns (potential telemarketing)
-  const phonePatterns = [
-    /\+?1?[-.\s]?\(?[0-9]{3}\)?[-.\s]?[0-9]{3}[-.\s]?[0-9]{4}/g,
-    /\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/g
-  ];
-
-  let phoneCount = 0;
-  for (const pattern of phonePatterns) {
-    const matches = message.match(pattern) || [];
-    phoneCount += matches.length;
-  }
-
-  if (phoneCount > 2) {
-    return { isSpam: true, reason: 'Multiple phone numbers detected' };
-  }
-
-  // 10. Check for common scam phrases
-  const scamPhrases = [
-    'act now', 'limited time', 'expires soon', 'dont delay', 'order now',
-    'what are you waiting for', 'call now', 'click below', 'click here',
-    'get started now', 'increase sales', 'increase traffic', 'one time',
-    'only $', 'order today', 'send now', 'sign up free', 'take action',
-    'urgent response', 'while supplies last', 'winner', 'you have been selected',
-    'dear friend', 'congratulations', 'you won', 'claim your', 'free trial'
-  ];
-
-  for (const phrase of scamPhrases) {
-    if (combinedText.includes(phrase)) {
-      return { isSpam: true, reason: `Scam phrase detected: ${phrase}` };
-    }
-  }
-
-  // 11. Check name field for suspicious content
-  if (name.length < 2 || name.length > 50) {
-    return { isSpam: true, reason: 'Suspicious name length' };
-  }
-  // Check if name contains numbers or special characters (suspicious)
-  if (/[0-9!@#$%^&*()_+=[\]{}|;':",./<>?`~]/.test(name)) {
-    return { isSpam: true, reason: 'Name contains suspicious characters' };
-  }
-
-  // 12. Check email domain against known spam domains
-  const emailDomain = email.split('@')[1]?.toLowerCase();
-  const suspiciousDomains = [
-    '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'tempmail.org',
-    'throwaway.email', 'temp-mail.org', 'sharklasers.com', 'guerrillamailblock.com'
-  ];
-
-  if (emailDomain && suspiciousDomains.includes(emailDomain)) {
-    return { isSpam: true, reason: `Suspicious email domain: ${emailDomain}` };
-  }
-
-  // 13. Check for emoji spam (excessive emoji usage)
-  const emojiCount = (message.match(/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]/gu) || []).length;
-  if (emojiCount > 10) {
-    return { isSpam: true, reason: 'Excessive emoji usage detected' };
   }
 
   return { isSpam: false, reason: '' };
@@ -462,12 +194,17 @@ export async function POST(request: NextRequest) {
       );
       const whatsappUrl = `https://wa.me/254797561978?text=${whatsappMessage}`;
 
+      const linkedinMessage = encodeURIComponent(
+        `Hi Austin! I tried to send a message through your portfolio contact form but it was flagged by your security filters.\n\nMy email: ${email}\nReference ID: ${referenceId}\n\nCould you please help me resolve this issue? Thank you!`
+      );
+      const linkedinUrl = `https://www.linkedin.com/in/austin-maina?message=${linkedinMessage}`;
+
       const userMessage = `Your message couldn't be sent due to our automated security filters.
 
 If you believe this is an error, please contact me directly:
 
 📧 Email: kuriaaustin125@gmail.com
-💼 LinkedIn: https://linkedin.com/in/austin-maina
+💼 LinkedIn: <a href='${linkedinUrl}' target='_blank' rel='noopener noreferrer'>Click here to send me a message on LinkedIn</a>
 
 Reference ID: ${referenceId}
 
