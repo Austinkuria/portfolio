@@ -14,14 +14,14 @@ export default function Contact() {  const [formData, setFormData] = useState({
     message: '',
     file: null as File | null, // Added file property
     phone: '', // Added phone property
-    preferredContactMethod: '' // Added preferred contact method property
+    preferredContactMethod: '', // Added preferred contact method property
+    budgetRange: '', // New field
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-  const [captchaVerified, setCaptchaVerified] = useState(false); // Add CAPTCHA state
 
   // FAQ Data
   const faqData = [
@@ -89,7 +89,8 @@ export default function Contact() {  const [formData, setFormData] = useState({
     category: '',
     message: '',
     phone: '', // Added phone validation error
-    preferredContactMethod: '' // Added preferredContactMethod validation error
+    preferredContactMethod: '', // Added preferredContactMethod validation error
+    budgetRange: '', // New field
   });
   const [fieldTouched, setFieldTouched] = useState({
     name: false,
@@ -98,7 +99,8 @@ export default function Contact() {  const [formData, setFormData] = useState({
     category: false,
     message: false,
     phone: false, // Added phone touched state
-    preferredContactMethod: false // Added preferredContactMethod touched state
+    preferredContactMethod: false, // Added preferredContactMethod touched state
+    budgetRange: false, // New field
   });
 
   // Real-time validation functions
@@ -206,6 +208,15 @@ export default function Contact() {  const [formData, setFormData] = useState({
     const validMethods = ['email', 'phone', 'whatsapp'];
     if (!validMethods.includes(method)) return 'Please select a valid contact method';
     return '';
+  };
+
+  const validateBudgetRange = (budget: string): string => {
+    if (!budget.trim()) return 'Please select a budget range';
+    const validRanges = [
+      'under-500', '500-1000', '1000-2500', '2500-5000', 'over-5000',
+    ];
+    if (!validRanges.includes(budget)) return 'Please select a valid budget range';
+    return '';
   };  // Check if form is valid for submission
   const isFormValid = () => {
     return formData.name.trim() && 
@@ -215,13 +226,15 @@ export default function Contact() {  const [formData, setFormData] = useState({
            formData.message.trim() &&
            formData.phone.trim() &&
            formData.preferredContactMethod.trim() &&
+           formData.budgetRange.trim() &&
            !validationErrors.name && 
            !validationErrors.email && 
            !validationErrors.subject &&
            !validationErrors.category &&
            !validationErrors.message &&
            !validationErrors.phone &&
-           !validationErrors.preferredContactMethod;
+           !validationErrors.preferredContactMethod &&
+           !validationErrors.budgetRange;
   };  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -250,6 +263,9 @@ export default function Contact() {  const [formData, setFormData] = useState({
       case 'preferredContactMethod':
         error = validatePreferredContactMethod(value);
         break;
+      case 'budgetRange':
+        error = validateBudgetRange(value);
+        break;
     }
 
     setValidationErrors(prev => ({ ...prev, [name]: error }));
@@ -260,7 +276,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
     setFieldTouched(prev => ({ ...prev, [name]: true }));
   };const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();    // Mark all fields as touched to show validation errors
-    setFieldTouched({ name: true, email: true, subject: true, category: true, message: true, phone: true, preferredContactMethod: true });
+    setFieldTouched({ name: true, email: true, subject: true, category: true, message: true, phone: true, preferredContactMethod: true, budgetRange: true });
     
     // Validate all fields
     const nameError = validateName(formData.name);
@@ -270,6 +286,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
     const messageError = validateMessage(formData.message);
     const phoneError = validatePhone(formData.phone);
     const preferredContactMethodError = validatePreferredContactMethod(formData.preferredContactMethod);
+    const budgetRangeError = validateBudgetRange(formData.budgetRange);
     
     setValidationErrors({
       name: nameError,
@@ -278,19 +295,32 @@ export default function Contact() {  const [formData, setFormData] = useState({
       category: categoryError,
       message: messageError,
       phone: phoneError,
-      preferredContactMethod: preferredContactMethodError
+      preferredContactMethod: preferredContactMethodError,
+      budgetRange: budgetRangeError,
     });
     
     // If there are validation errors, don't submit
-    if (nameError || emailError || subjectError || categoryError || messageError || phoneError || preferredContactMethodError) {
+    if (
+      nameError || 
+      emailError || 
+      subjectError || 
+      categoryError || 
+      messageError || 
+      phoneError || 
+      preferredContactMethodError || 
+      budgetRangeError
+    ) {
       // Scroll to first error field
-      const firstErrorField = nameError ? 'name' : emailError ? 'email' : subjectError ? 'subject' : categoryError ? 'category' : messageError ? 'message' : phoneError ? 'phone' : 'preferredContactMethod';
+      const firstErrorField = 
+        nameError ? 'name' : 
+        emailError ? 'email' : 
+        subjectError ? 'subject' : 
+        categoryError ? 'category' : 
+        messageError ? 'message' : 
+        phoneError ? 'phone' : 
+        budgetRangeError ? 'budgetRange' : 
+        'preferredContactMethod';
       document.getElementById(firstErrorField)?.focus();
-      return;
-    }
-    
-    if (!captchaVerified) {
-      setErrorMessage('Please complete the CAPTCHA verification');
       return;
     }
     
@@ -326,9 +356,9 @@ export default function Contact() {  const [formData, setFormData] = useState({
           throw new Error(result.error || 'Failed to send message');
         }
       }      // Reset form on success
-      setFormData({ name: '', email: '', subject: '', category: '', message: '', file: null, phone: '', preferredContactMethod: '' });
-      setFieldTouched({ name: false, email: false, subject: false, category: false, message: false, phone: false, preferredContactMethod: false });
-      setValidationErrors({ name: '', email: '', subject: '', category: '', message: '', phone: '', preferredContactMethod: '' });
+      setFormData({ name: '', email: '', subject: '', category: '', message: '', file: null, phone: '', preferredContactMethod: '', budgetRange: '' });
+      setFieldTouched({ name: false, email: false, subject: false, category: false, message: false, phone: false, preferredContactMethod: false, budgetRange: false });
+      setValidationErrors({ name: '', email: '', subject: '', category: '', message: '', phone: '', preferredContactMethod: '', budgetRange: '' });
       setSubmitStatus('success');
       
       // Reset status after 10 seconds
@@ -350,12 +380,6 @@ export default function Contact() {  const [formData, setFormData] = useState({
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  // Add CAPTCHA verification logic
-  const verifyCaptcha = (response: string): boolean => {
-    // Simulate CAPTCHA verification logic
-    return response === 'verified';
   };
 
   return (
@@ -672,24 +696,6 @@ export default function Contact() {  const [formData, setFormData] = useState({
                 Send Me a Message
               </h3>
                 <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                {/* CAPTCHA Field */}
-                <div className="group">
-                  <label htmlFor="captcha" className="block text-sm font-medium text-gray-700">
-                    CAPTCHA Verification
-                  </label>
-                  <input
-                    type="text"
-                    id="captcha"
-                    name="captcha"
-                    onChange={(e) => setCaptchaVerified(verifyCaptcha(e.target.value))}
-                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
-                    placeholder="Enter CAPTCHA code"
-                  />
-                  {!captchaVerified && (
-                    <p className="mt-2 text-sm text-red-600">CAPTCHA verification required</p>
-                  )}
-                </div>
-
                 <div className="group">
                   <label htmlFor="name" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Your Name
@@ -966,7 +972,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     <span className={`text-xs ${
                       formData.message.length > 1800 ? 'text-red-500' : 'text-muted-foreground'
                     }`}>
-                      {formData.message.length}/2000
+                      {formData.message.length} / 2000 characters
                     </span>
                   </div>
                 </div>
@@ -1085,6 +1091,73 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     </p>
                   )}
                 </div>
+                  <div className="group">
+                  <label htmlFor="budgetRange" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                    Budget Range
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Select your estimated project budget. This helps me tailor my proposal.">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8 4.03-8 9-8 9 3.582 9 8z" /></svg>
+                    </span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="budgetRange"
+                      name="budgetRange"
+                      value={formData.budgetRange}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
+                        validationErrors.budgetRange && fieldTouched.budgetRange
+                          ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
+                          : validationErrors.budgetRange === '' && formData.budgetRange && fieldTouched.budgetRange
+                          ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                          : 'border-border focus:ring-primary/30 focus:border-primary'
+                      }`}
+                    >
+                      <option value="">Select a budget range...</option>
+                      <option value="under-500">Under $500</option>
+                      <option value="500-1000">$500 - $1,000</option>
+                      <option value="1000-2500">$1,000 - $2,500</option>
+                      <option value="2500-5000">$2,500 - $5,000</option>
+                      <option value="over-5000">Over $5,000</option>
+                    </select>
+                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
+                      validationErrors.budgetRange && fieldTouched.budgetRange
+                        ? 'text-red-500'
+                        : validationErrors.budgetRange === '' && formData.budgetRange && fieldTouched.budgetRange
+                        ? 'text-green-500'
+                        : 'text-muted-foreground'
+                    }`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z" /></svg>
+                    </span>
+                    {/* Dropdown arrow */}
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                    </span>
+                    {/* Validation indicator */}
+                    {fieldTouched.budgetRange && (
+                      <span className="absolute right-8 top-1/2 -translate-y-1/2">
+                        {validationErrors.budgetRange ? (
+                          <FaExclamationTriangle className="text-red-500 w-4 h-4" />
+                        ) : formData.budgetRange ? (
+                          <FaCheck className="text-green-500 w-4 h-4" />
+                        ) : null}
+                      </span>
+                    )}
+                  </div>
+                  {validationErrors.budgetRange && fieldTouched.budgetRange && (
+                    <p className="text-red-500 text-sm mt-1 flex items-center">
+                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                      {validationErrors.budgetRange}
+                    </p>
+                  )}
+                  {/* Real-time feedback for valid input */}
+                  {!validationErrors.budgetRange && formData.budgetRange && fieldTouched.budgetRange && (
+                    <p className="text-green-600 text-xs mt-1 flex items-center">
+                      <FaCheck className="w-3 h-3 mr-1" /> Looks good!
+                    </p>
+                  )}
+                </div>
                   <m.button
                   type="submit"
                   disabled={isSubmitting || !isFormValid()}
@@ -1111,7 +1184,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     </>
                   )}
                 </m.button>                {/* Form validation summary */}
-                {!isFormValid() && (fieldTouched.name || fieldTouched.email || fieldTouched.subject || fieldTouched.category || fieldTouched.message || fieldTouched.phone || fieldTouched.preferredContactMethod) && (
+                {!isFormValid() && (fieldTouched.name || fieldTouched.email || fieldTouched.subject || fieldTouched.category || fieldTouched.message || fieldTouched.phone || fieldTouched.preferredContactMethod || fieldTouched.budgetRange) && (
                   <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
                     <p className="font-medium mb-1">Please complete the following:</p>
                     <ul className="space-y-1">
@@ -1122,6 +1195,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                       {!formData.message.trim() && <li>• Write your message</li>}
                       {!formData.phone.trim() && <li>• Enter your phone number</li>}
                       {!formData.preferredContactMethod.trim() && <li>• Select a preferred contact method</li>}
+                      {!formData.budgetRange.trim() && <li>• Select a budget range</li>}
                       {validationErrors.name && <li>• Fix name validation errors</li>}
                       {validationErrors.email && <li>• Fix email validation errors</li>}
                       {validationErrors.subject && <li>• Fix subject validation errors</li>}
@@ -1129,6 +1203,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                       {validationErrors.message && <li>• Fix message validation errors</li>}
                       {validationErrors.phone && <li>• Fix phone validation errors</li>}
                       {validationErrors.preferredContactMethod && <li>• Fix preferred contact method validation errors</li>}
+                      {validationErrors.budgetRange && <li>• Fix budget range validation errors</li>}
                     </ul>
                   </div>
                 )}
