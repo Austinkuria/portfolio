@@ -696,9 +696,13 @@ export default function Contact() {  const [formData, setFormData] = useState({
                 Send Me a Message
               </h3>
                 <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
-                <div className="group">
-                  <label htmlFor="name" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                <div className="group">                  <label htmlFor="name" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Your Name
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Please enter your full name as you'd like to be addressed">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
                   </label>
                   <div className="relative">
                     <input
@@ -748,9 +752,13 @@ export default function Contact() {  const [formData, setFormData] = useState({
                   )}
                 </div>
                 
-                <div className="group">
-                  <label htmlFor="email" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                <div className="group">                  <label htmlFor="email" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Your Email
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Enter a valid email address for communication. This will be used for project updates and correspondence.">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
                   </label>
                   <div className="relative">
                     <input
@@ -799,9 +807,13 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     </p>
                   )}
                 </div>
-                  <div className="group">
-                  <label htmlFor="subject" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                  <div className="group">                  <label htmlFor="subject" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Subject
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Brief description of your project or inquiry. Be specific to help me understand your needs better.">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
                   </label>
                   <div className="relative">
                     <input
@@ -916,10 +928,14 @@ export default function Contact() {  const [formData, setFormData] = useState({
                   )}
                 </div>
                 
-                <div className="group">
-                  <label htmlFor="message" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                <div className="group">                  <label htmlFor="message" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Your Message
-                  </label>                  <div className="relative">
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Describe your project, requirements, timeline, and any specific features you need. The more details you provide, the better I can understand your needs.">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                  </label><div className="relative">
                     <textarea
                       id="message"
                       name="message"
@@ -1008,23 +1024,42 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     <p className="text-sm text-muted-foreground mt-1">Selected file: {formData.file.name}</p>
                   )}
                 </div>
-                  <div className="group">
-                  <label htmlFor="phone" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                  <div className="group">                  <label htmlFor="phone" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Phone Number
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Enter your phone number in international format (e.g., +254712345678). Used only for important project communications if email is not responsive.">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
                   </label>
-                  <div className="relative">
-                    <input
+                  <div className="relative">                    <input
                       type="text"
                       id="phone"
                       name="phone"
                       value={formData.phone}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm ${
-                        validationErrors.phone ? 'border-red-500' : ''
+                      required
+                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all peer pl-10 ${
+                        validationErrors.phone && fieldTouched.phone
+                          ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
+                          : validationErrors.phone === '' && formData.phone && fieldTouched.phone
+                          ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                          : 'border-border focus:ring-primary/30 focus:border-primary'
                       }`}
-                      placeholder="e.g., +254712345678"
+                      placeholder="+254712345678"
                     />
+                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${
+                      validationErrors.phone && fieldTouched.phone
+                        ? 'text-red-500'
+                        : validationErrors.phone === '' && formData.phone && fieldTouched.phone
+                        ? 'text-green-500'
+                        : 'text-muted-foreground peer-focus:text-primary'
+                    }`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                      </svg>
+                    </span>
                     {/* Validation indicator */}
                     {fieldTouched.phone && (
                       <span className="absolute right-3 top-1/2 -translate-y-1/2">
@@ -1034,6 +1069,11 @@ export default function Contact() {  const [formData, setFormData] = useState({
                           <FaCheck className="text-green-500 w-4 h-4" />
                         ) : null}
                       </span>
+                    )}
+                    {!validationErrors.phone && formData.phone && fieldTouched.phone && (
+                      <p className="text-green-600 text-xs mt-1 flex items-center">
+                        <FaCheck className="w-3 h-3 mr-1" /> Looks good!
+                      </p>
                     )}
                   </div>
                   {fieldTouched.phone && validationErrors.phone && (
@@ -1103,11 +1143,12 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     </p>
                   )}
                 </div>
-                  <div className="group">
-                  <label htmlFor="budgetRange" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                  <div className="group">                  <label htmlFor="budgetRange" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Budget Range
-                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Select your estimated project budget. This helps me tailor my proposal.">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8s-9-3.582-9-8 4.03-8 9-8 9 3.582 9 8z" /></svg>
+                    <span className="ml-1 text-muted-foreground cursor-pointer group" title="Select your estimated project budget. This helps me tailor my proposal.">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
                     </span>
                   </label>
                   <div className="relative">
@@ -1140,7 +1181,11 @@ export default function Contact() {  const [formData, setFormData] = useState({
                         ? 'text-green-500'
                         : 'text-muted-foreground'
                     }`}>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3z" /></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zM17 2H7a5 5 0 00-5 5v10a5 5 0 005 5h10a5 5 0 005-5V7a5 5 0 00-5-5z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 11a2 2 0 11-4 0 2 2 0 014 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.5 8.5V12m7-3.5V12" />
+                      </svg>
                     </span>
                     {/* Dropdown arrow */}
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -1221,20 +1266,38 @@ export default function Contact() {  const [formData, setFormData] = useState({
                 )}
                 
                 {submitStatus !== 'idle' && (
-                  <MotionDiv
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className={`mt-4 p-3 rounded-lg ${
+                  <MotionDiv                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3, ease: "easeOut" }}
+                    className={`mt-4 p-6 rounded-lg ${
                       submitStatus === 'success' 
                         ? 'bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-400' 
                         : 'bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400'
                     } flex items-center`}
-                  >                    {submitStatus === 'success' ? (
-                      <>
-                        <FaCheck className="mr-2 flex-shrink-0" />
-                        <span>Thank you! Your message has been sent successfully. You'll receive a confirmation email, and I'll get back to you soon.</span>
-                      </>                    ) : (
+                  >                    {                      submitStatus === 'success' ? (
+                      <div className="w-full">
+                        <div className="flex items-center justify-center mb-4">
+                          <div className="relative">
+                            <svg className="w-16 h-16 animate-[successCheckmark_0.7s_cubic-bezier(0.65,0,0.45,1)_forwards]" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                              <circle className="text-green-500" cx="26" cy="26" r="25" fill="none" stroke="currentColor" strokeWidth="2" strokeMiterlimit="10" />
+                              <path className="text-green-500" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeMiterlimit="10" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                            </svg>
+                            <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                              <div className="w-16 h-16 border-2 border-green-500 rounded-full animate-[ripple_1s_cubic-bezier(0.65,0,0.45,1)_forwards]" />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="text-center">
+                          <h4 className="text-xl font-semibold mb-2 animate-[fadeSlideUp_0.5s_0.5s_both]">Message Sent Successfully!</h4>
+                          <p className="text-muted-foreground animate-[fadeSlideUp_0.5s_0.7s_both]">
+                            Thank you for reaching out! I'll review your message and get back to you within 24-48 hours.
+                          </p>
+                          <p className="text-sm text-muted-foreground mt-4 animate-[fadeSlideUp_0.5s_0.9s_both]">
+                            A confirmation email has been sent to your inbox.
+                          </p>
+                        </div>
+                      </div>) : (
                       <>
                         <FaExclamationTriangle className="mr-2 flex-shrink-0 mt-1" />
                         <div className="flex-1">
