@@ -919,8 +919,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                 <div className="group">
                   <label htmlFor="message" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Your Message
-                  </label>
-                  <div className="relative">
+                  </label>                  <div className="relative">
                     <textarea
                       id="message"
                       name="message"
@@ -929,6 +928,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                       onBlur={handleBlur}
                       required
                       rows={5}
+                      maxLength={2000}
                       className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all resize-none pl-10 ${
                         validationErrors.message && fieldTouched.message
                           ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
@@ -938,6 +938,18 @@ export default function Contact() {  const [formData, setFormData] = useState({
                       }`}
                       placeholder="Hello! I'd like to talk about..."
                     ></textarea>
+                    {/* Character counter */}
+                    <div className="absolute bottom-2 right-3 text-sm">
+                      <span className={`${
+                        formData.message.length > 1800 
+                          ? 'text-red-500'
+                          : formData.message.length > 1500
+                          ? 'text-yellow-500'
+                          : 'text-muted-foreground'
+                      }`}>
+                        {formData.message.length}/2000
+                      </span>
+                    </div>
                     <span className={`absolute left-3 top-6 transition-colors ${
                       validationErrors.message && fieldTouched.message
                         ? 'text-red-500'
