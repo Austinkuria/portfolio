@@ -929,7 +929,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                       required
                       rows={5}
                       maxLength={2000}
-                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all resize-none pl-10 ${
+                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all resize-y min-h-[120px] pl-10 ${
                         validationErrors.message && fieldTouched.message
                           ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
                           : validationErrors.message === '' && formData.message && fieldTouched.message
