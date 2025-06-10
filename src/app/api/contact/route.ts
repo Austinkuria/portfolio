@@ -316,18 +316,16 @@ You can also click the WhatsApp button below to send me a quick message with you
                 <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Project Category</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
-                </div>
-                
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                </div>                  <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Budget Range</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">
                     ${(() => {
           switch (body.budgetRange) {
-            case 'under-500': return 'Under $500';
-            case '500-1000': return '$500 - $1,000';
-            case '1000-2500': return '$1,000 - $2,500';
-            case '2500-5000': return '$2,500 - $5,000';
-            case 'over-5000': return 'Over $5,000';
+            case 'under-500': return 'Under Ksh 15,000';
+            case '500-1000': return 'Ksh 15,000 - Ksh 30,000';
+            case '1000-2500': return 'Ksh 30,000 - Ksh 60,000';
+            case '2500-5000': return 'Ksh 60,000 - Ksh 100,000';
+            case 'over-5000': return 'Over Ksh 100,000';
             default: return 'Not specified';
           }
         })()}
@@ -440,15 +438,14 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <p style="margin: 0; color: #6b7280; font-size: 14px;"><strong>From:</strong> ${name}</p>
                   <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Email:</strong> ${email}</p>
                   <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Subject:</strong> ${subject}</p>
-                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Project Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
-                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Budget Range:</strong> 
+                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Project Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Budget Range:</strong> 
                     ${(() => {
           switch (body.budgetRange) {
-            case 'under-500': return 'Under $500';
-            case '500-1000': return '$500 - $1,000';
-            case '1000-2500': return '$1,000 - $2,500';
-            case '2500-5000': return '$2,500 - $5,000';
-            case 'over-5000': return 'Over $5,000';
+            case 'under-500': return 'Under Ksh 15,000';
+            case '500-1000': return 'Ksh 15,000 - Ksh 30,000';
+            case '1000-2500': return 'Ksh 30,000 - Ksh 60,000';
+            case '2500-5000': return 'Ksh 60,000 - Ksh 100,000';
+            case 'over-5000': return 'Over Ksh 100,000';
             default: return 'Not specified';
           }
         })()}
@@ -460,10 +457,9 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <span style="background: #f59e0b; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">❓</span>
                   Quick Answers While You Wait
                 </h3>
-                <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
-                  <div style="margin-bottom: 15px;">
+                <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">                  <div style="margin-bottom: 15px;">
                     <strong style="color: #1e293b;">💰 Project Budget:</strong>
-                    <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">I work with budgets ranging from $2,000 to $50,000+ depending on project scope.</p>
+                    <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">I work with budgets ranging from Ksh 15,000 to Ksh 150,000+ depending on project scope.</p>
                   </div>
                   <div style="margin-bottom: 15px;">
                     <strong style="color: #1e293b;">⏱️ Timeline:</strong>
@@ -525,7 +521,7 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
                     <a href="https://linkedin.com/in/austin-maina" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: 500;">💼 LinkedIn</a>
                     <a href="https://calendly.com/austinmaina" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500;">📅 Schedule Call</a>
-                    <a href="https://github.com/austin-maina" target="_blank" style="color: #1f2937; text-decoration: none; font-weight: 500;">💻 GitHub</a>
+                    <a href="https://github.com/Austinkuria" target="_blank" style="color: #1f2937; text-decoration: none; font-weight: 500;">💻 GitHub</a>
                   </div>
                 </div>
               </div>
