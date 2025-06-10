@@ -33,8 +33,8 @@ function sanitizeInput(input: string): string {
 }
 
 // Refined spam detection function
-function detectSpam(name: string, email: string, subject: string, category: string, message: string): { isSpam: boolean; reason: string } {
-  const combinedText = `${name} ${email} ${subject} ${category} ${message}`.toLowerCase();
+function detectSpam(name: string, email: string, subject: string, category: string, message: string, phone?: string, preferredContactMethod?: string, budgetRange?: string): { isSpam: boolean; reason: string } {
+  const combinedText = `${name} ${email} ${subject} ${category} ${message} ${phone || ''} ${preferredContactMethod || ''} ${budgetRange || ''}`.toLowerCase();
 
   // Refined spam keywords
   const spamKeywords = [
@@ -117,28 +117,26 @@ export async function POST(request: NextRequest) {
         { status: 429 }
       );
     } const body = await request.json();
-    let { name, email, subject, category, message } = body;
+    let { name, email, subject, category, message, phone, preferredContactMethod, budgetRange } = body;
 
     // Validate required fields
-    if (!name || !email || !subject || !category || !message) {
+    if (!name || !email || !subject || !category || !message || !phone || !preferredContactMethod || !budgetRange) {
       return NextResponse.json(
         {
-          error: 'All fields (name, email, subject, category, message) are required.',
+          error: 'Required fields are missing. Please complete all required fields.',
           code: 'MISSING_FIELDS'
         },
         { status: 400 }
       );
-    }
-
-    // Sanitize inputs
+    }    // Sanitize inputs
     name = sanitizeInput(name);
     email = sanitizeInput(email);
     subject = sanitizeInput(subject);
     category = sanitizeInput(category);
     message = sanitizeInput(message);
-    email = sanitizeInput(email);
-    subject = sanitizeInput(subject);
-    message = sanitizeInput(message);
+    phone = sanitizeInput(phone);
+    preferredContactMethod = sanitizeInput(preferredContactMethod);
+    budgetRange = sanitizeInput(budgetRange);
 
     // Validate field lengths
     if (name.length < 2 || name.length > 100) {
@@ -173,7 +171,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }    // Enhanced spam detection system
-    const spamDetectionResult = detectSpam(name, email, subject, category, message);
+    const spamDetectionResult = detectSpam(name, email, subject, category, message, phone, preferredContactMethod, budgetRange);
     if (spamDetectionResult.isSpam) {
       console.log('Spam detected:', spamDetectionResult.reason);
 
@@ -288,8 +286,7 @@ You can also click the WhatsApp button below to send me a quick message with you
                 <span style="background: #667eea; color: white; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 15px; line-height: 1; text-align: center; vertical-align: middle;">👤</span>
                 Contact Information
               </h2>
-              
-              <div style="display: grid; gap: 15px;">                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                <div style="display: grid; gap: 15px;">                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Full Name</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 18px; font-weight: 600;">${name}</p>
                 </div>
@@ -300,7 +297,18 @@ You can also click the WhatsApp button below to send me a quick message with you
                     <a href="mailto:${email}" style="color: #667eea; text-decoration: none; font-size: 16px; font-weight: 500;">${email}</a>
                   </p>
                 </div>
-                  <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                  
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Phone Number</strong>
+                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${body.phone || 'Not provided'}</p>
+                </div>
+                  
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Preferred Contact Method</strong>
+                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${body.preferredContactMethod ? body.preferredContactMethod.charAt(0).toUpperCase() + body.preferredContactMethod.slice(1) : 'Not specified'}</p>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Subject</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${subject}</p>
                 </div>
@@ -309,6 +317,37 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Project Category</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
                 </div>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Budget Range</strong>
+                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">
+                    ${(() => {
+          switch (body.budgetRange) {
+            case 'under-500': return 'Under $500';
+            case '500-1000': return '$500 - $1,000';
+            case '1000-2500': return '$1,000 - $2,500';
+            case '2500-5000': return '$2,500 - $5,000';
+            case 'over-5000': return 'Over $5,000';
+            default: return 'Not specified';
+          }
+        })()}
+                  </p>
+                </div>
+                
+                ${body.file ? `
+                <div style="background: #eef2ff; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #6366f1;">
+                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">File Attachment</strong>
+                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">
+                    <span style="display: inline-flex; align-items: center; gap: 6px;">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                        <polyline points="13 2 13 9 20 9"></polyline>
+                      </svg>
+                      Client attached a file
+                    </span>
+                  </p>
+                </div>
+                ` : ''}
               </div>
             </div>
             
@@ -401,6 +440,20 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <p style="margin: 0; color: #6b7280; font-size: 14px;"><strong>From:</strong> ${name}</p>
                   <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Email:</strong> ${email}</p>
                   <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Subject:</strong> ${subject}</p>
+                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Project Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
+                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Budget Range:</strong> 
+                    ${(() => {
+          switch (body.budgetRange) {
+            case 'under-500': return 'Under $500';
+            case '500-1000': return '$500 - $1,000';
+            case '1000-2500': return '$1,000 - $2,500';
+            case '2500-5000': return '$2,500 - $5,000';
+            case 'over-5000': return 'Over $5,000';
+            default: return 'Not specified';
+          }
+        })()}
+                  </p>
+                  ${body.file ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>File:</strong> <span style="color: #4f46e5;">✓ File received</span></p>` : ''}
                   <p style="margin: 15px 0 0 0; color: #374151; font-style: italic; line-height: 1.5;">"${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"</p>
                 </div>
               </div>              <div style="background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #f59e0b;">                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
