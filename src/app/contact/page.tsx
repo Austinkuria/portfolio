@@ -20,10 +20,10 @@ export default function Contact() {  const [formData, setFormData] = useState({
     preferredContactMethod: '', // Added preferred contact method property
     budgetRange: '', // New field
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isSubmitting, setIsSubmitting] = useState(false);  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
+  const [attachmentWarning, setAttachmentWarning] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
 
   // FAQ Data
@@ -336,14 +336,13 @@ export default function Contact() {  const [formData, setFormData] = useState({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(formData),
-      });
-
-      const result = await response.json();
+      });      const result = await response.json();
 
       if (!response.ok) {
         // Handle specific error codes
         if (result.code === 'RATE_LIMIT_EXCEEDED') {
-          throw new Error('Too many requests. Please wait 15 minutes before sending another message.');        } else if (result.code === 'SPAM_DETECTED') {
+          throw new Error('Too many requests. Please wait 15 minutes before sending another message.');
+        } else if (result.code === 'SPAM_DETECTED') {
           // Handle spam detection with new reference ID system
           const errorMsg = result.error || 'Your message was flagged by our security filters.';
           
@@ -353,32 +352,37 @@ export default function Contact() {  const [formData, setFormData] = useState({
           }
           
           throw new Error(errorMsg);
-        }else if (result.code === 'INVALID_EMAIL') {
+        } else if (result.code === 'INVALID_EMAIL') {
           throw new Error('Please enter a valid email address.');
         } else {
           throw new Error(result.error || 'Failed to send message');
         }
+      }
+      
+      // Check for attachment issues
+      if (result.success && result.data?.attachmentIssue && formData.file) {
+        setAttachmentWarning("Your message was sent successfully, but we couldn't process your file attachment. Please consider sending your file through an alternative method.");
       }      // Reset form on success
       setFormData({ name: '', email: '', subject: '', category: '', message: '', file: null, fileData: null, fileName: null, fileType: null, phone: '', preferredContactMethod: '', budgetRange: '' });
       setFieldTouched({ name: false, email: false, subject: false, category: false, message: false, phone: false, preferredContactMethod: false, budgetRange: false, file: false });
       setValidationErrors({ name: '', email: '', subject: '', category: '', message: '', phone: '', preferredContactMethod: '', budgetRange: '', file: '' });
       setSubmitStatus('success');
-      
-      // Reset status after 10 seconds
+        // Reset status after 10 seconds
       setTimeout(() => {
         setSubmitStatus('idle');
+        setAttachmentWarning(null);
       }, 10000);
     } catch (error) {
       // console.error('Error sending message:', error);
       setSubmitStatus('error');
       
       // Store error message for display
-      setErrorMessage(error instanceof Error ? error.message : 'An unexpected error occurred');
-        // Reset status after 10 seconds
+      setErrorMessage(error instanceof Error ? error.message : 'An unexpected error occurred');      // Reset status after 10 seconds
       setTimeout(() => {
         setSubmitStatus('idle');
         setErrorMessage('');
         setWhatsappUrl(null);
+        setAttachmentWarning(null);
       }, 10000);
     } finally {
       setIsSubmitting(false);
@@ -1015,6 +1019,26 @@ export default function Contact() {  const [formData, setFormData] = useState({
                       </svg>
                     </span>
                   </label>                  <div className="relative">
+                    <div className="flex items-center">
+                      <label htmlFor="file" className="flex-grow px-4 py-3 rounded-lg border bg-background/80 hover:border-primary hover:bg-background/90 transition-all cursor-pointer text-muted-foreground flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                        </svg>
+                        {formData.file ? formData.file.name : "Choose a file..."}
+                      </label>
+                      {formData.file && (
+                        <button
+                          type="button"
+                          onClick={() => setFormData(prev => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }))}
+                          className="ml-2 p-2 text-muted-foreground hover:text-red-500 transition-colors"
+                          title="Remove file"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
                     <input
                       type="file"
                       id="file"
@@ -1048,12 +1072,15 @@ export default function Contact() {  const [formData, setFormData] = useState({
                         }
                       }}
                       accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                      className="w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all cursor-pointer"
+                      className="hidden"
                     />
                   </div>
-                  {formData.file && (
-                    <p className="text-sm text-muted-foreground mt-1">Selected file: {formData.file.name}</p>
-                  )}
+                  <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Supported: PDF, DOC, DOCX, PNG, JPG (Max 10MB)
+                  </div>
                   {validationErrors.file && fieldTouched.file && (
                     <p className="text-sm text-red-500 mt-1">{validationErrors.file}</p>
                   )}
@@ -1319,8 +1346,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                               <div className="w-16 h-16 border-2 border-green-500 rounded-full animate-[ripple_1s_cubic-bezier(0.65,0,0.45,1)_forwards]" />
                             </div>
                           </div>
-                        </div>
-                        <div className="text-center">
+                        </div>                        <div className="text-center">
                           <h4 className="text-xl font-semibold mb-2 animate-[fadeSlideUp_0.5s_0.5s_both]">Message Sent Successfully!</h4>
                           <p className="text-muted-foreground animate-[fadeSlideUp_0.5s_0.7s_both]">
                             Thank you for reaching out! I'll review your message and get back to you within 24-48 hours.
@@ -1328,6 +1354,16 @@ export default function Contact() {  const [formData, setFormData] = useState({
                           <p className="text-sm text-muted-foreground mt-4 animate-[fadeSlideUp_0.5s_0.9s_both]">
                             A confirmation email has been sent to your inbox.
                           </p>
+                          {attachmentWarning && (
+                            <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg animate-[fadeSlideUp_0.5s_1.1s_both]">
+                              <div className="flex items-start">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                                </svg>
+                                <p className="text-sm text-left">{attachmentWarning}</p>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>) : (
                       <>

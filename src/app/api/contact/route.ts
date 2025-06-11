@@ -114,9 +114,10 @@ export async function POST(request: NextRequest) {
           error: 'Too many requests. Please wait 15 minutes before sending another message.',
           code: 'RATE_LIMIT_EXCEEDED'
         },
-        { status: 429 }
-      );
-    } const body = await request.json();
+        { status: 429 });
+    }
+
+    const body = await request.json();
     let { name, email, subject, category, message, phone, preferredContactMethod, budgetRange } = body;
 
     // Validate required fields
@@ -126,9 +127,10 @@ export async function POST(request: NextRequest) {
           error: 'Required fields are missing. Please complete all required fields.',
           code: 'MISSING_FIELDS'
         },
-        { status: 400 }
-      );
-    }    // Sanitize inputs
+        { status: 400 });
+    }
+
+    // Sanitize inputs
     name = sanitizeInput(name);
     email = sanitizeInput(email);
     subject = sanitizeInput(subject);
@@ -168,9 +170,10 @@ export async function POST(request: NextRequest) {
           error: 'Please enter a valid email address.',
           code: 'INVALID_EMAIL'
         },
-        { status: 400 }
-      );
-    }    // Enhanced spam detection system
+        { status: 400 });
+    }
+
+    // Enhanced spam detection system
     const spamDetectionResult = detectSpam(name, email, subject, category, message, phone, preferredContactMethod, budgetRange);
     if (spamDetectionResult.isSpam) {
       console.log('Spam detected:', spamDetectionResult.reason);
@@ -221,9 +224,10 @@ You can also click the WhatsApp button below to send me a quick message with you
           },
           details: process.env.NODE_ENV === 'development' ? spamDetectionResult.reason : undefined
         },
-        { status: 400 }
-      );
-    }// Enhanced email templates with better branding
+        { status: 400 });
+    }
+
+    // Enhanced email templates with better branding
     const timestamp = new Date().toLocaleString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -231,7 +235,9 @@ You can also click the WhatsApp button below to send me a quick message with you
       hour: '2-digit',
       minute: '2-digit',
       timeZoneName: 'short'
-    });        // Message analytics
+    });
+
+    // Message analytics
     const messageWordCount = message.trim().split(/\s+/).length;
     const urgencyScore = message.toLowerCase().includes('urgent') || message.toLowerCase().includes('asap') || message.toLowerCase().includes('immediate') ? 'HIGH' : 'NORMAL';
 
@@ -239,10 +245,52 @@ You can also click the WhatsApp button below to send me a quick message with you
     const referer = request.headers.get('referer') || 'Direct visit';
 
     // Email to you (notification) - Enhanced
+    // Prepare email with attachments if file is provided
+    let attachments = [];
+    if (body.fileData && body.fileName) {
+      try {
+        // Make sure the data is a valid data URL
+        if (body.fileData.startsWith('data:')) {
+          // Extract the base64 data part from the data URL (removing the prefix like "data:application/pdf;base64,")
+          const base64Data = body.fileData.split(',')[1];
+
+          if (base64Data) {
+            // Get the file extension and set content type
+            let contentType = body.fileType || 'application/octet-stream';
+            const fileExt = body.fileName.split('.').pop()?.toLowerCase();
+
+            // Ensure we have a proper content type based on extension
+            if (!contentType || contentType === 'unknown/unknown') {
+              if (fileExt === 'pdf') contentType = 'application/pdf';
+              else if (fileExt === 'doc' || fileExt === 'docx') contentType = 'application/msword';
+              else if (fileExt === 'png') contentType = 'image/png';
+              else if (fileExt === 'jpg' || fileExt === 'jpeg') contentType = 'image/jpeg';
+            }
+
+            attachments.push({
+              filename: body.fileName,
+              content: base64Data,
+              encoding: 'base64',
+              contentType: contentType
+            });
+            console.log(`Attachment prepared: ${body.fileName} (${contentType})`);
+          } else {
+            console.error('Invalid file data format: Could not extract base64 content');
+          }
+        } else {
+          console.error('Invalid file data format: Not a data URL');
+        }
+      } catch (error) {
+        console.error('Failed to process file attachment:', error);
+      }
+    }
+
     const notificationEmail = {
       from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
       to: process.env.TO_EMAIL || 'kuriaaustin125@gmail.com',
-      subject: `${urgencyScore === 'HIGH' ? '🚨 URGENT' : '🚀'} New Portfolio Contact: ${name} - ${subject}`, html: `
+      subject: `${urgencyScore === 'HIGH' ? '🚨 URGENT' : '🚀'} New Portfolio Contact: ${name} - ${subject}`,
+      attachments: attachments,
+      html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 0; background: #f8fafc;">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center; position: relative;">
             ${urgencyScore === 'HIGH' ? '<div style="position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">URGENT</div>' : ''}
@@ -260,10 +308,12 @@ You can also click the WhatsApp button below to send me a quick message with you
                 <a href="https://calendly.com/austinmaina" target="_blank"
                    style="background: #22c55e; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">📅 Schedule Call</a>
                 <a href="https://linkedin.com/in/austin-maina" target="_blank"
-                   style="background: #0077b5; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">💼 LinkedIn</a>
-              </div>
-            </div>            <!-- Message Analytics -->
-            <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; border-left: 5px solid #0ea5e9; margin-bottom: 25px;">              <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; display: flex; align-items: center;">
+                   style="background: #0077b5; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">💼 LinkedIn</a>              </div>
+            </div>
+            
+            <!-- Message Analytics -->
+            <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; border-left: 5px solid #0ea5e9; margin-bottom: 25px;">
+              <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; display: flex; align-items: center;">
                 <span style="background: #0ea5e9; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">📊</span>
                 Message Analytics
               </h3>
@@ -280,13 +330,14 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <div style="font-size: 20px; font-weight: bold; color: #8b5cf6;">${message.length}</div>
                   <div style="font-size: 12px; color: #64748b;">Characters</div>
                 </div>
-              </div>
-            </div>
-              <div style="background: #f1f5f9; padding: 25px; border-radius: 12px; border-left: 5px solid #667eea; margin-bottom: 25px;">              <h2 style="color: #1e293b; margin: 0 0 20px 0; font-size: 20px; display: flex; align-items: center;">
+              </div>            </div>
+              
+              <div style="background: #f1f5f9; padding: 25px; border-radius: 12px; border-left: 5px solid #667eea; margin-bottom: 25px;">
+              <h2 style="color: #1e293b; margin: 0 0 20px 0; font-size: 20px; display: flex; align-items: center;">
                 <span style="background: #667eea; color: white; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 15px; line-height: 1; text-align: center; vertical-align: middle;">👤</span>
-                Contact Information
-              </h2>
-                <div style="display: grid; gap: 15px;">                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                Contact Information              </h2>
+                <div style="display: grid; gap: 15px;">
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Full Name</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 18px; font-weight: 600;">${name}</p>
                 </div>
@@ -316,7 +367,9 @@ You can also click the WhatsApp button below to send me a quick message with you
                 <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Project Category</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
-                </div>                  <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                </div>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Budget Range</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">
                     ${(() => {
@@ -331,6 +384,7 @@ You can also click the WhatsApp button below to send me a quick message with you
         })()}
                   </p>
                 </div>
+                  
                   ${body.fileData ? `
                 <div style="background: #eef2ff; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #6366f1;">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">File Attachment</strong>
@@ -343,19 +397,16 @@ You can also click the WhatsApp button below to send me a quick message with you
                       File: ${body.fileName} (${(body.fileType || '').split('/')[1]})
                     </span>
                   </p>
-                  <div style="margin-top: 10px;">
-                    <a href="${body.fileData}" 
-                       download="${body.fileName}"
-                       style="display: inline-block; background: #4f46e5; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500;">
-                      📥 Download Attachment
-                    </a>
-                  </div>
+                  <p style="margin: 10px 0 0 0; color: #4b5563; font-size: 14px;">
+                    The file has been attached to this email.
+                  </p>
                 </div>
                 ` : ''}
               </div>
             </div>
             
-            <div style="background: #fefce8; padding: 20px; border-radius: 12px; border-left: 5px solid #eab308; margin-bottom: 25px;">              <h3 style="color: #1e293b; margin: 0 0 15px 0; font-size: 18px; display: flex; align-items: center;">
+            <div style="background: #fefce8; padding: 20px; border-radius: 12px; border-left: 5px solid #eab308; margin-bottom: 25px;">
+              <h3 style="color: #1e293b; margin: 0 0 15px 0; font-size: 18px; display: flex; align-items: center;">
                 <span style="background: #eab308; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">💬</span>
                 Message
               </h3>
@@ -437,14 +488,18 @@ You can also click the WhatsApp button below to send me a quick message with you
                 I've received your message and I'm excited to learn more about your project! I'll review your inquiry carefully and get back to you soon.
               </p>
               
-              <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 25px; border-radius: 12px; border-left: 4px solid #3b82f6; margin: 25px 0;">                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
+              <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 25px; border-radius: 12px; border-left: 4px solid #3b82f6; margin: 25px 0;">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
                   <span style="background: #3b82f6; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">📋</span>
                   Your Message Summary
-                </h3>                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                </h3>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
                   <p style="margin: 0; color: #6b7280; font-size: 14px;"><strong>From:</strong> ${name}</p>
                   <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Email:</strong> ${email}</p>
                   <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Subject:</strong> ${subject}</p>
-                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Project Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Budget Range:</strong> 
+                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Project Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
+                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Budget Range:</strong> 
                     ${(() => {
           switch (body.budgetRange) {
             case 'under-500': return 'Under Ksh 15,000';
@@ -459,11 +514,15 @@ You can also click the WhatsApp button below to send me a quick message with you
                   ${body.fileData ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>File:</strong> <span style="color: #4f46e5;">${body.fileName}</span></p>` : ''}
                   <p style="margin: 15px 0 0 0; color: #374151; font-style: italic; line-height: 1.5;">"${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"</p>
                 </div>
-              </div>              <div style="background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #f59e0b;">                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
+              </div>
+              
+              <div style="background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #f59e0b;">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
                   <span style="background: #f59e0b; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">❓</span>
                   Quick Answers While You Wait
                 </h3>
-                <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">                  <div style="margin-bottom: 15px;">
+                <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                  <div style="margin-bottom: 15px;">
                     <strong style="color: #1e293b;">💰 Project Budget:</strong>
                     <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">I work with budgets ranging from Ksh 15,000 to Ksh 150,000+ depending on project scope.</p>
                   </div>
@@ -477,7 +536,9 @@ You can also click the WhatsApp button below to send me a quick message with you
                   </div>
                 </div>
               </div>
-                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #22c55e;">                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
+                
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #22c55e;">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
                   <span style="background: #22c55e; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">⚡</span>
                   What Happens Next?
                 </h3>
@@ -499,7 +560,10 @@ You can also click the WhatsApp button below to send me a quick message with you
                     <span style="color: #374151;">Create a detailed proposal with timeline and pricing</span>
                   </div>
                 </div>
-              </div>              <div style="background: linear-gradient(135deg, #f3e8ff 0%, #ddd6fe 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #8b5cf6;">                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
+              </div>
+              
+              <div style="background: linear-gradient(135deg, #f3e8ff 0%, #ddd6fe 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #8b5cf6;">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
                   <span style="background: #8b5cf6; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">🌟</span>
                   Recent Success Story
                 </h3>
@@ -556,11 +620,44 @@ You can also click the WhatsApp button below to send me a quick message with you
       const [notificationResult, autoReplyResult] = await Promise.allSettled([
         resend.emails.send(notificationEmail),
         resend.emails.send(autoReplyEmail),
-      ]);
-
-      // Check if notification email failed
+      ]);      // Check if notification email failed
       if (notificationResult.status === 'rejected') {
         console.error('Notification email failed:', notificationResult.reason);
+
+        // Check if the error is related to the attachment
+        const errorMsg = notificationResult.reason?.toString() || '';
+        const isAttachmentError = errorMsg.toLowerCase().includes('attachment') ||
+          errorMsg.toLowerCase().includes('file') ||
+          errorMsg.toLowerCase().includes('base64');
+
+        // If it's an attachment error, try again without the attachment
+        if (isAttachmentError && body.fileData) {
+          console.log('Attempting to send email without attachment due to attachment error');
+
+          // Remove attachments and try again
+          const notificationWithoutAttachment = {
+            ...notificationEmail,
+            attachments: [],
+          };
+
+          try {
+            const retryResult = await resend.emails.send(notificationWithoutAttachment);
+            if (retryResult.data?.id) {
+              return NextResponse.json({
+                success: true,
+                message: 'Message sent successfully, but we could not include your attachment due to technical issues.',
+                data: {
+                  notificationId: retryResult.data.id,
+                  timestamp: new Date().toISOString(),
+                  attachmentIssue: true
+                }
+              });
+            }
+          } catch (retryError) {
+            console.error('Retry without attachment also failed:', retryError);
+          }
+        }
+
         return NextResponse.json(
           {
             error: 'Failed to send notification email. Please try again.',
@@ -572,20 +669,41 @@ You can also click the WhatsApp button below to send me a quick message with you
 
       // Check if auto-reply failed (less critical)
       if (autoReplyResult.status === 'rejected') {
-        console.error('Auto-reply email failed:', autoReplyResult.reason);
-        // Still return success since notification was sent
+        console.error('Auto-reply email failed:', autoReplyResult.reason);        // Still return success since notification was sent
       }
 
-      return NextResponse.json({
+      // Build response data
+      const responseData: {
+        success: boolean;
+        message: string;
+        data: {
+          notificationId: string | null;
+          autoReplyId: string | null;
+          timestamp: string;
+          fileAttached?: boolean;
+          attachmentIssue?: boolean;
+        }
+      } = {
         success: true,
         message: 'Message sent successfully! You should receive a confirmation email shortly.',
         data: {
-          notificationId: notificationResult.status === 'fulfilled' ? notificationResult.value.data?.id : null,
-          autoReplyId: autoReplyResult.status === 'fulfilled' ? autoReplyResult.value.data?.id : null,
+          notificationId: notificationResult.status === 'fulfilled' ? (notificationResult.value.data?.id || null) : null,
+          autoReplyId: autoReplyResult.status === 'fulfilled' ? (autoReplyResult.value.data?.id || null) : null,
           timestamp: new Date().toISOString(),
         }
-      });
+      };
 
+      // Add attachment status if there was an attachment
+      if (body.fileData && body.fileName) {
+        responseData.data.fileAttached = true;
+
+        // If there was any issue with attachment processing, note it
+        if (notificationResult.status === 'fulfilled' && !notificationResult.value.data?.id) {
+          responseData.data.attachmentIssue = true;
+        }
+      }
+
+      return NextResponse.json(responseData);
     } catch (emailError) {
       console.error('Email sending error:', emailError);
       return NextResponse.json(
@@ -596,7 +714,6 @@ You can also click the WhatsApp button below to send me a quick message with you
         { status: 500 }
       );
     }
-
   } catch (error) {
     console.error('Contact form error:', error);
 
@@ -609,9 +726,7 @@ You can also click the WhatsApp button below to send me a quick message with you
         },
         { status: 400 }
       );
-    }
-
-    return NextResponse.json(
+    } return NextResponse.json(
       {
         error: 'An unexpected error occurred. Please try again later.',
         code: 'INTERNAL_ERROR',
