@@ -331,8 +331,7 @@ You can also click the WhatsApp button below to send me a quick message with you
         })()}
                   </p>
                 </div>
-                
-                ${body.file ? `
+                  ${body.fileData ? `
                 <div style="background: #eef2ff; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #6366f1;">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">File Attachment</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">
@@ -341,9 +340,16 @@ You can also click the WhatsApp button below to send me a quick message with you
                         <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
                         <polyline points="13 2 13 9 20 9"></polyline>
                       </svg>
-                      Client attached a file
+                      File: ${body.fileName} (${(body.fileType || '').split('/')[1]})
                     </span>
                   </p>
+                  <div style="margin-top: 10px;">
+                    <a href="${body.fileData}" 
+                       download="${body.fileName}"
+                       style="display: inline-block; background: #4f46e5; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-size: 14px; font-weight: 500;">
+                      📥 Download Attachment
+                    </a>
+                  </div>
                 </div>
                 ` : ''}
               </div>
@@ -450,7 +456,7 @@ You can also click the WhatsApp button below to send me a quick message with you
           }
         })()}
                   </p>
-                  ${body.file ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>File:</strong> <span style="color: #4f46e5;">✓ File received</span></p>` : ''}
+                  ${body.fileData ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>File:</strong> <span style="color: #4f46e5;">${body.fileName}</span></p>` : ''}
                   <p style="margin: 15px 0 0 0; color: #374151; font-style: italic; line-height: 1.5;">"${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"</p>
                 </div>
               </div>              <div style="background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #f59e0b;">                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">

@@ -12,7 +12,10 @@ export default function Contact() {  const [formData, setFormData] = useState({
     subject: '',
     category: '',
     message: '',
-    file: null as File | null, // Added file property
+    file: null as File | null, // File object for UI display
+    fileData: null as string | null, // Base64 encoded file data
+    fileName: null as string | null, // Original filename
+    fileType: null as string | null, // File MIME type
     phone: '', // Added phone property
     preferredContactMethod: '', // Added preferred contact method property
     budgetRange: '', // New field
@@ -80,8 +83,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
       category: 'UI/UX Design',
       icon: <FaPalette className="w-5 h-5" />
     }
-  ];
-  // Real-time validation states
+  ];  // Real-time validation states
   const [validationErrors, setValidationErrors] = useState({
     name: '',
     email: '',
@@ -91,6 +93,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
     phone: '', // Added phone validation error
     preferredContactMethod: '', // Added preferredContactMethod validation error
     budgetRange: '', // New field
+    file: '', // Added file validation error
   });
   const [fieldTouched, setFieldTouched] = useState({
     name: false,
@@ -99,6 +102,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
     category: false,
     message: false,
     phone: false, // Added phone touched state
+    file: false, // Added file touched state
     preferredContactMethod: false, // Added preferredContactMethod touched state
     budgetRange: false, // New field
   });
@@ -274,9 +278,8 @@ export default function Contact() {  const [formData, setFormData] = useState({
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name } = e.target;
     setFieldTouched(prev => ({ ...prev, [name]: true }));
-  };const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();    // Mark all fields as touched to show validation errors
-    setFieldTouched({ name: true, email: true, subject: true, category: true, message: true, phone: true, preferredContactMethod: true, budgetRange: true });
+  };const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {    e.preventDefault();    // Mark all fields as touched to show validation errors
+    setFieldTouched({ name: true, email: true, subject: true, category: true, message: true, phone: true, preferredContactMethod: true, budgetRange: true, file: true });
     
     // Validate all fields
     const nameError = validateName(formData.name);
@@ -287,8 +290,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
     const phoneError = validatePhone(formData.phone);
     const preferredContactMethodError = validatePreferredContactMethod(formData.preferredContactMethod);
     const budgetRangeError = validateBudgetRange(formData.budgetRange);
-    
-    setValidationErrors({
+      setValidationErrors({
       name: nameError,
       email: emailError,
       subject: subjectError,
@@ -297,6 +299,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
       phone: phoneError,
       preferredContactMethod: preferredContactMethodError,
       budgetRange: budgetRangeError,
+      file: '', // Add the file validation error
     });
     
     // If there are validation errors, don't submit
@@ -356,9 +359,9 @@ export default function Contact() {  const [formData, setFormData] = useState({
           throw new Error(result.error || 'Failed to send message');
         }
       }      // Reset form on success
-      setFormData({ name: '', email: '', subject: '', category: '', message: '', file: null, phone: '', preferredContactMethod: '', budgetRange: '' });
-      setFieldTouched({ name: false, email: false, subject: false, category: false, message: false, phone: false, preferredContactMethod: false, budgetRange: false });
-      setValidationErrors({ name: '', email: '', subject: '', category: '', message: '', phone: '', preferredContactMethod: '', budgetRange: '' });
+      setFormData({ name: '', email: '', subject: '', category: '', message: '', file: null, fileData: null, fileName: null, fileType: null, phone: '', preferredContactMethod: '', budgetRange: '' });
+      setFieldTouched({ name: false, email: false, subject: false, category: false, message: false, phone: false, preferredContactMethod: false, budgetRange: false, file: false });
+      setValidationErrors({ name: '', email: '', subject: '', category: '', message: '', phone: '', preferredContactMethod: '', budgetRange: '', file: '' });
       setSubmitStatus('success');
       
       // Reset status after 10 seconds
@@ -1011,21 +1014,48 @@ export default function Contact() {  const [formData, setFormData] = useState({
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </span>
-                  </label>
-                  <div className="relative">
+                  </label>                  <div className="relative">
                     <input
                       type="file"
                       id="file"
                       name="file"
                       onChange={(e) => {
                         const file = e.target.files?.[0];
-                        setFormData((prev) => ({ ...prev, file: file || null }));
+                        if (file) {
+                          // Check file size (limit to 10MB)
+                          if (file.size > 10 * 1024 * 1024) {
+                            setValidationErrors(prev => ({
+                              ...prev,
+                              file: "File size exceeds 10MB limit"
+                            }));
+                            return;
+                          }
+                          
+                          // Convert file to Base64 for transmission
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            setFormData((prev) => ({ 
+                              ...prev, 
+                              file: file,
+                              fileData: reader.result as string,
+                              fileName: file.name,
+                              fileType: file.type
+                            }));
+                          };
+                          reader.readAsDataURL(file);
+                        } else {
+                          setFormData((prev) => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }));
+                        }
                       }}
+                      accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
                       className="w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all cursor-pointer"
                     />
                   </div>
                   {formData.file && (
                     <p className="text-sm text-muted-foreground mt-1">Selected file: {formData.file.name}</p>
+                  )}
+                  {validationErrors.file && fieldTouched.file && (
+                    <p className="text-sm text-red-500 mt-1">{validationErrors.file}</p>
                   )}
                 </div>
                   <div className="group">                  <label htmlFor="phone" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
