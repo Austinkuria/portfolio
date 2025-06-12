@@ -44,7 +44,7 @@ export const projects: Project[] = [
         metrics: ['100/100 Lighthouse performance score', 'Fully responsive across all devices', 'SEO optimized with structured data', 'Interactive UI animations'],
         image: '/images/portfolio-website.png',
         github: 'https://github.com/Austinkuria/portfolio',
-        demo: 'https://austinkuria.vercel.app'
+        demo: 'https://austinmaina.vercel.app'
     },
     {
         id: 4,
