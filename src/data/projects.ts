@@ -35,6 +35,18 @@ export const projects: Project[] = [
         demo: 'https://attendance-system123.vercel.app/'
     },
     {
+        id: 3,
+        title: 'Personal Portfolio Website',
+        description: 'A modern, responsive portfolio website built with Next.js and TypeScript to showcase my projects, skills, and professional experience.',
+        problem: 'Needed a professional online presence to showcase my work, skills, and experience to potential employers and clients',
+        solution: 'Designed and developed a Next.js-powered portfolio with optimized performance, responsive design, and interactive project displays',
+        techStack: ['Next.js', 'TypeScript', 'React', 'Tailwind CSS', 'Framer Motion'], 
+        metrics: ['100/100 Lighthouse performance score', 'Fully responsive across all devices', 'SEO optimized with structured data', 'Interactive UI animations'],
+        image: '/images/portfolio-website.png',
+        github: 'https://github.com/Austinkuria/portfolio',
+        demo: 'https://austinkuria.vercel.app'
+    },
+    {
         id: 4,
         title: 'E-Commerce Website',
         description: 'A fully functional e-commerce website built with Django (Python) for the backend and HTML, CSS, Bootstrap, and JavaScript for the frontend. Features include product listing, shopping cart, user authentication, and order management.',
