@@ -8,69 +8,72 @@
 export function setupInitialPreload() {
     if (typeof window === 'undefined') return;
 
-    // Wait for the page to be fully loaded
-    window.addEventListener('load', () => {
-        // Use requestIdleCallback to avoid competing with important rendering work
-        if ('requestIdleCallback' in window) {
-            const requestIdleCallback = (window as Window & {
-                requestIdleCallback: (callback: () => void) => void
-            }).requestIdleCallback;
+    // Wait until after initial page render is complete
+    if (document.readyState === 'complete') {
+        schedulePreload();
+    } else {
+        window.addEventListener('load', schedulePreload);
+    }
+}
 
-            requestIdleCallback(() => {
-                preloadCriticalRoutes();
-            });
-        } else {
-            // Fallback to setTimeout for browsers without requestIdleCallback
-            setTimeout(preloadCriticalRoutes, 1000);
-        }
-    });
+function schedulePreload() {
+    // Use requestIdleCallback with a timeout to ensure it runs
+    if ('requestIdleCallback' in window) {
+        const requestIdleCallback = (window as Window & {
+            requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void
+        }).requestIdleCallback;
+
+        requestIdleCallback(() => {
+            preloadCriticalRoutes();
+        }, { timeout: 2000 });
+    } else {
+        // Fallback to setTimeout for browsers without requestIdleCallback
+        setTimeout(preloadCriticalRoutes, 800);
+    }
 }
 
 function preloadCriticalRoutes() {
-    // List of routes to preload
-    const routes = [
+    // Define critical routes that should be preloaded
+    const criticalRoutes = [
         '/about',
         '/projects',
         '/skills',
-        '/contact'
+        '/contact',
     ];
 
-    // Create a service worker to handle preloaded content in the background
-    if ('serviceWorker' in navigator) {
-        try {
-            // Use the Cache API to store preloaded routes
-            caches.open('route-cache').then(cache => {
-                routes.forEach(route => {                    // Fetch the route with low priority
-                    const request = new Request(route);
-                    fetch(request, { cache: 'force-cache' })
-                        .then(response => {
-                            // Store the response in the cache
-                            if (response.status === 200) {
-                                cache.put(request, response);
-                            }
-                        })
-                        .catch(() => {
-                            // Ignore fetch errors
-                        });
-                });
+    // Preload routes in a staggered manner to avoid network congestion
+    criticalRoutes.forEach((route, index) => {
+        setTimeout(() => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = route;
+            link.as = 'document';
+            document.head.appendChild(link);
+
+            // Also preload using fetch API for more immediate availability in Next.js cache
+            fetch(route, {
+                cache: 'force-cache'
+            }).catch(() => {
+                // Silent catch for fetch errors
             });
-        } catch {
-            // Fallback to simple fetch
-            routes.forEach(route => {
-                try {
-                    fetch(route, { cache: 'force-cache' }).catch(() => { });
-                } catch {
-                    // Ignore fetch errors
-                }
-            });
-        }
-    } else {        // Fallback for browsers without service worker support
-        routes.forEach(route => {
-            try {
-                fetch(route, { cache: 'force-cache' }).catch(() => { });
-            } catch {
-                // Ignore fetch errors
-            }
-        });
-    }
+        }, index * 300); // Stagger preloads by 300ms each
+    });
+
+    // Preload key static assets
+    preloadAssets();
+}
+
+function preloadAssets() {
+    // Critical static assets (images, etc.)
+    const criticalAssets = [
+        '/images/Passport_Photo_AustinMaina.jpg',
+    ];
+
+    criticalAssets.forEach(asset => {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = asset;
+        link.as = asset.endsWith('.jpg') || asset.endsWith('.png') ? 'image' : 'fetch';
+        document.head.appendChild(link);
+    });
 }

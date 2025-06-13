@@ -7,7 +7,7 @@
 
 // Store page reload attempts to prevent infinite reload loops
 let reloadAttempts = 0;
-const MAX_RELOAD_ATTEMPTS = 3;
+const MAX_RELOAD_ATTEMPTS = 2; // Reduced from 3 to be less aggressive
 
 /**
  * Initialize chunk error handling when the component mounts
@@ -28,14 +28,22 @@ export function initChunkErrorHandling() {
   }
 
   // Handle chunk loading errors
-  window.addEventListener('error', (event) => {
-    // Check if this is a chunk loading error
-    if (
-      (event.error?.name === 'ChunkLoadError' || event.message?.includes('Loading chunk')) ||
-      (event.target && event.target instanceof HTMLScriptElement && event.target.src.includes('/_next/'))
-    ) {
-      console.error('Chunk loading error detected', event);
+  window.addEventListener('error', (event) => {    // Check if this is a chunk loading error that's truly critical
+    const isScriptSrc = event.target && 
+      event.target instanceof HTMLScriptElement && 
+      event.target.src.includes('/_next/');
+    
+    // Only reload for actual chunk errors or critical script failures
+    const isCriticalError = 
+      (event.error?.name === 'ChunkLoadError') || 
+      (event.message?.includes('Loading chunk') && event.message?.includes('failed')) ||
+      (isScriptSrc && (
+        (event.target instanceof HTMLScriptElement && event.target.src.includes('main')) || 
+        (event.target instanceof HTMLScriptElement && event.target.src.includes('webpack'))
+      ));
       
+    if (isCriticalError) {
+      console.error('Critical chunk loading error detected', event);
       event.preventDefault();
       
       // Prevent infinite reload loops
@@ -52,7 +60,7 @@ export function initChunkErrorHandling() {
           // Reload after a brief delay
           setTimeout(() => {
             window.location.reload();
-          }, 2000);
+          }, 1000); // Reduced from 2000ms
           
         } catch (e) {
           console.error('Error during chunk error recovery:', e);
@@ -63,6 +71,13 @@ export function initChunkErrorHandling() {
       }
       return true;
     }
+    
+    // For non-critical errors, log but don't reload
+    if (event.target && event.target instanceof HTMLScriptElement && event.target.src.includes('/_next/')) {
+      console.warn('Non-critical script loading error, continuing without reload:', event.target.src);
+      return false;
+    }
+    
     return false;
   }, true);
   
@@ -99,17 +114,29 @@ function showChunkErrorNotification() {
   
   notification.innerHTML = `
     <div style="display: flex; align-items: center; gap: 8px;">
-      <div style="font-weight: 600;">Loading issue detected</div>
-    </div>
-    <div style="margin-top: 4px;">
-      Reloading page to fix this issue (${reloadAttempts}/${MAX_RELOAD_ATTEMPTS})...
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <div>
+        <p style="margin: 0; font-weight: 500;">Loading issue detected</p>
+        <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">Refreshing to fix the problem...</p>
+      </div>
     </div>
   `;
   
   document.body.appendChild(notification);
+  
+  // Remove notification after a delay
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.parentNode.removeChild(notification);
+    }
+  }, 5000);
 }
 
-// Show notification when max attempts is reached
+// Show notification when max attempts reached
 function showMaxAttemptsNotification() {
   const notificationId = 'max-attempts-notification';
   if (document.getElementById(notificationId)) return;
@@ -117,47 +144,40 @@ function showMaxAttemptsNotification() {
   const notification = document.createElement('div');
   notification.id = notificationId;
   notification.style.position = 'fixed';
-  notification.style.top = '50%';
-  notification.style.left = '50%';
-  notification.style.transform = 'translate(-50%, -50%)';
-  notification.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-  notification.style.color = '#1f2937';
-  notification.style.padding = '20px 24px';
-  notification.style.borderRadius = '8px';
-  notification.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)';
+  notification.style.bottom = '20px';
+  notification.style.right = '20px';
+  notification.style.backgroundColor = 'rgba(254, 226, 226, 0.95)';
+  notification.style.color = '#991b1b';
+  notification.style.padding = '12px 16px';
+  notification.style.borderRadius = '6px';
+  notification.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)';
   notification.style.zIndex = '9999';
-  notification.style.maxWidth = '450px';
-  notification.style.textAlign = 'center';
+  notification.style.maxWidth = '400px';
   notification.style.fontFamily = 'system-ui, -apple-system, sans-serif';
+  notification.style.fontSize = '14px';
   
   notification.innerHTML = `
-    <div style="font-weight: 600; font-size: 18px; margin-bottom: 12px;">Unable to load the page</div>
-    <div style="margin-bottom: 16px;">
-      We've tried multiple times to load the page, but it seems there might be an issue with your connection or the site's resources.
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <div>
+        <p style="margin: 0; font-weight: 500;">Unable to load page</p>
+        <p style="margin: 4px 0 0 0; font-size: 12px; opacity: 0.8;">Please try refreshing the page manually.</p>
+      </div>
     </div>
-    <button id="manual-reload" style="background-color: #3b82f6; color: white; padding: 8px 16px; border: none; border-radius: 4px; font-weight: 500; cursor: pointer;">
-      Try Again
-    </button>
-    <button id="clear-storage" style="background-color: transparent; border: 1px solid #d1d5db; padding: 8px 16px; border-radius: 4px; margin-left: 8px; font-weight: 500; cursor: pointer;">
-      Clear Cache & Reload
+    <button id="manual-refresh-btn" style="display: block; margin-top: 8px; padding: 6px 12px; background-color: #991b1b; color: white; border: none; border-radius: 4px; cursor: pointer; width: 100%;">
+      Refresh Now
     </button>
   `;
   
   document.body.appendChild(notification);
   
-  document.getElementById('manual-reload')?.addEventListener('click', () => {
+  // Add click handler for the refresh button
+  document.getElementById('manual-refresh-btn')?.addEventListener('click', () => {
     window.location.reload();
-  });
-  
-  document.getElementById('clear-storage')?.addEventListener('click', () => {
-    try {
-      sessionStorage.clear();
-      localStorage.clear();
-      window.location.reload();
-    } catch (e) {
-      console.error('Error clearing storage:', e);
-      window.location.reload();
-    }
   });
 }
 

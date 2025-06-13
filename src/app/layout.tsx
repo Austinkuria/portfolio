@@ -19,8 +19,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google Tag Manager */}
-        <Script id="gtm-script" strategy="beforeInteractive">
+        {/* Google Tag Manager - moved to afterInteractive for better performance */}
+        <Script id="gtm-script" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
             j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -28,35 +28,25 @@ export default function RootLayout({
             })(window,document,'script','dataLayer','GTM-P2G8NGPF');`}
         </Script>
 
-        {/* Preload important routes */}
+        {/* Preload important routes with higher priority */}
         <link rel="preload" as="fetch" href="/about" crossOrigin="anonymous" />
         <link rel="preload" as="fetch" href="/projects" crossOrigin="anonymous" />
         <link rel="preload" as="fetch" href="/skills" crossOrigin="anonymous" />
         
-        {/* Preload critical resources */}
-        <link rel="preload" href="/_next/static/chunks/main.js" as="script" />
-        <link rel="preload" href="/_next/static/chunks/webpack.js" as="script" />
-        <link rel="preload" href="/_next/static/chunks/pages/_app.js" as="script" />
+        {/* Preconnect to critical domains */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://vitals.vercel-insights.com" crossOrigin="anonymous" />
         
-        {/* Chunk error detection */}
+        {/* Improved chunk loading error detection */}
         <script dangerouslySetInnerHTML={{
           __html: `
-            if (!window.__chunksLoadAttempts) {
-              window.__chunksLoadAttempts = 0;
-            }
             window.addEventListener('error', function(e) {
-              if (e.error && e.error.name === 'ChunkLoadError' || 
+              if ((e.error && e.error.name === 'ChunkLoadError') || 
                   (e.target && e.target.src && e.target.src.includes('/_next/'))) {
                 console.error('Chunk loading error detected:', e);
-                if (window.__chunksLoadAttempts < 3) {
-                  window.__chunksLoadAttempts++;
-                  console.log('Reloading page, attempt:', window.__chunksLoadAttempts);
-                  setTimeout(() => window.location.reload(), 500);
-                }
-                e.preventDefault();
-                return true;
+                // Emit a custom event to notify our error handler component
+                window.dispatchEvent(new CustomEvent('chunkError'));
               }
-              return false;
             }, true);
           `
         }} />
@@ -76,6 +66,7 @@ export default function RootLayout({
           <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
           <Footer />
         </Providers>
+        {/* Moved analytics to the end for better performance */}
         <SpeedInsights />
         <Analytics />
       </body>

@@ -9,10 +9,10 @@ const LoadingIndicator = memo(function LoadingIndicator() {
   const [currentMessage, setCurrentMessage] = useState('Initializing...');
   
   useEffect(() => {
-    // Show the loading indicator only if navigation takes more than 300ms
+    // Show the loading indicator only if navigation takes more than 200ms (reduced from 300ms)
     const timeoutId = setTimeout(() => {
       setVisible(true);
-    }, 300);
+    }, 200);
     
     return () => clearTimeout(timeoutId);
   }, []);
@@ -20,9 +20,9 @@ const LoadingIndicator = memo(function LoadingIndicator() {
   // Optimize progress calculation with useCallback
   const updateProgress = useCallback(() => {
     setProgress(prev => {
-      // Gradually increase progress but slow down as it approaches 100%
-      const increment = prev < 30 ? 8 : prev < 70 ? 4 : prev < 90 ? 2 : 0.5;
-      const newProgress = Math.min(prev + increment, 95); // Cap at 95% until navigation completes
+      // Increase speed of progression especially in the later stages
+      const increment = prev < 30 ? 10 : prev < 70 ? 6 : prev < 90 ? 4 : 3;
+      const newProgress = Math.min(prev + increment, 100); // Allow reaching 100% (changed from 95%)
       
       // Update message based on progress
       if (newProgress < 30) setCurrentMessage('Initializing...');
@@ -38,7 +38,8 @@ const LoadingIndicator = memo(function LoadingIndicator() {
   useEffect(() => {
     if (!visible) return;
     
-    const progressInterval = setInterval(updateProgress, 150);
+    // Reduce interval timing for faster updates (changed from 150ms)
+    const progressInterval = setInterval(updateProgress, 120);
     
     return () => clearInterval(progressInterval);
   }, [visible, updateProgress]);
@@ -48,28 +49,24 @@ const LoadingIndicator = memo(function LoadingIndicator() {
   
   return (
     <>
-      {/* Top progress bar */}
+      {/* Top progress bar - simplified animation */}
       <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-background/50">
         <div 
-          className="h-full bg-gradient-to-r from-primary via-primary/80 to-primary transition-all duration-300 ease-out progress-glow"
+          className="h-full bg-primary"
           style={{ 
             width: `${progress}%`,
-            transition: 'width 150ms ease-out'
+            transition: 'width 120ms ease-out'
           }}
         />
       </div>
 
-      {/* Enhanced loading card */}
+      {/* Simplified loading card - reduced animations */}
       <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
-        <div className="bg-background/95 backdrop-blur-sm shadow-xl px-6 py-4 rounded-xl flex items-center gap-4 border border-border/50 transition-all duration-500 animate-in slide-in-from-top-4 fade-in-0 loading-shimmer">
-          {/* Animated spinner with multiple rings */}
-          <div className="relative">
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-solid border-primary/20 border-t-primary"></div>
-            <div className="absolute inset-0 h-5 w-5 rounded-full border-2 border-primary/10 animate-pulse"></div>
-            <div className="absolute inset-1 h-3 w-3 rounded-full border border-primary/30 animate-ping"></div>
-          </div>
+        <div className="bg-background/95 backdrop-blur-sm shadow-xl px-6 py-4 rounded-xl flex items-center gap-4 border border-border/50">
+          {/* Simplified spinner with fewer animations */}
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-solid border-primary/20 border-t-primary"></div>
 
-          {/* Loading text with typing animation */}
+          {/* Loading text with simpler animation */}
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-foreground/90">
               Loading
@@ -88,9 +85,6 @@ const LoadingIndicator = memo(function LoadingIndicator() {
           </div>
         </div>
       </div>
-
-      {/* Optional: Subtle overlay for focus */}
-      <div className="fixed inset-0 bg-background/5 backdrop-blur-[0.5px] z-40 transition-opacity duration-300" />
     </>
   );
 });

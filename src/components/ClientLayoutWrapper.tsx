@@ -15,44 +15,61 @@ export default function ClientLayoutWrapper({ children }: { children: ReactNode 
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
   
-  // Create a memoized loading state setter
+  // Create a memoized loading state setter with reduced delay
   const setLoadingWithDebounce = useCallback((loading: boolean) => {
     if (loading) {
-      // Add a small delay before showing the loading indicator to prevent flashing
+      // Reduced delay from 180ms to 100ms
       const timer = setTimeout(() => {
         setIsLoading(true);
         setHasError(false);
-      }, 180);
+      }, 100);
       
       return () => clearTimeout(timer);
     } else {
+      // Immediately set loading to false when complete
       setIsLoading(false);
       return () => {};
     }
   }, []);
+
   // Preload key pages for better performance
   useEffect(() => {
-    // Preload important routes in the background
+    // Preload important routes in the background with improved priority
     const pagesToPreload = ['/about', '/projects', '/skills', '/contact'];
     
-    // Use requestIdleCallback for non-blocking preloading
     if ('requestIdleCallback' in window) {
       const requestIdleCallback = (window as Window & {
-        requestIdleCallback: (callback: () => void) => void;
+        requestIdleCallback: (callback: () => void, options?: { timeout: number }) => void;
       }).requestIdleCallback;
-        requestIdleCallback(() => {        pagesToPreload.forEach(page => {
+      
+      // Add a timeout to ensure preloading happens within a reasonable time
+      requestIdleCallback(() => {
+        pagesToPreload.forEach(page => {
+          try {            // Use fetch to preload pages
+            fetch(page, { 
+              cache: 'force-cache'
+            }).catch(() => {});
+          } catch {
+            // Ignore fetch errors
+          }
+        });
+      }, { timeout: 2000 });
+    } else {
+      // Fallback with setTimeout
+      setTimeout(() => {
+        pagesToPreload.forEach(page => {
           try {
             fetch(page, { cache: 'force-cache' }).catch(() => {});
           } catch {
             // Ignore fetch errors
           }
         });
-      });
+      }, 1000);
     }
   }, []);
+
   // Initialize chunk error handling
   useEffect(() => {
-    // Use our specialized chunk error handler
     initChunkErrorHandling();
     
     // Set up local error state for UI feedback
@@ -65,11 +82,12 @@ export default function ClientLayoutWrapper({ children }: { children: ReactNode 
     return () => {
       window.removeEventListener('chunkError', handleError);
     };
-  }, []);  return (
-    <>      {/* Use NavigationEvents component to track route changes - wrapped in Suspense */}
-      <Suspense fallback={null}>
-        <NavigationEvents setLoading={setLoadingWithDebounce} />
-      </Suspense>
+  }, []);
+
+  return (
+    <>
+      {/* NavigationEvents component for route change tracking */}
+      <NavigationEvents setLoading={setLoadingWithDebounce} />
       
       {/* Only show loading indicator when actually loading */}
       {isLoading && <LoadingIndicator />}
@@ -92,9 +110,7 @@ export default function ClientLayoutWrapper({ children }: { children: ReactNode 
           </div>
         </div>
       ) : (
-        <Suspense fallback={<LoadingIndicator />}>
-          {children}
-        </Suspense>
+        <>{children}</>
       )}
     </>
   );

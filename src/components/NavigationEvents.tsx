@@ -6,18 +6,14 @@ import { useEffect } from 'react';
 export default function NavigationEvents({ setLoading }: { setLoading: (isLoading: boolean) => void }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  
+  // When pathname or searchParams changes, we know navigation is complete
   useEffect(() => {
-    // When pathname or searchParams changes, we know navigation is complete
-    // Add a small delay to let the progress bar complete its animation
-    const completeNavigation = () => {
-      setTimeout(() => {
-        setLoading(false);
-      }, 200);
-    };
-    
-    completeNavigation();
+    // Mark navigation as complete immediately to avoid the 95% hanging issue
+    setLoading(false);
   }, [pathname, searchParams, setLoading]);
-    // Listen for client-side navigation start
+  
+  // Listen for client-side navigation start
   useEffect(() => {
     // Start loading when navigation begins
     const handleNavigationStart = () => {
@@ -30,6 +26,7 @@ export default function NavigationEvents({ setLoading }: { setLoading: (isLoadin
     };
 
     const handleAfterPageChange = () => {
+      // Complete navigation immediately
       setLoading(false);
     };
     
