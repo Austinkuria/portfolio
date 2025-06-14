@@ -5,8 +5,10 @@ import { m } from 'framer-motion';
 import { FaEnvelope, FaMapMarkerAlt, FaCheck, FaExclamationTriangle, FaLinkedin, FaPaperPlane, FaWhatsapp, FaGithub, FaTwitter, FaPhone, FaChevronDown, FaCode, FaMobile, FaPalette } from 'react-icons/fa';
 import { MotionDiv, MotionP } from '@/lib/motion';
 import Image from 'next/image';
+import RouteOptimizer from '@/components/RouteOptimizer';
 
-export default function Contact() {  const [formData, setFormData] = useState({
+export default function Contact() {  
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
@@ -388,9 +390,10 @@ export default function Contact() {  const [formData, setFormData] = useState({
       setIsSubmitting(false);
     }
   };
-
   return (
-    <section id="contact" className="py-20 w-full">
+    <>
+      <RouteOptimizer pageName="contact" />
+      <section id="contact" className="py-20 w-full">
       <div className="container mx-auto px-4">
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
@@ -1204,8 +1207,7 @@ export default function Contact() {  const [formData, setFormData] = useState({
                     </p>
                   )}
                 </div>
-                  <div className="group">                  <label htmlFor="budgetRange" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">                    Budget Range
-                    <span className="ml-1 text-muted-foreground cursor-pointer group" title="Select your estimated project budget in Kenyan Shillings (KSH). This helps me tailor my proposal to your needs.">
+                  <div className="group">                  <label htmlFor="budgetRange" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">                    Budget Range                    <span className="ml-1 text-muted-foreground cursor-pointer group" title="Select your estimated project budget in Kenyan Shillings (KSH). This helps me tailor my proposal to your needs.">
                       <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -1529,8 +1531,8 @@ export default function Contact() {  const [formData, setFormData] = useState({
               </svg>
             </m.a>
           </div>
-        </MotionDiv>
-      </div>
+        </MotionDiv>      </div>
     </section>
+    </>
   );
 }

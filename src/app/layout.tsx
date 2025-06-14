@@ -60,8 +60,7 @@ export default function RootLayout({
             width="0" 
             style={{ display: 'none', visibility: 'hidden' }}
           />
-        </noscript>
-        <Providers>
+        </noscript>        <Providers>
           <Header />
           <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
           <Footer />

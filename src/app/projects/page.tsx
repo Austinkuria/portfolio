@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { MotionDiv, MotionArticle } from '@/lib/motion';
 import CanonicalURL from '@/components/CanonicalURL';
 import ProjectSchema from '@/components/ProjectSchema';
+import RouteOptimizer from '@/components/RouteOptimizer';
 import { Project, projects } from '@/data/projects';
 
 export default function Projects() {
@@ -13,6 +14,7 @@ export default function Projects() {
 
   return (
     <>
+      <RouteOptimizer pageName="projects" />
       {projects.map((project) => (
         <ProjectSchema key={`schema-${project.id}`} project={project} />
       ))}

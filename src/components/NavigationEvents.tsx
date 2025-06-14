@@ -30,7 +30,25 @@ export default function NavigationEvents({ setLoading }: { setLoading: (isLoadin
       setLoading(false);
     };
     
+    // Handle forced completion from the LoadingIndicator
+    const handleForcedCompletion = () => {
+      setLoading(false);
+      
+      // Force refresh of content if needed
+      setTimeout(() => {
+        const mainContent = document.querySelector('main');
+        if (mainContent) {
+          // Trigger a reflow to force content to appear
+          mainContent.style.opacity = '0.99';
+          setTimeout(() => {
+            mainContent.style.opacity = '1';
+          }, 10);
+        }
+      }, 50);
+    };
+    
     window.addEventListener('navigationStart', handleNavigationStart);
+    document.addEventListener('navigationComplete', handleForcedCompletion);
     
     // Add Next.js router events for better reliability
     document.addEventListener('nextjs:beforePageChange', handleBeforePageChange);
@@ -41,6 +59,7 @@ export default function NavigationEvents({ setLoading }: { setLoading: (isLoadin
       window.removeEventListener('navigationStart', handleNavigationStart);
       document.removeEventListener('nextjs:beforePageChange', handleBeforePageChange);
       document.removeEventListener('nextjs:afterPageChange', handleAfterPageChange);
+      document.removeEventListener('navigationComplete', handleForcedCompletion);
     };
   }, [setLoading]);
   

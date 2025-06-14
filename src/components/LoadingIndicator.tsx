@@ -7,22 +7,31 @@ const LoadingIndicator = memo(function LoadingIndicator() {
   const [visible, setVisible] = useState(false);
   const [progress, setProgress] = useState(0);
   const [currentMessage, setCurrentMessage] = useState('Initializing...');
+  const [timeExpired, setTimeExpired] = useState(false);
   
   useEffect(() => {
-    // Show the loading indicator only if navigation takes more than 200ms (reduced from 300ms)
+    // Show the loading indicator only if navigation takes more than 200ms
     const timeoutId = setTimeout(() => {
       setVisible(true);
     }, 200);
     
-    return () => clearTimeout(timeoutId);
+    // Set a maximum time for the loading indicator
+    const maxTimeoutId = setTimeout(() => {
+      setTimeExpired(true);
+    }, 8000); // Maximum 8 seconds before force completing
+    
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(maxTimeoutId);
+    };
   }, []);
 
   // Optimize progress calculation with useCallback
   const updateProgress = useCallback(() => {
     setProgress(prev => {
       // Increase speed of progression especially in the later stages
-      const increment = prev < 30 ? 10 : prev < 70 ? 6 : prev < 90 ? 4 : 3;
-      const newProgress = Math.min(prev + increment, 100); // Allow reaching 100% (changed from 95%)
+      const increment = prev < 30 ? 12 : prev < 70 ? 8 : prev < 90 ? 5 : 4;
+      const newProgress = Math.min(prev + increment, 100); // Allow reaching 100%
       
       // Update message based on progress
       if (newProgress < 30) setCurrentMessage('Initializing...');
@@ -38,14 +47,30 @@ const LoadingIndicator = memo(function LoadingIndicator() {
   useEffect(() => {
     if (!visible) return;
     
-    // Reduce interval timing for faster updates (changed from 150ms)
-    const progressInterval = setInterval(updateProgress, 120);
+    // Faster interval for smoother animation
+    const progressInterval = setInterval(updateProgress, 100);
     
     return () => clearInterval(progressInterval);
   }, [visible, updateProgress]);
   
-  // Don't render anything if we're still within the delay period
-  if (!visible) return null;
+  // Force complete loading if time expired
+  useEffect(() => {
+    if (timeExpired) {
+      setProgress(100);
+      
+      // Force completion after a brief delay
+      const forceCompleteTimeout = setTimeout(() => {
+        // Dispatch a synthetic event to inform the app that navigation is complete
+        const customEvent = new Event('navigationComplete', { bubbles: true });
+        document.dispatchEvent(customEvent);
+      }, 500);
+      
+      return () => clearTimeout(forceCompleteTimeout);
+    }
+  }, [timeExpired]);
+  
+  // Don't render anything if we're still within the delay period or if we've hit 100%
+  if (!visible || progress >= 100) return null;
   
   return (
     <>
@@ -55,7 +80,7 @@ const LoadingIndicator = memo(function LoadingIndicator() {
           className="h-full bg-primary"
           style={{ 
             width: `${progress}%`,
-            transition: 'width 120ms ease-out'
+            transition: 'width 100ms ease-out'
           }}
         />
       </div>

@@ -5,8 +5,12 @@ import LoadingIndicator from './LoadingIndicator';
 import { initChunkErrorHandling } from '@/lib/chunkErrorHandler';
 import dynamic from 'next/dynamic';
 
-// Import NavigationEvents using dynamic() to properly handle clientside rendering
+// Import NavigationEvents and BlankPageFixer using dynamic() to properly handle clientside rendering
 const NavigationEvents = dynamic(() => import('./NavigationEvents'), {
+  ssr: false,
+});
+
+const BlankPageFixer = dynamic(() => import('./BlankPageFixer'), {
   ssr: false,
 });
 
@@ -83,11 +87,15 @@ export default function ClientLayoutWrapper({ children }: { children: ReactNode 
       window.removeEventListener('chunkError', handleError);
     };
   }, []);
-
+  // Add a specific key to force re-render on route change
+  const renderKey = `layout-${typeof window !== 'undefined' ? window.location.pathname : 'server'}`;
   return (
     <>
       {/* NavigationEvents component for route change tracking */}
       <NavigationEvents setLoading={setLoadingWithDebounce} />
+      
+      {/* BlankPageFixer to prevent blank page issues */}
+      <BlankPageFixer />
       
       {/* Only show loading indicator when actually loading */}
       {isLoading && <LoadingIndicator />}
@@ -110,7 +118,9 @@ export default function ClientLayoutWrapper({ children }: { children: ReactNode 
           </div>
         </div>
       ) : (
-        <>{children}</>
+        <div key={renderKey} className="min-h-screen">
+          {children}
+        </div>
       )}
     </>
   );
