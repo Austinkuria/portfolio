@@ -12,13 +12,12 @@ export default function BlankPageFixer() {
   useEffect(() => {
     // Apply fixes on initial render
     forceRouteRehydration();
-    
-    // Create a MutationObserver to detect when the page content changes
+      // Create a MutationObserver to detect when the page content changes
     const observer = new MutationObserver((mutations) => {
       // Check if main content suddenly disappears or changes significantly
       const hasContentChanges = mutations.some(mutation => 
         mutation.target.nodeName === 'MAIN' || 
-        mutation.target.closest('main')
+        (mutation.target instanceof Element && mutation.target.closest('main'))
       );
       
       if (hasContentChanges) {
