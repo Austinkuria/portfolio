@@ -639,6 +639,21 @@ export default function Contact() {
                   
                   <div className="flex items-start group transition-all">
                     <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
+                      <FaPhone className="text-lg" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h5 className="font-medium text-base">Phone</h5>
+                      <a 
+                        href="tel:+254797561978" 
+                        className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
+                      >
+                        Call Now
+                      </a>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-start group transition-all">
+                    <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
                       <FaLinkedin className="text-lg" />
                     </div>
                     <div className="min-w-0 flex-1">

@@ -50,11 +50,12 @@ export function useSafeRender() {
 export function setupHydrationFallback() {
     if (typeof window === 'undefined') return;    // Track navigation pattern
     try {
-        const currentPath = window.location.pathname; if (performanceMetrics.lastRoute !== currentPath) {
+        const currentPath = window.location.pathname;
+        if (performanceMetrics.lastRoute !== currentPath) {
             performanceMetrics.lastRoute = currentPath;
             console.debug('[RenderSafety] Navigation to:', currentPath);
         }
-    } catch {
+    } catch (e) {
         // Ignore any errors in tracking
     }
 
