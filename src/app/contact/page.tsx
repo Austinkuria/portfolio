@@ -701,7 +701,7 @@ export default function Contact() {
               <div className="absolute top-0 right-0 w-40 h-40 bg-primary/5 rounded-full -mt-20 -mr-20 z-0"></div>
               <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full -mb-16 -ml-16 z-0"></div>
               
-              <h3 className="text-2xl font-bold mb-6 flex items-center relative z-10">
+              <h3 id="contact-form" className="text-2xl font-bold mb-6 flex items-center relative z-10">
                 <span className="inline-block w-8 h-1 bg-primary mr-3"></span>
                 Send Me a Message
               </h3>

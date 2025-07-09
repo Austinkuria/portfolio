@@ -135,7 +135,7 @@ export default function Footer() {
               </div>
 
               <Link 
-                href="/contact" 
+                href="/contact#contact-form" 
                 className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 border border-primary/30 rounded-md text-xs sm:text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
                 Send a message
