@@ -98,42 +98,45 @@ export default function Footer() {
               <span className="w-6 h-0.5 bg-primary mr-2"></span>
               Get In Touch
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-1 gap-3 sm:gap-4">              <div className="flex items-start group">
-                <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg text-primary transition-all duration-300 mr-2 sm:mr-3">
-                  <FaDiscord size={14} className="sm:w-4 sm:h-4" />
+            <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
+                <div className="flex items-start group">
+                  <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg text-primary transition-all duration-300 mr-2 sm:mr-3">
+                    <FaDiscord size={14} className="sm:w-4 sm:h-4" />
+                  </div>
+                  <div>
+                    <h5 className="font-medium text-xs sm:text-sm">Discord</h5>
+                    <a
+                      href={socialLinks.discord}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors text-xs sm:text-sm"
+                    >
+                      Join Discord Server
+                    </a>
+                  </div>
                 </div>
-                <div>
-                  <h5 className="font-medium text-xs sm:text-sm">Discord</h5>
-                  <a
-                    href={socialLinks.discord}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors text-xs sm:text-sm"
-                  >
-                    Join Discord Server
-                  </a>
-                </div>
-              </div>
-              <div className="flex items-start group">
-                <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg text-primary transition-all duration-300 mr-2 sm:mr-3">
-                  <FaWhatsapp size={14} className="sm:w-4 sm:h-4" />
-                </div>
-                <div>
-                  <h5 className="font-medium text-xs sm:text-sm">WhatsApp</h5>
-                  <a
-                    href={socialLinks.whatsapp}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-primary transition-colors text-xs sm:text-sm"
-                  >
-                    Chat on WhatsApp
-                  </a>
+                <div className="flex items-start group">
+                  <div className="bg-primary/10 p-1.5 sm:p-2 rounded-lg text-primary transition-all duration-300 mr-2 sm:mr-3">
+                    <FaWhatsapp size={14} className="sm:w-4 sm:h-4" />
+                  </div>
+                  <div>
+                    <h5 className="font-medium text-xs sm:text-sm">WhatsApp</h5>
+                    <a
+                      href={socialLinks.whatsapp}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-primary transition-colors text-xs sm:text-sm"
+                    >
+                      Chat on WhatsApp
+                    </a>
+                  </div>
                 </div>
               </div>
 
               <Link 
                 href="/contact" 
-                className="mt-2 inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 border border-primary/30 rounded-md text-xs sm:text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                className="inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 border border-primary/30 rounded-md text-xs sm:text-sm font-medium hover:bg-primary hover:text-primary-foreground transition-all duration-300"
               >
                 Send a message
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1.5 sm:w-4 sm:h-4">
