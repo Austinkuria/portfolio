@@ -594,114 +594,99 @@ export default function Contact() {
                 {/* Contact Information Grid */}
               <div className="mb-8">
                 <h4 className="text-lg font-semibold mb-4 text-foreground">Get in Touch</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="flex items-start group transition-all">
-                    <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
-                      <FaMapMarkerAlt className="text-lg" />
+                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-4 auto-rows-fr w-full">
+                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
+                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
+                      <FaMapMarkerAlt className="text-base sm:text-lg" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-base">Location</h5>
-                      <p className="text-sm text-muted-foreground">Nairobi, Kenya</p>
+                      <h5 className="font-medium text-sm sm:text-base">Location</h5>
+                      <p className="text-xs sm:text-sm text-muted-foreground">Nairobi, Kenya</p>
                     </div>
                   </div>
                   
-                  <div className="flex items-start group transition-all">
-                    <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
-                      <FaEnvelope className="text-lg" />
+                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
+                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
+                      <FaEnvelope className="text-base sm:text-lg" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-base">Email</h5>
+                      <h5 className="font-medium text-sm sm:text-base">Email</h5>
                       <a 
                         href="mailto:kuriaaustin125@gmail.com" 
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
+                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
                       >
                         Send Email
                       </a>
                     </div>
                   </div>
                   
-                  <div className="flex items-start group transition-all">
-                    <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
-                      <FaWhatsapp className="text-lg" />
+                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
+                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
+                      <FaWhatsapp className="text-base sm:text-lg" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-base">WhatsApp</h5>
+                      <h5 className="font-medium text-sm sm:text-base">WhatsApp</h5>
                       <a 
                         href="https://wa.me/254797561978?text=Hi%20Austin!%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project%20with%20you." 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
+                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
                       >
                         Message on WhatsApp
                       </a>
                     </div>
                   </div>
                   
-                  <div className="flex items-start group transition-all">
-                    <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
-                      <FaPhone className="text-lg" />
+                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
+                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
+                      <FaPhone className="text-base sm:text-lg" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-base">Phone</h5>
+                      <h5 className="font-medium text-sm sm:text-base">Phone</h5>
                       <a 
                         href="tel:+254797561978" 
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
+                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
                       >
                         Call Now
                       </a>
                     </div>
                   </div>
                   
-                  <div className="flex items-start group transition-all">
-                    <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
-                      <FaLinkedin className="text-lg" />
+                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
+                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
+                      <FaLinkedin className="text-base sm:text-lg" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-base">LinkedIn</h5>
+                      <h5 className="font-medium text-sm sm:text-base">LinkedIn</h5>
                       <a 
                         href="https://linkedin.com/in/austin-maina" 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
+                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
                       >
                         Connect on LinkedIn
                       </a>
                     </div>
                   </div>
                   
-                  <div className="flex items-start group transition-all">
-                    <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
-                      <FaGithub className="text-lg" />
+                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
+                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
+                      <FaGithub className="text-base sm:text-lg" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-base">GitHub</h5>
+                      <h5 className="font-medium text-sm sm:text-base">GitHub</h5>
                       <a 
                         href="https://github.com/Austinkuria" 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
+                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
                       >
                         View Projects & Code
                       </a>
                     </div>
                   </div>
                   
-                  <div className="flex items-start group transition-all">
-                    {/* <div className="bg-primary/10 p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
-                      <FaTwitter className="text-lg" />
-                    </div> */}
-                    {/* <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-base">Twitter / X</h5>
-                      <a 
-                        href="https://twitter.com/AustinMaina_" 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
-                      >
-                        Follow on X
-                      </a>
-                    </div> */}
-                  </div>                </div>
+                </div>
               </div>
             </div>
           </m.div>
