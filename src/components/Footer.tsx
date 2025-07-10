@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { FaGithub, FaLinkedin, FaDiscord, FaWhatsapp } from 'react-icons/fa6';
 import BackToTopLink from './BackToTopLink';
 import { socialLinks, SocialPlatform } from '@/data/socialLinks';
+import { personalInfo } from '@/config';
 
 const SocialIcon = ({ platform }: { platform: SocialPlatform }) => {
   const icons = {
@@ -9,9 +10,12 @@ const SocialIcon = ({ platform }: { platform: SocialPlatform }) => {
     linkedin: FaLinkedin,
     discord: FaDiscord,
     whatsapp: FaWhatsapp,
-  };
+  } as const;
   
-  const Icon = icons[platform];
+  // Only render icon if it exists in our icon mapping
+  if (!(platform in icons)) return null;
+  
+  const Icon = icons[platform as keyof typeof icons];
   const url = socialLinks[platform];
   
   return (
@@ -40,11 +44,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           <div>
             <h3 className="text-2xl font-bold mb-4 flex items-center">
-              Austin<span className="text-primary">Maina</span>
+              {personalInfo.name.first}<span className="text-primary">{personalInfo.name.last}</span>
               <span className="inline-block w-2 h-2 bg-primary rounded-full ml-1 animate-pulse"></span>
             </h3>
             <p className="text-muted-foreground mb-6 max-w-xs">
-              Building scalable solutions with code & creativity. Let's create something amazing together.
+              {personalInfo.tagline}. Let's create something amazing together.
             </p>            <div className="flex space-x-3">
               {(Object.keys(socialLinks) as SocialPlatform[]).map((platform) => (
                 <SocialIcon key={platform} platform={platform} />
@@ -149,7 +153,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-border/40 mt-4 pt-4 flex flex-col items-center justify-center text-center">
-          <p className="text-muted-foreground text-sm">© {currentYear} Austin Maina. All rights reserved.</p>
+          <p className="text-muted-foreground text-sm">© {currentYear} {personalInfo.name.full}. All rights reserved.</p>
           <div className="mt-4">
             <BackToTopLink />
           </div>

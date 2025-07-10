@@ -1,5 +1,6 @@
 'use client';
 
+import { personalInfo, socialLinks } from '@/config';
 import { FaGithub, FaLinkedin, FaArrowDown } from 'react-icons/fa';
 import { HiDownload } from 'react-icons/hi';
 import CustomLink from '@/components/CustomLink';
@@ -79,7 +80,7 @@ export default function Hero() {
               transition={{ duration: 0.8 }}
               className="mb-6"
             >
-              <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">Full Stack Developer</span>
+              <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">{personalInfo.title}</span>
             </MotionDiv>
             <MotionH1 
               className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight"
@@ -87,7 +88,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
-              Building Scalable Solutions with{' '}
+              {personalInfo.tagline.split(' ').slice(0, 3).join(' ')} with{' '}
               <span className="relative">
                 <span className="text-primary inline-block relative z-10" style={{ minWidth: '180px' }}>
                   <TypeAnimation
@@ -141,7 +142,7 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               <a 
-                href="https://github.com/Austinkuria" 
+                href={socialLinks.github}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-foreground hover:text-white hover:bg-[#24292e] transition-all p-3 rounded-full border border-border hover:border-[#24292e]"
@@ -150,7 +151,7 @@ export default function Hero() {
                 <FaGithub className="h-5 w-5" />
               </a>
               <a 
-                href="https://linkedin.com/in/austin-maina" 
+                href={socialLinks.linkedin}
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="text-foreground hover:text-white hover:bg-[#0a66c2] transition-all p-3 rounded-full border border-border hover:border-[#0a66c2]"

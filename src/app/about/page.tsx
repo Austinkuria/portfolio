@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { FaCode, FaLaptopCode, FaMountain, FaBookReader, FaGamepad } from 'react-icons/fa';
 import { MotionDiv } from '@/lib/motion';
+import { personalInfo } from '@/config';
 
 export default function About() {
   return (
@@ -30,8 +31,8 @@ export default function About() {
           >
             <div className="relative h-80 w-full md:h-96 rounded-xl overflow-hidden">
               <Image
-                src="/images/Passport_Photo_AustinMaina.jpg"
-                alt="Austin Maina"
+                src={personalInfo.image}
+                alt={personalInfo.name.full}
                 fill
                 className="object-contain object-center bg-muted"
                 sizes="(max-width: 768px) 100vw, 50vw"
@@ -45,10 +46,9 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold mb-4">Full Stack Developer with a Passion for Innovation</h3>
+            <h3 className="text-2xl font-bold mb-4">{personalInfo.title} with a Passion for Innovation</h3>
             <p className="text-muted-foreground mb-6">
-              I'm a Full Stack Developer with a B.Sc. in Software Engineering, passionate about building 
-              scalable web applications that solve real-world problems. With several years of experience 
+              {personalInfo.description}. With several years of experience 
               in both frontend and backend development, I enjoy bringing ideas to life through clean code 
               and thoughtful design.
             </p>

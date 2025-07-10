@@ -1,4 +1,5 @@
 import { Project } from '@/data/projects';
+import { personalInfo, siteConfig, socialLinks } from '@/config';
 
 export default function ProjectSchema({ project }: { project: Project }) {
     const schema = {
@@ -8,13 +9,13 @@ export default function ProjectSchema({ project }: { project: Project }) {
         description: project.description,
         author: {
             '@type': 'Person',
-            name: 'Austin Maina',
-            url: 'https://austinmaina.vercel.app',
-            jobTitle: 'Full Stack Developer',
-            image: '/images/Passport_Photo_AustinMaina.jpg',
+            name: personalInfo.name.full,
+            url: siteConfig.url,
+            jobTitle: personalInfo.title,
+            image: personalInfo.image,
             sameAs: [
-                'https://github.com/austinmaina',
-                'https://austinmaina.vercel.app'
+                socialLinks.github,
+                siteConfig.url
             ]
         },
         programmingLanguage: project.techStack.join(', '),

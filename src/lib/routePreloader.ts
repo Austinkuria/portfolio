@@ -1,5 +1,7 @@
 'use client';
 
+import { personalInfo } from '@/config';
+
 /**
  * This script preloads critical routes as soon as the page loads
  * to minimize navigational delays between pages
@@ -66,7 +68,7 @@ function preloadCriticalRoutes() {
 function preloadAssets() {
     // Critical static assets (images, etc.)
     const criticalAssets = [
-        '/images/Passport_Photo_AustinMaina.jpg',
+        personalInfo.image,
     ];
 
     criticalAssets.forEach(asset => {

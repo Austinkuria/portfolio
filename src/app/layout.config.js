@@ -1,13 +1,16 @@
 // Configuration file for Next.js app router root layout
 // This must be a separate file from page.ts or layout.ts files
 
+// Import configuration
+const { personalInfo, seoConfig } = require('@/config');
+
 // Metadata 
 export const metadata = {
     title: {
-        template: '%s | Austin Maina',
-        default: 'Austin Maina | Full Stack Developer',
+        template: seoConfig.titleTemplate,
+        default: seoConfig.defaultTitle,
     },
-    description: 'Building scalable solutions with code & creativity',
+    description: personalInfo.tagline,
 };
 
 // App router configuration

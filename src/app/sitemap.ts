@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
 import { projects, Project } from '@/data/projects';
+import { siteConfig } from '@/config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://austinmaina.vercel.app'
+    const baseUrl = siteConfig.url
 
     // List all static routes
     const routes = [

@@ -1,55 +1,46 @@
 import type { Metadata } from 'next';
+import { personalInfo, siteConfig, socialLinks, seoConfig } from '@/config';
 
 export const siteMetadata: Metadata = {
   title: {
-    template: '%s | Austin Maina',
-    default: 'Austin Maina | Full Stack Developer',
+    template: seoConfig.titleTemplate,
+    default: seoConfig.defaultTitle,
   },
-  description: 'Full Stack Developer with a passion for building scalable web applications that solve real-world problems',
-  creator: 'Austin Maina',
-  keywords: ['Full Stack Developer', 'Web Development', 'React', 'Node.js', 'TypeScript', 'Next.js', 'Software Engineer', 'Web Applications', 'Cloud Architecture', 'Backend Development', 'Frontend Development'],
-  applicationName: 'Austin Maina Portfolio',
+  description: personalInfo.description,
+  creator: personalInfo.name.full,
+  keywords: seoConfig.keywords,
+  applicationName: siteConfig.applicationName,
   authors: [
-    { name: 'Austin Maina', url: 'https://austinmaina.vercel.app' },
-    { name: 'GitHub', url: 'https://github.com/austinmaina' },
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/austin-maina/' }
+    { name: personalInfo.name.full, url: siteConfig.url },
+    { name: 'GitHub', url: socialLinks.github },
+    { name: 'LinkedIn', url: socialLinks.linkedin }
   ], icons: {
-    icon: '/images/am-logo.jpg',
-    shortcut: '/images/am-logo.jpg',
-    apple: '/images/am-logo.jpg',
+    icon: siteConfig.favicon,
+    shortcut: siteConfig.favicon,
+    apple: siteConfig.favicon,
   },
   openGraph: {
-    title: 'Austin Maina | Full Stack Developer',
-    description: 'Full Stack Developer specializing in scalable web applications built with React, Node.js, and modern cloud architecture.',
-    url: 'https://austinmaina.vercel.app',
-    siteName: 'Austin Maina Portfolio',
+    title: seoConfig.defaultTitle,
+    description: `${personalInfo.title} specializing in scalable web applications built with React, Node.js, and modern cloud architecture.`,
+    url: siteConfig.url,
+    siteName: siteConfig.siteName,
     images: [
       {
-        url: '/images/am-logo.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Austin Maina - Full Stack Developer Portfolio',
+        url: seoConfig.openGraph.images.url,
+        width: seoConfig.openGraph.images.width,
+        height: seoConfig.openGraph.images.height,
+        alt: seoConfig.openGraph.images.alt,
       },
     ],
-    locale: 'en_US',
-    type: 'website',
+    locale: seoConfig.openGraph.locale,
+    type: seoConfig.openGraph.type,
   },
   alternates: {
-    canonical: 'https://austinmaina.vercel.app',
+    canonical: siteConfig.url,
   },
-  metadataBase: new URL('https://austinmaina.vercel.app'),
+  metadataBase: new URL(siteConfig.url),
   verification: {
-    google: 'google771005efe7b937ff'
+    google: siteConfig.googleSiteVerification
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  }
+  robots: seoConfig.robots,
 };

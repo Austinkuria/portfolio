@@ -1,25 +1,27 @@
+import { personalInfo, siteConfig, seoConfig } from '@/config';
+
 // Page-specific metadata for the homepage
 export const homeMetadata = {
-  title: 'Austin Maina | Full Stack Developer',
-  description: 'Building scalable solutions with code & creativity. Portfolio, projects, and contact for Austin Maina, a full stack developer based in Nairobi.',
+  title: seoConfig.defaultTitle,
+  description: `${personalInfo.tagline}. Portfolio, projects, and contact for ${personalInfo.name.full}, a ${personalInfo.title.toLowerCase()} based in ${personalInfo.location}.`,
   alternates: {
-    canonical: 'https://austinmaina.vercel.app'
+    canonical: siteConfig.url
   },
   openGraph: {
-    title: 'Austin Maina | Full Stack Developer',
-    description: 'Building scalable solutions with code & creativity',
+    title: seoConfig.defaultTitle,
+    description: personalInfo.tagline,
     images: [
       {
-        url: '/images/am-logo.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Austin Maina',
+        url: seoConfig.openGraph.images.url,
+        width: seoConfig.openGraph.images.width,
+        height: seoConfig.openGraph.images.height,
+        alt: personalInfo.name.full,
       },
     ],
   },
   other: {
-    'application-name': 'Austin Maina Portfolio',
-    'theme-color': '#ffffff',
+    'application-name': siteConfig.applicationName,
+    'theme-color': siteConfig.themeColor,
   },
 };
 

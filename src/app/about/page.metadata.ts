@@ -1,4 +1,6 @@
+import { personalInfo } from '@/config';
+
 export const metadata = {
-    title: 'About | Austin Maina',
-    description: 'Learn more about Austin Maina, a full stack developer based in Nairobi, Kenya.',
+    title: `About | ${personalInfo.name.full}`,
+    description: `Learn more about ${personalInfo.name.full}, a ${personalInfo.title.toLowerCase()} based in ${personalInfo.location}.`,
 };

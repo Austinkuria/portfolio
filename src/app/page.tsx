@@ -1,10 +1,10 @@
 import Hero from '@/components/Hero';
 import HomeContent from '@/components/HomeContent';
+import { personalInfo, seoConfig } from '@/config';
 
 export const metadata = {
-  title: 'Austin Maina | Full Stack Developer',
-  description:
-    'Building scalable solutions with code & creativity. Portfolio, projects, and contact for Austin Maina, a full stack developer based in Nairobi.',
+  title: seoConfig.defaultTitle,
+  description: `${personalInfo.tagline}. Portfolio, projects, and contact for ${personalInfo.name.full}, a ${personalInfo.title.toLowerCase()} based in ${personalInfo.location}.`,
 };
 
 export default function Home() {

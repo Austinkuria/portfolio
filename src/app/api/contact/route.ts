@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { personalInfo, socialLinks, contactConfig, siteConfig, emailConfig, appConfig } from '@/config';
 
 // Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(emailConfig.apiKey);
 
 // Simple in-memory rate limiter (for basic protection)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -36,10 +37,8 @@ function sanitizeInput(input: string): string {
 function detectSpam(name: string, email: string, subject: string, category: string, message: string, phone?: string, preferredContactMethod?: string, budgetRange?: string): { isSpam: boolean; reason: string } {
   const combinedText = `${name} ${email} ${subject} ${category} ${message} ${phone || ''} ${preferredContactMethod || ''} ${budgetRange || ''}`.toLowerCase();
 
-  // Refined spam keywords
-  const spamKeywords = [
-    'viagra', 'casino', 'lottery', 'bitcoin investment', 'get rich quick', 'nigerian prince', 'free money'
-  ];
+  // Use spam keywords from configuration
+  const spamKeywords = contactConfig.spamKeywords;
 
   // Simplified suspicious patterns
   const suspiciousPatterns = [
@@ -85,9 +84,9 @@ export async function GET() {
     message: 'Contact API endpoint is active',
     timestamp: new Date().toISOString(),
     environment: {
-      hasResendKey: !!process.env.RESEND_API_KEY,
-      fromEmail: process.env.FROM_EMAIL ? 'configured' : 'missing',
-      toEmail: process.env.TO_EMAIL ? 'configured' : 'missing'
+      hasResendKey: !!emailConfig.apiKey,
+      fromEmail: emailConfig.from.default ? 'configured' : 'missing',
+      toEmail: emailConfig.to.default ? 'configured' : 'missing'
     }
   });
 }
@@ -96,9 +95,9 @@ export async function POST(request: NextRequest) {
   // Add debugging for production
   console.log('Contact API called at:', new Date().toISOString());
   console.log('Environment check:', {
-    hasResendKey: !!process.env.RESEND_API_KEY,
-    fromEmail: process.env.FROM_EMAIL,
-    toEmail: process.env.TO_EMAIL
+    hasResendKey: !!emailConfig.apiKey,
+    fromEmail: emailConfig.from.default,
+    toEmail: emailConfig.to.default
   });
 
   try {
@@ -191,20 +190,20 @@ export async function POST(request: NextRequest) {
         ip
       });      // Create WhatsApp message with user email and reference ID
       const whatsappMessage = encodeURIComponent(
-        `Hi Austin! I tried to send a message through your portfolio contact form but it was flagged by your security filters.\n\nMy email: ${email}\nReference ID: ${referenceId}\n\nCould you please help me resolve this issue? Thank you!`
+        `Hi ${personalInfo.name.first}! I tried to send a message through your portfolio contact form but it was flagged by your security filters.\n\nMy email: ${email}\nReference ID: ${referenceId}\n\nCould you please help me resolve this issue? Thank you!`
       );
-      const whatsappUrl = `https://wa.me/254797561978?text=${whatsappMessage}`;
+      const whatsappUrl = `${socialLinks.whatsapp}&text=${whatsappMessage}`;
 
       const linkedinMessage = encodeURIComponent(
-        `Hi Austin! I tried to send a message through your portfolio contact form but it was flagged by your security filters.\n\nMy email: ${email}\nReference ID: ${referenceId}\n\nCould you please help me resolve this issue? Thank you!`
+        `Hi ${personalInfo.name.first}! I tried to send a message through your portfolio contact form but it was flagged by your security filters.\n\nMy email: ${email}\nReference ID: ${referenceId}\n\nCould you please help me resolve this issue? Thank you!`
       );
-      const linkedinUrl = `https://www.linkedin.com/in/austin-maina?message=${linkedinMessage}`;
+      const linkedinUrl = `${socialLinks.linkedin}?message=${linkedinMessage}`;
 
       const userMessage = `Your message couldn't be sent due to our automated security filters.
 
 If you believe this is an error, please contact me directly:
 
-📧 Email: kuriaaustin125@gmail.com
+📧 Email: ${personalInfo.email}
 💼 LinkedIn: <a href='${linkedinUrl}' target='_blank' rel='noopener noreferrer'>Click here to send me a message on LinkedIn</a>
 
 Reference ID: ${referenceId}
@@ -217,12 +216,12 @@ You can also click the WhatsApp button below to send me a quick message with you
           code: 'SPAM_DETECTED',
           referenceId: referenceId,
           alternativeContact: {
-            email: 'kuriaaustin125@gmail.com',
-            linkedin: 'https://linkedin.com/in/austin-maina',
+            email: personalInfo.email,
+            linkedin: socialLinks.linkedin,
             whatsappUrl: whatsappUrl,
             whatsappDisplay: 'Contact via WhatsApp'
           },
-          details: process.env.NODE_ENV === 'development' ? spamDetectionResult.reason : undefined
+          details: appConfig.isDevelopment ? spamDetectionResult.reason : undefined
         },
         { status: 400 });
     }
@@ -286,8 +285,8 @@ You can also click the WhatsApp button below to send me a quick message with you
     }
 
     const notificationEmail = {
-      from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
-      to: process.env.TO_EMAIL || 'kuriaaustin125@gmail.com',
+      from: emailConfig.from.default,
+      to: emailConfig.to.default,
       subject: `${urgencyScore === 'HIGH' ? '🚨 URGENT' : '🚀'} New Portfolio Contact: ${name} - ${subject}`,
       attachments: attachments,
       html: `
@@ -307,7 +306,7 @@ You can also click the WhatsApp button below to send me a quick message with you
                    style="background: #667eea; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">📧 Reply</a>
                 <a href="https://calendly.com/austinmaina" target="_blank"
                    style="background: #22c55e; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">📅 Schedule Call</a>
-                <a href="https://linkedin.com/in/austin-maina" target="_blank"
+                <a href="${socialLinks.linkedin}" target="_blank"
                    style="background: #0077b5; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">💼 LinkedIn</a>              </div>
             </div>
             
@@ -416,7 +415,7 @@ You can also click the WhatsApp button below to send me a quick message with you
             </div>
             
             <div style="text-align: center; margin: 30px 0;">
-              <a href="mailto:${email}?subject=Re:%20Your%20Portfolio%20Inquiry&body=Hi%20${name},%0D%0A%0D%0AThank%20you%20for%20reaching%20out!%20I%20received%20your%20message%20and%20I'm%20excited%20to%20discuss%20your%20project.%0D%0A%0D%0ALet's%20schedule%20a%20call%20to%20discuss%20your%20requirements%20in%20detail.%0D%0A%0D%0ABest%20regards,%0D%0AAustin%20Maina" 
+              <a href="mailto:${email}?subject=Re:%20Your%20Portfolio%20Inquiry&body=Hi%20${name},%0D%0A%0D%0AThank%20you%20for%20reaching%20out!%20I%20received%20your%20message%20and%20I'm%20excited%20to%20discuss%20your%20project.%0D%0A%0D%0ALet's%20schedule%20a%20call%20to%20discuss%20your%20requirements%20in%20detail.%0D%0A%0D%0ABest%20regards,%0D%0A${personalInfo.name.full}" 
                  style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s ease;">
                 📧 Reply to ${name}
               </a>
@@ -431,7 +430,7 @@ You can also click the WhatsApp button below to send me a quick message with you
               </div>
               <div>
                 <strong style="color: #475569;">🌐 Source:</strong><br>
-                <span style="color: #64748b; font-size: 14px;">Austin Maina Portfolio</span>
+                <span style="color: #64748b; font-size: 14px;">{siteConfig.siteName}</span>
               </div>
               <div>
                 <strong style="color: #475569;">🔒 Client IP:</strong><br>
@@ -439,7 +438,7 @@ You can also click the WhatsApp button below to send me a quick message with you
               </div>
               <div>
                 <strong style="color: #475569;">📱 Referrer:</strong><br>
-                <span style="color: #64748b; font-size: 14px;">${referer.includes('austinmaina') ? 'Portfolio Website' : 'External'}</span>
+                <span style="color: #64748b; font-size: 14px;">${referer.includes(siteConfig.domain) ? 'Portfolio Website' : 'External'}</span>
               </div>
             </div>
             <div style="border-top: 1px solid #e2e8f0; padding-top: 15px;">
@@ -452,9 +451,9 @@ You can also click the WhatsApp button below to send me a quick message with you
       `,
     };        // Enhanced auto-reply email to the sender
     const autoReplyEmail = {
-      from: process.env.FROM_EMAIL || 'onboarding@resend.dev',
+      from: emailConfig.from.default,
       to: email,
-      subject: `✨ Thanks for reaching out, ${name}! - Austin Maina`,
+      subject: `✨ Thanks for reaching out, ${name}! - ${personalInfo.name.full}`,
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; position: relative; overflow: hidden;">
@@ -580,18 +579,18 @@ You can also click the WhatsApp button below to send me a quick message with you
               <div style="text-align: center; margin: 30px 0 20px 0;">
                 <p style="color: #6b7280; margin: 0 0 20px 0; font-size: 16px;">In the meantime, feel free to explore my work or connect:</p>
                 <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
-                  <a href="https://austinmaina.vercel.app/projects" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">🚀 My Projects</a>
-                  <a href="https://austinmaina.vercel.app/skills" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">💻 My Skills</a>
-                  <a href="https://austinmaina.vercel.app/about" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">👨‍💻 About Me</a>
+                  <a href="${siteConfig.url}/projects" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">🚀 My Projects</a>
+                  <a href="${siteConfig.url}/skills" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">💻 My Skills</a>
+                  <a href="${siteConfig.url}/about" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">👨‍💻 About Me</a>
                 </div>
                 
                 <!-- Alternative Contact Methods -->
                 <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin: 20px 0;">
                   <h4 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">📞 Other Ways to Reach Me</h4>
                   <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                    <a href="https://linkedin.com/in/austin-maina" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: 500;">💼 LinkedIn</a>
+                    <a href="${socialLinks.linkedin}" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: 500;">💼 LinkedIn</a>
                     <a href="https://calendly.com/austinmaina" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500;">📅 Schedule Call</a>
-                    <a href="https://github.com/Austinkuria" target="_blank" style="color: #1f2937; text-decoration: none; font-weight: 500;">💻 GitHub</a>
+                    <a href="${socialLinks.github}" target="_blank" style="color: #1f2937; text-decoration: none; font-weight: 500;">💻 GitHub</a>
                   </div>
                 </div>
               </div>
@@ -600,13 +599,13 @@ You can also click the WhatsApp button below to send me a quick message with you
           
           <div style="background: #1e293b; padding: 30px 20px; text-align: center;">
             <p style="margin: 0 0 15px 0; color: white; font-size: 18px; font-weight: 600;">Best regards,</p>
-            <p style="margin: 0 0 20px 0; color: #667eea; font-size: 24px; font-weight: 700;">Austin Maina</p>
+            <p style="margin: 0 0 20px 0; color: #667eea; font-size: 24px; font-weight: 700;">${personalInfo.name.full}</p>
             <p style="margin: 0 0 20px 0; color: #94a3b8; font-size: 14px; font-style: italic;">Full-Stack Developer & Digital Solutions Expert</p>
             <div style="border-top: 1px solid #374151; padding-top: 20px; margin-top: 20px;">
               <p style="margin: 0; color: #94a3b8; font-size: 14px;">
-                📧 <a href="mailto:kuriaaustin125@gmail.com" style="color: #667eea; text-decoration: none;">kuriaaustin125@gmail.com</a><br>
-                🔗 <a href="https://linkedin.com/in/austin-maina" style="color: #667eea; text-decoration: none;">LinkedIn</a> | 
-                🌐 <a href="https://austinmaina.vercel.app" style="color: #667eea; text-decoration: none;">Portfolio</a>
+                📧 <a href="mailto:${personalInfo.email}" style="color: #667eea; text-decoration: none;">${personalInfo.email}</a><br>
+                🔗 <a href="${socialLinks.linkedin}" style="color: #667eea; text-decoration: none;">LinkedIn</a> | 
+                🌐 <a href="${siteConfig.url}" style="color: #667eea; text-decoration: none;">Portfolio</a>
               </p>
               <p style="margin: 15px 0 0 0; color: #64748b; font-size: 12px;">
                 This is an automated response. Please don't reply to this email - I'll respond personally soon!
@@ -730,7 +729,7 @@ You can also click the WhatsApp button below to send me a quick message with you
       {
         error: 'An unexpected error occurred. Please try again later.',
         code: 'INTERNAL_ERROR',
-        details: process.env.NODE_ENV === 'development' ? String(error) : undefined
+        details: appConfig.isDevelopment ? String(error) : undefined
       },
       { status: 500 }
     );

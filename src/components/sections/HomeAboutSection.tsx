@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { FaArrowRight } from 'react-icons/fa';
 import CustomLink from '@/components/CustomLink';
 import { MotionDiv } from '@/lib/motion';
+import { personalInfo } from '@/config';
 
 export default function HomeAboutSection() {
   return (
@@ -17,8 +18,8 @@ export default function HomeAboutSection() {
             transition={{ duration: 0.6 }}
           >            <div className="relative h-64 md:h-80 rounded-xl overflow-hidden">
               <Image
-                src="/images/Passport_Photo_AustinMaina.jpg"
-                alt="Austin Maina"
+                src={personalInfo.image}
+                alt={personalInfo.name.full}
                 fill
                 priority
                 loading="eager"
@@ -36,8 +37,7 @@ export default function HomeAboutSection() {
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">About Me</h2>
             <p className="text-muted-foreground mb-6">
-              I'm a Full Stack Developer with a passion for building scalable web applications 
-              that solve real-world problems. With experience in modern frontend and backend 
+              {personalInfo.description}. With experience in modern frontend and backend 
               technologies, I focus on creating seamless user experiences with clean, maintainable code.
             </p>            <CustomLink
               href="/about"

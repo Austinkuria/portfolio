@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
+import { siteConfig } from '@/config';
 
 export async function GET() {
     try {
-        const baseUrl = 'https://austinmaina.vercel.app';
+        const baseUrl = siteConfig.url;
         const routes = ['', '/about', '/projects', '/skills', '/blog', '/contact'];
 
         // Submit sitemap to Google

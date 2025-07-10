@@ -1,10 +1,12 @@
+import { navigation } from '@/config';
+
 /**
  * Configuration constants for the application
  * These are separated from layout/page files to optimize Fast Refresh
  */
 
 // Pages to prefetch for better navigation performance
-export const PREFETCH_PAGES = ['/about', '/projects', '/skills', '/blog', '/contact'];
+export const PREFETCH_PAGES = navigation.prefetchPages;
 
 // NextJS build configuration options
 export const DYNAMIC_PARAMS = true;

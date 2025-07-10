@@ -1,5 +1,7 @@
 'use client';
 
+import { personalInfo, socialLinks, contactConfig, siteConfig, errorMessages } from '@/config';
+
 import { useState } from 'react';
 import { m } from 'framer-motion';
 import { FaEnvelope, FaMapMarkerAlt, FaCheck, FaExclamationTriangle, FaLinkedin, FaPaperPlane, FaWhatsapp, FaGithub, FaPhone, FaChevronDown, FaCode, FaPalette, FaCalendarAlt } from 'react-icons/fa';
@@ -99,13 +101,9 @@ export default function Contact() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) return 'Please enter a valid email address';
     
-    // Check for suspicious domains
+    // Check for suspicious domains using configuration
     const emailDomain = email.split('@')[1]?.toLowerCase();
-    const suspiciousDomains = [
-      '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'tempmail.org',
-      'throwaway.email', 'temp-mail.org', 'sharklasers.com', 'guerrillamailblock.com'
-    ];
-    if (emailDomain && suspiciousDomains.includes(emailDomain)) {
+    if (emailDomain && contactConfig.suspiciousEmailDomains.includes(emailDomain)) {
       return 'Please use a valid email address';
     }
     
@@ -116,9 +114,9 @@ export default function Contact() {
     if (subject.length < 3) return 'Subject must be at least 3 characters';
     if (subject.length > 100) return 'Subject must be less than 100 characters';
     
-    // Basic spam check for subject
+    // Basic spam check for subject using configuration
     const lowerSubject = subject.toLowerCase();
-    const spamWords = ['urgent!!', 'click here', 'free money', 'winner!'];
+    const spamWords = contactConfig.spamKeywords;
     for (const word of spamWords) {
       if (lowerSubject.includes(word)) {
         return 'Subject contains inappropriate content';
@@ -130,11 +128,7 @@ export default function Contact() {
 
   const validateCategory = (category: string): string => {
     if (!category.trim()) return 'Please select a project category';
-    const validCategories = [
-      'web-development', 'ui-ux-design', 'ecommerce', 'backend-development', 
-      'api-development', 'consultation', 'maintenance', 'other'
-    ];
-    if (!validCategories.includes(category)) {
+    if (!contactConfig.validCategories.includes(category)) {
       return 'Please select a valid category';
     }
     return '';
@@ -145,12 +139,9 @@ export default function Contact() {
     if (message.length < 10) return 'Message must be at least 10 characters';
     if (message.length > 2000) return 'Message must be less than 2000 characters';
     
-    // Basic spam detection for real-time feedback
+    // Basic spam detection for real-time feedback using configuration
     const lowerMessage = message.toLowerCase();
-    const quickSpamCheck = [
-      'viagra', 'casino', 'lottery', 'bitcoin investment', 'get rich quick',
-      'nigerian prince', 'click here now', 'free money'
-    ];
+    const quickSpamCheck = contactConfig.spamKeywords;
     
     for (const spam of quickSpamCheck) {
       if (lowerMessage.includes(spam)) {
@@ -182,17 +173,17 @@ export default function Contact() {
 
   const validatePreferredContactMethod = (method: string): string => {
     if (!method.trim()) return 'Preferred contact method is required';
-    const validMethods = ['email', 'phone', 'whatsapp'];
-    if (!validMethods.includes(method)) return 'Please select a valid contact method';
+    if (!contactConfig.validContactMethods.includes(method)) {
+      return 'Please select a valid contact method';
+    }
     return '';
   };
 
   const validateBudgetRange = (budget: string): string => {
     if (!budget.trim()) return 'Please select a budget range';
-    const validRanges = [
-      'under-500', '500-1000', '1000-2500', '2500-5000', 'over-5000',
-    ];
-    if (!validRanges.includes(budget)) return 'Please select a valid budget range';
+    if (!contactConfig.validBudgetRanges.includes(budget)) {
+      return 'Please select a valid budget range';
+    }
     return '';
   };  // Check if form is valid for submission
   const isFormValid = () => {
@@ -493,7 +484,7 @@ export default function Contact() {
                 </m.button>
                 
                 <a
-                  href="https://wa.me/254797561978?text=Hi%20Austin!%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project%20with%20you."
+                  href={socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold inline-flex items-center shadow-lg hover:shadow-xl transition-all duration-300"
@@ -530,7 +521,7 @@ export default function Contact() {
                   Current Availability
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  <strong>Available for new projects</strong> • Currently accepting web development and consultation work
+                  <strong>{contactConfig.availability.statusMessage}</strong> • {contactConfig.availability.currentWork}
                 </p>
               </div>
 
@@ -543,7 +534,7 @@ export default function Contact() {
                   Response Time
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  I typically respond to messages within <strong>24-48 hours</strong> during business days. 
+                  I typically respond to messages within <strong>{contactConfig.responseTime}</strong> during business days. 
                   For urgent inquiries, WhatsApp is the fastest way to reach me.
                 </p>
               </div>
@@ -554,12 +545,12 @@ export default function Contact() {
                   <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                   </svg>
-                  Business Hours (EAT)
+                  Business Hours ({contactConfig.businessHours.timezone})
                 </h4>
                 <div className="text-sm text-muted-foreground space-y-1">
-                  <p><strong>Monday - Friday:</strong> 9:00 AM - 6:00 PM</p>
-                  <p><strong>Weekends:</strong> Limited availability for urgent projects</p>
-                  <p><strong>Holidays:</strong> Emergency support only</p>
+                  <p><strong>Monday - Friday:</strong> {contactConfig.businessHours.weekdays}</p>
+                  <p><strong>Weekends:</strong> {contactConfig.businessHours.weekends}</p>
+                  <p><strong>Holidays:</strong> {contactConfig.businessHours.holidays}</p>
                 </div>
               </div>
               
@@ -623,7 +614,7 @@ export default function Contact() {
                     </div>
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">Location</h5>
-                      <p className="text-xs sm:text-sm text-muted-foreground">Nairobi, Kenya</p>
+                      <p className="text-xs sm:text-sm text-muted-foreground">{personalInfo.location}</p>
                     </div>
                   </div>
                   
@@ -634,7 +625,7 @@ export default function Contact() {
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">Email</h5>
                       <a 
-                        href="mailto:kuriaaustin125@gmail.com" 
+                        href={socialLinks.email}
                         className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
                       >
                         Send Email
@@ -649,7 +640,7 @@ export default function Contact() {
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">WhatsApp</h5>
                       <a 
-                        href="https://wa.me/254797561978?text=Hi%20Austin!%20I%20found%20your%20portfolio%20and%20would%20like%20to%20discuss%20a%20project%20with%20you." 
+                        href={socialLinks.whatsapp}
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
@@ -666,7 +657,7 @@ export default function Contact() {
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">Phone</h5>
                       <a 
-                        href="tel:+254797561978" 
+                        href={socialLinks.phone}
                         className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
                       >
                         Call Now
@@ -681,7 +672,7 @@ export default function Contact() {
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">LinkedIn</h5>
                       <a 
-                        href="https://linkedin.com/in/austin-maina" 
+                        href={socialLinks.linkedin}
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
@@ -698,7 +689,7 @@ export default function Contact() {
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">GitHub</h5>
                       <a 
-                        href="https://github.com/Austinkuria" 
+                        href={socialLinks.github}
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
@@ -775,7 +766,7 @@ export default function Contact() {
                           ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
                           : 'border-border focus:ring-primary/30 focus:border-primary'
                       }`}
-                      placeholder="Austin Maina"
+                      placeholder={personalInfo.name.full}
                     />
                     <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${
                       validationErrors.name && fieldTouched.name
@@ -831,7 +822,7 @@ export default function Contact() {
                           ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
                           : 'border-border focus:ring-primary/30 focus:border-primary'
                       }`}
-                      placeholder="austinexample@gmail.com"
+                      placeholder={contactConfig.emailPlaceholder}
                     />
                     <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${
                       validationErrors.email && fieldTouched.email
@@ -1458,7 +1449,7 @@ export default function Contact() {
                         <FaExclamationTriangle className="mr-2 flex-shrink-0 mt-1" />
                         <div className="flex-1">
                           <div className="whitespace-pre-line">
-                            {errorMessage || 'Something went wrong. Please try again or contact me directly at kuriaaustin125@gmail.com'}
+                            {errorMessage || errorMessages.generic}
                           </div>
                           {whatsappUrl && (
                             <div className="mt-3">
