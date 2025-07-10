@@ -652,7 +652,7 @@ export default function Contact() {
                   
                   <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
                     <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
-                      <FaPhone className="text-base sm:text-lg" />
+                      <FaPhone className="text-base sm:text-lg scale-x-[-1]" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">Phone</h5>
