@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { m } from 'framer-motion';
-import { FaEnvelope, FaMapMarkerAlt, FaCheck, FaExclamationTriangle, FaLinkedin, FaPaperPlane, FaWhatsapp, FaGithub, FaTwitter, FaPhone, FaChevronDown, FaCode, FaMobile, FaPalette } from 'react-icons/fa';
+import { FaEnvelope, FaMapMarkerAlt, FaCheck, FaExclamationTriangle, FaLinkedin, FaPaperPlane, FaWhatsapp, FaGithub, FaPhone, FaChevronDown, FaCode, FaPalette, FaCalendarAlt } from 'react-icons/fa';
 import { MotionDiv, MotionP } from '@/lib/motion';
 import Image from 'next/image';
 import RouteOptimizer from '@/components/RouteOptimizer';
@@ -32,11 +32,11 @@ export default function Contact() {
   const faqData = [
     {
       question: "What types of projects do you work on?",
-      answer: "I specialize in web development (React, Next.js), mobile app development (React Native), UI/UX design, API development, and technical consultation. I work on everything from simple landing pages to complex full-stack applications."
+      answer: "I specialize in web development (React, Next.js), UI/UX design, API development, backend development, and technical consultation. I work on everything from simple landing pages to complex full-stack applications."
     },
     {
       question: "What is your typical project timeline?",
-      answer: "Project timelines vary based on complexity: Simple websites (1-2 weeks), Complex web applications (4-8 weeks), Mobile apps (6-12 weeks), API development (2-4 weeks). I always provide detailed timelines during our initial consultation."
+      answer: "Project timelines vary based on complexity: Simple websites (1-2 weeks), Complex web applications (4-8 weeks), UI/UX design projects (2-3 weeks), API development (2-4 weeks). I always provide detailed timelines during our initial consultation."
     },
     {
       question: "Do you offer ongoing maintenance and support?",
@@ -56,36 +56,7 @@ export default function Contact() {
     }
   ];
 
-  // Featured Projects Data
-  const featuredProjects = [
-    {
-      id: 1,
-      title: 'Clinique Beauty E-Commerce',
-      description: 'Modern e-commerce platform with responsive design and streamlined shopping experience',
-      image: '/images/clinique-beauty.png',
-      technologies: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS'],
-      category: 'Web Development',
-      icon: <FaCode className="w-5 h-5" />
-    },
-    {
-      id: 2,
-      title: 'QR Attendance System',
-      description: 'Mobile-first attendance tracking system using QR codes for schools and events',
-      image: '/images/attendance-system.png',
-      technologies: ['React Native', 'Node.js', 'PostgreSQL'],
-      category: 'Mobile App',
-      icon: <FaMobile className="w-5 h-5" />
-    },
-    {
-      id: 3,
-      title: 'UI/UX Design Portfolio',
-      description: 'Creative designs for various digital products and user experiences',
-      image: '/images/am-logo.jpg',
-      technologies: ['Figma', 'Adobe XD', 'Sketch'],
-      category: 'UI/UX Design',
-      icon: <FaPalette className="w-5 h-5" />
-    }
-  ];  // Real-time validation states
+  // Real-time validation states
   const [validationErrors, setValidationErrors] = useState({
     name: '',
     email: '',
@@ -160,8 +131,8 @@ export default function Contact() {
   const validateCategory = (category: string): string => {
     if (!category.trim()) return 'Please select a project category';
     const validCategories = [
-      'web-development', 'mobile-app', 'consultation', 'maintenance', 
-      'ui-ux-design', 'api-development', 'other'
+      'web-development', 'ui-ux-design', 'ecommerce', 'backend-development', 
+      'api-development', 'consultation', 'maintenance', 'other'
     ];
     if (!validCategories.includes(category)) {
       return 'Please select a valid category';
@@ -591,6 +562,57 @@ export default function Contact() {
                   <p><strong>Holidays:</strong> Emergency support only</p>
                 </div>
               </div>
+              
+              {/* Interactive Availability Calendar */}
+              <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-4 mb-8">
+                <h4 className="font-semibold text-orange-600 dark:text-orange-400 mb-3 flex items-center">
+                  <FaCalendarAlt className="w-4 h-4 mr-2" />
+                  This Week's Availability
+                </h4>
+                <div className="grid grid-cols-7 gap-1 text-xs">
+                  {(() => {
+                    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                    const availability = ['available', 'busy', 'available', 'available', 'limited', 'limited', 'unavailable'];
+                    const colors = {
+                      available: 'bg-green-500',
+                      busy: 'bg-yellow-500',
+                      limited: 'bg-orange-500',
+                      unavailable: 'bg-red-500'
+                    };
+                    
+                    return days.map((day, index) => (
+                      <div key={day} className="text-center">
+                        <div className="text-muted-foreground mb-1">{day}</div>
+                        <div className={`w-8 h-8 rounded-full ${colors[availability[index] as keyof typeof colors]} mx-auto flex items-center justify-center text-white text-xs font-bold`}>
+                          {new Date().getDate() + index}
+                        </div>
+                        <div className="text-xs mt-1 capitalize">{availability[index]}</div>
+                      </div>
+                    ));
+                  })()}
+                </div>
+                <div className="mt-3 text-xs text-muted-foreground space-y-1">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                      Available
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
+                      Busy
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
+                      Limited
+                    </div>
+                    <div className="flex items-center">
+                      <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
+                      Unavailable
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
                 {/* Contact Information Grid */}
               <div className="mb-8">
                 <h4 className="text-lg font-semibold mb-4 text-foreground">Get in Touch</h4>
@@ -686,6 +708,29 @@ export default function Contact() {
                     </div>
                   </div>
                   
+                </div>
+              </div>
+              
+              {/* Quick Testimonial */}
+              <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                <h4 className="font-semibold text-primary mb-3 flex items-center">
+                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clipRule="evenodd" />
+                  </svg>
+                  What Clients Say
+                </h4>
+                <div className="text-sm text-muted-foreground italic">
+                  "Austin's technical expertise and attention to detail made our project successful. His communication throughout the development process was excellent, and he delivered exactly what we needed."
+                </div>
+                <div className="mt-2 text-xs text-muted-foreground">
+                  - Client Review, Web Development Project
+                </div>
+                <div className="flex items-center mt-2">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-3 h-3 text-yellow-400 fill-current" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
                 </div>
               </div>
             </div>
@@ -895,8 +940,9 @@ export default function Contact() {
                     >
                       <option value="">Select a category...</option>
                       <option value="web-development">Web Development</option>
-                      <option value="mobile-app">Mobile App Development</option>
                       <option value="ui-ux-design">UI/UX Design</option>
+                      <option value="ecommerce">E-Commerce Development</option>
+                      <option value="backend-development">Backend Development</option>
                       <option value="api-development">API Development</option>
                       <option value="consultation">Technical Consultation</option>
                       <option value="maintenance">Website Maintenance</option>
@@ -937,6 +983,46 @@ export default function Contact() {
                     </p>
                   )}
                 </div>
+                
+                {/* Skills Match Indicator */}
+                {formData.category && (
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+                    <h4 className="font-medium text-primary mb-3 flex items-center">
+                      <FaCode className="w-4 h-4 mr-2" />
+                      Skills Match for {formData.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                    </h4>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      {(() => {
+                        const skillsMap = {
+                          'web-development': ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Express'],
+                          'ui-ux-design': ['Figma', 'Adobe XD', 'User Research', 'Wireframing', 'Prototyping', 'Design Systems'],
+                          'api-development': ['REST APIs', 'Node.js', 'Express', 'Database Design', 'Authentication', 'M-Pesa Integration'],
+                          'ecommerce': ['Full-Stack Development', 'Payment Integration', 'User Management', 'Product Management', 'Shopping Cart'],
+                          'backend-development': ['Django', 'Python', 'PHP', 'MySQL', 'PostgreSQL', 'MongoDB'],
+                          'consultation': ['Code Review', 'Architecture', 'Performance', 'Best Practices', 'Team Training'],
+                          'maintenance': ['Bug Fixes', 'Updates', 'Security', 'Performance', 'Monitoring'],
+                          'other': ['Full-Stack', 'Problem Solving', 'Custom Solutions', 'Technical Analysis']
+                        };
+                        
+                        const skills = skillsMap[formData.category as keyof typeof skillsMap] || [];
+                        return skills.map((skill, index) => (
+                          <div key={index} className="flex items-center text-sm bg-primary/10 px-2 py-1 rounded">
+                            <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                            {skill}
+                          </div>
+                        ));
+                      })()}
+                    </div>
+                    <div className="mt-3 text-sm text-muted-foreground">
+                      <div className="flex items-center">
+                        <div className="w-16 bg-gray-200 rounded-full h-2 mr-2">
+                          <div className="bg-green-500 h-2 rounded-full" style={{ width: '90%' }}></div>
+                        </div>
+                        <span className="font-medium text-green-600">Strong Match</span>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 
                 <div className="group">                  <label htmlFor="message" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Your Message
@@ -1443,95 +1529,7 @@ export default function Contact() {
           </div>
         </MotionDiv>
 
-        {/* Portfolio Highlights Section */}
-        <MotionDiv
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-20"
-        >
-          <div className="text-center mb-12">
-            <h3 className="text-2xl md:text-3xl font-bold mb-4">Recent Work Highlights</h3>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              A showcase of my latest projects demonstrating various skills and technologies
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            {featuredProjects.map((project, index) => (
-              <m.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <Image 
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="bg-primary/90 rounded-full p-3">
-                      {project.icon}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-semibold px-2 py-1 bg-primary/10 text-primary rounded-full">
-                      {project.category}
-                    </span>
-                  </div>
-                  
-                  <h4 className="font-bold text-lg mb-2 group-hover:text-primary transition-colors">
-                    {project.title}
-                  </h4>
-                  
-                  <p className="text-muted-foreground text-sm mb-4 leading-relaxed">
-                    {project.description}
-                  </p>
-                  
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.slice(0, 3).map((tech, techIndex) => (
-                      <span
-                        key={techIndex}
-                        className="text-xs px-2 py-1 bg-muted rounded-full text-muted-foreground"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                    {project.technologies.length > 3 && (
-                      <span className="text-xs px-2 py-1 bg-muted rounded-full text-muted-foreground">
-                        +{project.technologies.length - 3} more
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </m.div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <m.a
-              href="/projects"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
-            >
-              View All Projects
-              <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-              </svg>
-            </m.a>
-          </div>
-        </MotionDiv>      </div>
+      </div>
     </section>
     </>
   );
