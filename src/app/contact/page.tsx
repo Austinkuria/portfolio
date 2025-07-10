@@ -4,7 +4,7 @@ import { personalInfo, socialLinks, contactConfig, siteConfig, errorMessages } f
 
 import { useState } from 'react';
 import { m } from 'framer-motion';
-import { FaEnvelope, FaMapMarkerAlt, FaCheck, FaExclamationTriangle, FaLinkedin, FaPaperPlane, FaWhatsapp, FaGithub, FaPhone, FaChevronDown, FaCode, FaPalette, FaCalendarAlt } from 'react-icons/fa';
+import { FaEnvelope, FaMapMarkerAlt, FaCheck, FaExclamationTriangle, FaLinkedin, FaPaperPlane, FaWhatsapp, FaGithub, FaPhone, FaChevronDown, FaCode, FaPalette } from 'react-icons/fa';
 import { MotionDiv, MotionP } from '@/lib/motion';
 import Image from 'next/image';
 import RouteOptimizer from '@/components/RouteOptimizer';
@@ -526,7 +526,7 @@ export default function Contact() {
               </div>
 
               {/* Response Time Information */}
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
+              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-8">
                 <h4 className="font-semibold text-blue-600 dark:text-blue-400 mb-2 flex items-center">
                   <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
@@ -534,74 +534,9 @@ export default function Contact() {
                   Response Time
                 </h4>
                 <p className="text-sm text-muted-foreground">
-                  I typically respond to messages within <strong>{contactConfig.responseTime}</strong> during business days. 
+                  I typically respond to messages within <strong>{contactConfig.responseTime}</strong>. 
                   For urgent inquiries, WhatsApp is the fastest way to reach me.
                 </p>
-              </div>
-
-              {/* Business Hours */}
-              <div className="bg-purple-500/10 border border-purple-500/20 rounded-lg p-4 mb-8">
-                <h4 className="font-semibold text-purple-600 dark:text-purple-400 mb-2 flex items-center">
-                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
-                  </svg>
-                  Business Hours ({contactConfig.businessHours.timezone})
-                </h4>
-                <div className="text-sm text-muted-foreground space-y-1">
-                  <p><strong>Monday - Friday:</strong> {contactConfig.businessHours.weekdays}</p>
-                  <p><strong>Weekends:</strong> {contactConfig.businessHours.weekends}</p>
-                  <p><strong>Holidays:</strong> {contactConfig.businessHours.holidays}</p>
-                </div>
-              </div>
-              
-              {/* Interactive Availability Calendar */}
-              <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-4 mb-8">
-                <h4 className="font-semibold text-orange-600 dark:text-orange-400 mb-3 flex items-center">
-                  <FaCalendarAlt className="w-4 h-4 mr-2" />
-                  This Week's Availability
-                </h4>
-                <div className="grid grid-cols-7 gap-1 text-xs">
-                  {(() => {
-                    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-                    const availability = ['available', 'busy', 'available', 'available', 'limited', 'limited', 'unavailable'];
-                    const colors = {
-                      available: 'bg-green-500',
-                      busy: 'bg-yellow-500',
-                      limited: 'bg-orange-500',
-                      unavailable: 'bg-red-500'
-                    };
-                    
-                    return days.map((day, index) => (
-                      <div key={day} className="text-center">
-                        <div className="text-muted-foreground mb-1">{day}</div>
-                        <div className={`w-8 h-8 rounded-full ${colors[availability[index] as keyof typeof colors]} mx-auto flex items-center justify-center text-white text-xs font-bold`}>
-                          {new Date().getDate() + index}
-                        </div>
-                        <div className="text-xs mt-1 capitalize">{availability[index]}</div>
-                      </div>
-                    ));
-                  })()}
-                </div>
-                <div className="mt-3 text-xs text-muted-foreground space-y-1">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                      Available
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
-                      Busy
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
-                      Limited
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-2 h-2 bg-red-500 rounded-full mr-2"></div>
-                      Unavailable
-                    </div>
-                  </div>
-                </div>
               </div>
               
                 {/* Contact Information Grid */}

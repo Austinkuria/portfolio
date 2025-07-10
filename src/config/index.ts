@@ -172,12 +172,6 @@ export const contactConfig = {
     supportEmail: personalInfo.email,
     maxFileSize: 5 * 1024 * 1024, // 5MB in bytes
     allowedFileTypes: ['pdf', 'doc', 'docx', 'txt', 'jpg', 'jpeg', 'png'],
-    businessHours: {
-        weekdays: '9:00 AM - 6:00 PM',
-        weekends: 'Limited availability for urgent projects',
-        holidays: 'Emergency support only',
-        timezone: 'EAT'
-    },
     responseTime: '24-48 hours',
     availability: {
         status: 'available', // 'available', 'busy', 'limited', 'unavailable'
