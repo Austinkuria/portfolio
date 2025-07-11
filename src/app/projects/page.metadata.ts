@@ -1,27 +1,30 @@
 import { Metadata } from 'next';
-import { personalInfo, siteConfig } from '@/config';
+import { personalInfo, siteConfig, seoConfig } from '@/config';
 
-export const metadata: Metadata = {
-    title: `Featured Projects | ${personalInfo.name.full}`,
-    description: 'Explore my portfolio of full-stack web applications, including e-commerce platforms, attendance systems, and modern web solutions.',
+export const projectsMetadata: Metadata = {
+    title: 'Projects',
+    description: seoConfig.descriptions.projects,
     openGraph: {
-        title: `Featured Projects | ${personalInfo.name.full}`,
-        description: 'Explore my portfolio of full-stack web applications, including e-commerce platforms, attendance systems, and modern web solutions.',
+        title: `${personalInfo.name.first}'s Projects - Web Development Portfolio`,
+        description: seoConfig.descriptions.projects,
         url: `${siteConfig.url}/projects`,
         type: 'website',
         images: [
             {
-                url: '/images/clinique-beauty.png',
-                width: 1200,
-                height: 630,
-                alt: `Featured Projects by ${personalInfo.name.full}`,
+                url: `${siteConfig.url}/api/og?title=${encodeURIComponent('Projects Portfolio')}&description=${encodeURIComponent(seoConfig.descriptions.projects)}&type=project`,
+                width: seoConfig.openGraph.images.width,
+                height: seoConfig.openGraph.images.height,
+                alt: `${personalInfo.name.full}'s Projects`,
             },
         ],
     },
     twitter: {
-        card: 'summary_large_image',
-        title: `Featured Projects | ${personalInfo.name.full}`,
-        description: 'Full-stack web applications and modern solutions',
-        images: ['/images/clinique-beauty.png'],
+        card: seoConfig.twitter.card,
+        title: `${personalInfo.name.first}'s Projects - Web Development Portfolio`,
+        description: seoConfig.descriptions.projects,
+        images: [`${siteConfig.url}/api/og?title=${encodeURIComponent('Projects Portfolio')}&description=${encodeURIComponent(seoConfig.descriptions.projects)}&type=project`],
+    },
+    alternates: {
+        canonical: `${siteConfig.url}/projects`
     },
 };

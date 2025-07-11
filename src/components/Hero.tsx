@@ -5,8 +5,17 @@ import { FaGithub, FaLinkedin, FaArrowDown } from 'react-icons/fa';
 import { HiDownload } from 'react-icons/hi';
 import CustomLink from '@/components/CustomLink';
 import { useRef } from 'react';
-import { TypeAnimation } from 'react-type-animation';
+import dynamic from 'next/dynamic';
 import { MotionDiv, MotionH1, MotionP } from '@/lib/motion';
+
+// Dynamically import TypeAnimation to avoid SSR issues
+const TypeAnimation = dynamic(
+  () => import('react-type-animation').then((mod) => mod.TypeAnimation),
+  { 
+    ssr: false,
+    loading: () => <span>Code</span>
+  }
+);
 
 // Pre-generate random values outside of render
 const circles = Array.from({ length: 20 }, (_, i) => ({

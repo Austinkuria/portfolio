@@ -3,21 +3,28 @@ import { personalInfo, siteConfig, seoConfig } from '@/config';
 // Page-specific metadata for the homepage
 export const homeMetadata = {
   title: seoConfig.defaultTitle,
-  description: `${personalInfo.tagline}. Portfolio, projects, and contact for ${personalInfo.name.full}, a ${personalInfo.title.toLowerCase()} based in ${personalInfo.location}.`,
+  description: seoConfig.descriptions.home,
   alternates: {
     canonical: siteConfig.url
   },
   openGraph: {
     title: seoConfig.defaultTitle,
-    description: personalInfo.tagline,
+    description: seoConfig.descriptions.home,
+    url: siteConfig.url,
     images: [
       {
-        url: seoConfig.openGraph.images.url,
+        url: `${siteConfig.url}/api/og?title=${encodeURIComponent(personalInfo.name.full)}&description=${encodeURIComponent(personalInfo.tagline)}&type=default`,
         width: seoConfig.openGraph.images.width,
         height: seoConfig.openGraph.images.height,
         alt: personalInfo.name.full,
       },
     ],
+  },
+  twitter: {
+    card: seoConfig.twitter.card,
+    title: seoConfig.defaultTitle,
+    description: seoConfig.descriptions.home,
+    images: [`${siteConfig.url}/api/og?title=${encodeURIComponent(personalInfo.name.full)}&description=${encodeURIComponent(personalInfo.tagline)}&type=default`],
   },
   other: {
     'application-name': siteConfig.applicationName,

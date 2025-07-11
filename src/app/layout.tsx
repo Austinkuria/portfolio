@@ -10,6 +10,13 @@ import { Analytics } from '@vercel/analytics/next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
+import StructuredData from '@/components/StructuredData';
+import { 
+  generatePersonSchema, 
+  generateWebsiteSchema, 
+  generateOrganizationSchema,
+  generateProfessionalServiceSchema 
+} from '@/lib/structuredData';
 
 export default function RootLayout({
   children,
@@ -27,6 +34,16 @@ export default function RootLayout({
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-P2G8NGPF');`}
         </Script>
+
+        {/* Structured Data for SEO */}
+        <StructuredData 
+          data={[
+            generatePersonSchema(),
+            generateWebsiteSchema(),
+            generateOrganizationSchema(),
+            generateProfessionalServiceSchema()
+          ]} 
+        />
 
         {/* Preload important routes with higher priority */}
         <link rel="preload" as="fetch" href="/about" crossOrigin="anonymous" />

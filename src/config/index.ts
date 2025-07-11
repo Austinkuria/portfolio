@@ -94,31 +94,81 @@ export const navigation = {
     prefetchPages: ['/about', '/projects', '/skills', '/blog', '/contact'],
 } as const;
 
-// SEO Configuration
+// SEO Configuration - Enhanced for better search visibility
 export const seoConfig = {
-    defaultTitle: `${personalInfo.name.full} | ${personalInfo.title}`,
+    defaultTitle: `${personalInfo.name.full} - ${personalInfo.title} | Modern Web Solutions`,
     titleTemplate: `%s | ${personalInfo.name.full}`,
     keywords: [
+        // Primary skills
         'Full Stack Developer',
         'Web Development',
+        'React Developer',
+        'Next.js Developer',
+        'TypeScript Developer',
+        'Node.js Developer',
+        'JavaScript Developer',
+
+        // Services
+        'Frontend Development',
+        'Backend Development',
+        'UI/UX Design',
+        'E-commerce Development',
+        'API Development',
+        'Web Applications',
+        'Custom Software Development',
+        'Responsive Web Design',
+
+        // Technologies
         'React',
-        'Node.js',
-        'TypeScript',
         'Next.js',
+        'TypeScript',
+        'Node.js',
+        'TailwindCSS',
+        'MongoDB',
+        'PostgreSQL',
+        'Express.js',
+        'REST API',
+        'GraphQL',
+
+        // Industry terms
         'Software Engineer',
         'Web Applications',
         'Cloud Architecture',
-        'Backend Development',
-        'Frontend Development',
+        'Scalable Solutions',
+        'Modern Web Technologies',
+        'Progressive Web Apps',
+        'Single Page Applications',
+
+        // Location-based
         personalInfo.name.full,
         personalInfo.location,
+        'Kenya Developer',
+        'Nairobi Developer',
+        'East Africa Developer',
+
+        // Client-focused
+        'Freelance Developer',
+        'Web Development Services',
+        'Custom Web Solutions',
+        'Business Web Applications',
+        'Startup Development',
+        'Small Business Websites',
+        'Enterprise Solutions'
     ],
+    descriptions: {
+        home: `${personalInfo.name.full} is a ${personalInfo.title.toLowerCase()} based in ${personalInfo.location}, specializing in modern web applications built with React, Next.js, and TypeScript. Available for freelance projects and consultations.`,
+        about: `Learn about ${personalInfo.name.full}, a passionate ${personalInfo.title.toLowerCase()} with expertise in full-stack development, UI/UX design, and modern web technologies. Discover my journey, skills, and approach to building exceptional web solutions.`,
+        projects: `Explore ${personalInfo.name.full}'s portfolio of web development projects, featuring modern applications built with React, Next.js, TypeScript, and other cutting-edge technologies. See real-world examples of full-stack development work.`,
+        skills: `Discover the technical skills and expertise of ${personalInfo.name.full}, including proficiency in React, Next.js, TypeScript, Node.js, and modern web development tools and frameworks.`,
+        contact: `Get in touch with ${personalInfo.name.full} for web development projects, consultations, or collaborations. Available for freelance work including full-stack development, UI/UX design, and custom web solutions.`,
+        blog: `Read ${personalInfo.name.full}'s insights on web development, programming tutorials, industry trends, and technical guides covering React, Next.js, TypeScript, and modern development practices.`
+    },
     openGraph: {
         type: 'website',
         locale: 'en_US',
         siteName: siteConfig.siteName,
         images: {
-            url: siteConfig.defaultMetaImage,
+            url: '/api/og', // Dynamic OG image
             width: 1200,
             height: 630,
             alt: `${personalInfo.name.full} - ${personalInfo.title} Portfolio`,
@@ -126,10 +176,16 @@ export const seoConfig = {
     },
     twitter: {
         card: 'summary_large_image',
+        site: '@austinmaina', // Add if you have Twitter
+        creator: '@austinmaina', // Add if you have Twitter
     },
     robots: {
         index: true,
         follow: true,
+        noarchive: false,
+        nosnippet: false,
+        noimageindex: false,
+        nocache: false,
         googleBot: {
             index: true,
             follow: true,
@@ -138,6 +194,66 @@ export const seoConfig = {
             'max-snippet': -1,
         },
     },
+    additionalMetaTags: [
+        {
+            name: 'application-name',
+            content: siteConfig.applicationName,
+        },
+        {
+            name: 'apple-mobile-web-app-capable',
+            content: 'yes',
+        },
+        {
+            name: 'apple-mobile-web-app-status-bar-style',
+            content: 'default',
+        },
+        {
+            name: 'apple-mobile-web-app-title',
+            content: siteConfig.applicationName,
+        },
+        {
+            name: 'format-detection',
+            content: 'telephone=yes',
+        },
+        {
+            name: 'mobile-web-app-capable',
+            content: 'yes',
+        },
+        {
+            name: 'theme-color',
+            content: siteConfig.themeColor,
+        },
+        // Professional/Business related
+        {
+            name: 'classification',
+            content: 'Business',
+        },
+        {
+            name: 'coverage',
+            content: 'Worldwide',
+        },
+        {
+            name: 'distribution',
+            content: 'Global',
+        },
+        {
+            name: 'rating',
+            content: 'General',
+        },
+        // Geographic
+        {
+            name: 'geo.region',
+            content: 'KE',
+        },
+        {
+            name: 'geo.placename',
+            content: personalInfo.location,
+        },
+        {
+            name: 'ICBM',
+            content: '-1.2921, 36.8219', // Nairobi coordinates
+        },
+    ],
 } as const;
 
 // Email Configuration

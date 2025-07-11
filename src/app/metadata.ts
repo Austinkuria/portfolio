@@ -6,7 +6,7 @@ export const siteMetadata: Metadata = {
     template: seoConfig.titleTemplate,
     default: seoConfig.defaultTitle,
   },
-  description: personalInfo.description,
+  description: seoConfig.descriptions.home,
   creator: personalInfo.name.full,
   keywords: seoConfig.keywords,
   applicationName: siteConfig.applicationName,
@@ -14,14 +14,15 @@ export const siteMetadata: Metadata = {
     { name: personalInfo.name.full, url: siteConfig.url },
     { name: 'GitHub', url: socialLinks.github },
     { name: 'LinkedIn', url: socialLinks.linkedin }
-  ], icons: {
+  ],
+  icons: {
     icon: siteConfig.favicon,
     shortcut: siteConfig.favicon,
     apple: siteConfig.favicon,
   },
   openGraph: {
     title: seoConfig.defaultTitle,
-    description: `${personalInfo.title} specializing in scalable web applications built with React, Node.js, and modern cloud architecture.`,
+    description: seoConfig.descriptions.home,
     url: siteConfig.url,
     siteName: siteConfig.siteName,
     images: [
@@ -35,6 +36,14 @@ export const siteMetadata: Metadata = {
     locale: seoConfig.openGraph.locale,
     type: seoConfig.openGraph.type,
   },
+  twitter: {
+    card: seoConfig.twitter.card,
+    site: seoConfig.twitter.site,
+    creator: seoConfig.twitter.creator,
+    title: seoConfig.defaultTitle,
+    description: seoConfig.descriptions.home,
+    images: [seoConfig.openGraph.images.url],
+  },
   alternates: {
     canonical: siteConfig.url,
   },
@@ -43,4 +52,9 @@ export const siteMetadata: Metadata = {
     google: siteConfig.googleSiteVerification
   },
   robots: seoConfig.robots,
+  // Additional meta tags for better SEO
+  other: seoConfig.additionalMetaTags.reduce((acc, tag) => {
+    acc[tag.name] = tag.content;
+    return acc;
+  }, {} as Record<string, string>),
 };

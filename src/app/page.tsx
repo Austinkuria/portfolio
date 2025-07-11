@@ -1,17 +1,24 @@
 import Hero from '@/components/Hero';
 import HomeContent from '@/components/HomeContent';
-import { personalInfo, seoConfig } from '@/config';
+import { homeMetadata } from './page.metadata';
+import StructuredData from '@/components/StructuredData';
+import { generateBreadcrumbSchema } from '@/lib/structuredData';
+import { siteConfig } from '@/config';
 
-export const metadata = {
-  title: seoConfig.defaultTitle,
-  description: `${personalInfo.tagline}. Portfolio, projects, and contact for ${personalInfo.name.full}, a ${personalInfo.title.toLowerCase()} based in ${personalInfo.location}.`,
-};
+export const metadata = homeMetadata;
 
 export default function Home() {
+  const breadcrumbItems = [
+    { name: 'Home', url: siteConfig.url }
+  ];
+
   return (
-    <main className="flex min-h-screen flex-col items-center">
-      <Hero />
-      <HomeContent />
-    </main>
+    <>
+      <StructuredData data={generateBreadcrumbSchema(breadcrumbItems)} />
+      <main className="flex min-h-screen flex-col items-center">
+        <Hero />
+        <HomeContent />
+      </main>
+    </>
   );
 }

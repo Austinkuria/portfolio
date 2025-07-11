@@ -1,6 +1,28 @@
-import { personalInfo } from '@/config';
+import { personalInfo, siteConfig, seoConfig } from '@/config';
 
-export const metadata = {
-    title: `Contact | ${personalInfo.name.full}`,
-    description: `Contact ${personalInfo.name.full} for web development, mobile apps, UI/UX design, and technical consultation.`,
+export const contactMetadata = {
+    title: 'Contact',
+    description: seoConfig.descriptions.contact,
+    alternates: {
+        canonical: `${siteConfig.url}/contact`
+    },
+    openGraph: {
+        title: `Contact ${personalInfo.name.first} - Get in Touch`,
+        description: seoConfig.descriptions.contact,
+        url: `${siteConfig.url}/contact`,
+        images: [
+            {
+                url: `${siteConfig.url}/api/og?title=${encodeURIComponent(`Contact ${personalInfo.name.first}`)}&description=${encodeURIComponent(seoConfig.descriptions.contact)}&type=page`,
+                width: seoConfig.openGraph.images.width,
+                height: seoConfig.openGraph.images.height,
+                alt: `Contact ${personalInfo.name.full}`,
+            },
+        ],
+    },
+    twitter: {
+        card: seoConfig.twitter.card,
+        title: `Contact ${personalInfo.name.first} - Get in Touch`,
+        description: seoConfig.descriptions.contact,
+        images: [`${siteConfig.url}/api/og?title=${encodeURIComponent(`Contact ${personalInfo.name.first}`)}&description=${encodeURIComponent(seoConfig.descriptions.contact)}&type=page`],
+    },
 };
