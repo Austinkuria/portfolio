@@ -2,16 +2,56 @@
 
 import dynamic from 'next/dynamic';
 
-export const MotionDiv = dynamic(() => import('framer-motion').then((mod) => mod.m.div), { ssr: false });
-export const MotionArticle = dynamic(() => import('framer-motion').then((mod) => mod.m.article), { ssr: false });
-export const MotionButton = dynamic(() => import('framer-motion').then((mod) => mod.m.button), { ssr: false });
-export const MotionHeader = dynamic(() => import('framer-motion').then((mod) => mod.m.header), { ssr: false });
-export const MotionSection = dynamic(() => import('framer-motion').then((mod) => mod.m.section), { ssr: false });
-export const MotionSpan = dynamic(() => import('framer-motion').then((mod) => mod.m.span), { ssr: false });
-export const MotionP = dynamic(() => import('framer-motion').then((mod) => mod.m.p), { ssr: false });
-export const MotionUl = dynamic(() => import('framer-motion').then((mod) => mod.m.ul), { ssr: false });
-export const MotionLi = dynamic(() => import('framer-motion').then((mod) => mod.m.li), { ssr: false });
-export const MotionH1 = dynamic(() => import('framer-motion').then((mod) => mod.m.h1), { ssr: false });
-export const MotionH2 = dynamic(() => import('framer-motion').then((mod) => mod.m.h2), { ssr: false });
-export const MotionH3 = dynamic(() => import('framer-motion').then((mod) => mod.m.h3), { ssr: false });
-export const MotionForm = dynamic(() => import('framer-motion').then((mod) => mod.m.form), { ssr: false });
+// For SSR safety, we'll provide fallbacks
+export const MotionDiv = dynamic(() => import('framer-motion').then((mod) => mod.motion.div), { 
+  ssr: false,
+  loading: () => <div />
+});
+export const MotionArticle = dynamic(() => import('framer-motion').then((mod) => mod.motion.article), { 
+  ssr: false,
+  loading: () => <article />
+});
+export const MotionButton = dynamic(() => import('framer-motion').then((mod) => mod.motion.button), { 
+  ssr: false,
+  loading: () => <button />
+});
+export const MotionHeader = dynamic(() => import('framer-motion').then((mod) => mod.motion.header), { 
+  ssr: false,
+  loading: () => <header />
+});
+export const MotionSection = dynamic(() => import('framer-motion').then((mod) => mod.motion.section), { 
+  ssr: false,
+  loading: () => <section />
+});
+export const MotionSpan = dynamic(() => import('framer-motion').then((mod) => mod.motion.span), { 
+  ssr: false,
+  loading: () => <span />
+});
+export const MotionP = dynamic(() => import('framer-motion').then((mod) => mod.motion.p), { 
+  ssr: false,
+  loading: () => <p />
+});
+export const MotionUl = dynamic(() => import('framer-motion').then((mod) => mod.motion.ul), { 
+  ssr: false,
+  loading: () => <ul />
+});
+export const MotionLi = dynamic(() => import('framer-motion').then((mod) => mod.motion.li), { 
+  ssr: false,
+  loading: () => <li />
+});
+export const MotionH1 = dynamic(() => import('framer-motion').then((mod) => mod.motion.h1), { 
+  ssr: false,
+  loading: () => <h1 />
+});
+export const MotionH2 = dynamic(() => import('framer-motion').then((mod) => mod.motion.h2), { 
+  ssr: false,
+  loading: () => <h2 />
+});
+export const MotionH3 = dynamic(() => import('framer-motion').then((mod) => mod.motion.h3), { 
+  ssr: false,
+  loading: () => <h3 />
+});
+export const MotionForm = dynamic(() => import('framer-motion').then((mod) => mod.motion.form), { 
+  ssr: false,
+  loading: () => <form />
+});

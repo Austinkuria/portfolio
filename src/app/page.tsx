@@ -1,9 +1,9 @@
 import Hero from '@/components/Hero';
 import HomeContent from '@/components/HomeContent';
-import { homeMetadata } from './page.metadata';
 import StructuredData from '@/components/StructuredData';
 import { generateBreadcrumbSchema } from '@/lib/structuredData';
 import { siteConfig } from '@/config';
+import { homeMetadata } from './page.metadata';
 
 export const metadata = homeMetadata;
 
