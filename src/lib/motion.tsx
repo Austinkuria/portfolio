@@ -14,3 +14,4 @@ export const MotionLi = dynamic(() => import('framer-motion').then((mod) => mod.
 export const MotionH1 = dynamic(() => import('framer-motion').then((mod) => mod.m.h1), { ssr: false });
 export const MotionH2 = dynamic(() => import('framer-motion').then((mod) => mod.m.h2), { ssr: false });
 export const MotionH3 = dynamic(() => import('framer-motion').then((mod) => mod.m.h3), { ssr: false });
+export const MotionForm = dynamic(() => import('framer-motion').then((mod) => mod.m.form), { ssr: false });

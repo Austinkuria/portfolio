@@ -170,8 +170,6 @@ export const contactConfig = {
     phoneFormatExample: '+254712345678',
     emailPlaceholder: 'austinexample@gmail.com',
     supportEmail: personalInfo.email,
-    maxFileSize: 5 * 1024 * 1024, // 5MB in bytes
-    allowedFileTypes: ['pdf', 'doc', 'docx', 'txt', 'jpg', 'jpeg', 'png'],
     responseTime: '24-48 hours',
     availability: {
         status: 'available', // 'available', 'busy', 'limited', 'unavailable'
@@ -181,10 +179,6 @@ export const contactConfig = {
     validCategories: [
         'web-development', 'ui-ux-design', 'ecommerce', 'backend-development',
         'api-development', 'consultation', 'maintenance', 'other'
-    ],
-    validContactMethods: ['email', 'phone', 'whatsapp'],
-    validBudgetRanges: [
-        'under-500', '500-1000', '1000-2500', '2500-5000', 'over-5000'
     ],
     spamKeywords: [
         'urgent!!', 'click here', 'free money', 'winner!', 'viagra', 'casino',
@@ -220,14 +214,12 @@ export const errorMessages = {
     generic: `Something went wrong. Please try again or contact me directly at ${personalInfo.email}`,
     networkError: 'Network error. Please check your connection and try again.',
     validationError: 'Please check your input and try again.',
-    fileUploadError: 'File upload failed. Please try again with a smaller file.',
 } as const;
 
 // Success Messages
 export const successMessages = {
     contactForm: 'Thank you for your message! I will get back to you soon.',
     newsletter: 'Successfully subscribed to the newsletter!',
-    fileUpload: 'File uploaded successfully.',
 } as const;
 
 // App Configuration
