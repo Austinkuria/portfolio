@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useTheme } from 'next-themes';
 import { FaSun, FaMoon } from 'react-icons/fa';
-import { m } from 'framer-motion';
+import dynamic from 'next/dynamic';
 
-const MotionButton = m.button;
+const MotionButton = dynamic(() => import('framer-motion').then((mod) => mod.m.button), { ssr: false });
 
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme();

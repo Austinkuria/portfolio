@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { AnimatePresence } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
 import CustomLink from './CustomLink';
 import ThemeToggle from './ThemeToggle';
 import { MotionDiv, MotionLi, MotionSpan } from '@/lib/motion';
 import Logo from './Logo';
+
+const AnimatePresence = dynamic(() => import('framer-motion').then((mod) => mod.AnimatePresence), { ssr: false });
 
 const navLinks = [
 	{ name: 'Home', href: '/' },

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { personalInfo, socialLinks, contactConfig, siteConfig, emailConfig, appConfig } from '@/config';
+import { personalInfo, socialLinks, contactConfig, emailConfig } from '@/config';
 
 // Initialize Resend
 const resend = new Resend(emailConfig.apiKey);
@@ -9,195 +9,195 @@ const resend = new Resend(emailConfig.apiKey);
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
 
 function rateLimit(ip: string, limit: number = 5, windowMs: number = 15 * 60 * 1000): boolean {
-    const now = Date.now();
-    const userLimit = rateLimitMap.get(ip);
+  const now = Date.now();
+  const userLimit = rateLimitMap.get(ip);
 
-    if (!userLimit || now > userLimit.resetTime) {
-        rateLimitMap.set(ip, { count: 1, resetTime: now + windowMs });
-        return true;
-    }
-
-    if (userLimit.count >= limit) {
-        return false;
-    }
-
-    userLimit.count++;
+  if (!userLimit || now > userLimit.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + windowMs });
     return true;
+  }
+
+  if (userLimit.count >= limit) {
+    return false;
+  }
+
+  userLimit.count++;
+  return true;
 }
 
 // Input sanitization
 function sanitizeInput(input: string): string {
-    return input
-        .replace(/[<>]/g, '') // Remove potential HTML tags
-        .trim()
-        .substring(0, 2000); // Limit length
+  return input
+    .replace(/[<>]/g, '') // Remove potential HTML tags
+    .trim()
+    .substring(0, 2000); // Limit length
 }
 
 // Refined spam detection function
 function detectSpam(name: string, email: string, subject: string, category: string, message: string): { isSpam: boolean; reason: string } {
-    const combinedText = `${name} ${email} ${subject} ${category} ${message}`.toLowerCase();
+  const combinedText = `${name} ${email} ${subject} ${category} ${message}`.toLowerCase();
 
-    // Use spam keywords from configuration
-    const spamKeywords = contactConfig.spamKeywords;
+  // Use spam keywords from configuration
+  const spamKeywords = contactConfig.spamKeywords;
 
-    // Simplified suspicious patterns
-    const suspiciousPatterns = [
-        /<script[^>]*>/gi,
-        /javascript:/gi,
-        /eval\s*\(/gi,
-        /union\s+select/gi,
-        /drop\s+table/gi
-    ];
+  // Simplified suspicious patterns
+  const suspiciousPatterns = [
+    /<script[^>]*>/gi,
+    /javascript:/gi,
+    /eval\s*\(/gi,
+    /union\s+select/gi,
+    /drop\s+table/gi
+  ];
 
-    // Check for spam keywords
-    for (const keyword of spamKeywords) {
-        if (combinedText.includes(keyword.toLowerCase())) {
-            return { isSpam: true, reason: `Contains spam keyword: ${keyword}` };
-        }
+  // Check for spam keywords
+  for (const keyword of spamKeywords) {
+    if (combinedText.includes(keyword.toLowerCase())) {
+      return { isSpam: true, reason: `Contains spam keyword: ${keyword}` };
     }
+  }
 
-    // Check for suspicious patterns
-    for (const pattern of suspiciousPatterns) {
-        if (pattern.test(combinedText)) {
-            return { isSpam: true, reason: 'Contains suspicious code patterns' };
-        }
+  // Check for suspicious patterns
+  for (const pattern of suspiciousPatterns) {
+    if (pattern.test(combinedText)) {
+      return { isSpam: true, reason: 'Contains suspicious code patterns' };
     }
+  }
 
-    // Check for excessive repeated characters
-    if (/(.)\1{10,}/.test(combinedText)) {
-        return { isSpam: true, reason: 'Excessive repeated characters' };
-    }
+  // Check for excessive repeated characters
+  if (/(.)\1{10,}/.test(combinedText)) {
+    return { isSpam: true, reason: 'Excessive repeated characters' };
+  }
 
-    // Check for excessive URLs
-    const urlMatches = combinedText.match(/https?:\/\/[^\s]+/g) || [];
-    if (urlMatches.length > 3) {
-        return { isSpam: true, reason: 'Too many URLs' };
-    }
+  // Check for excessive URLs
+  const urlMatches = combinedText.match(/https?:\/\/[^\s]+/g) || [];
+  if (urlMatches.length > 3) {
+    return { isSpam: true, reason: 'Too many URLs' };
+  }
 
-    // Check for suspicious email domains
-    const emailDomain = email.split('@')[1]?.toLowerCase();
-    if (emailDomain && contactConfig.suspiciousEmailDomains.includes(emailDomain as any)) {
-        return { isSpam: true, reason: 'Suspicious email domain' };
-    }
+  // Check for suspicious email domains
+  const emailDomain = email.split('@')[1]?.toLowerCase();
+  if (emailDomain && contactConfig.suspiciousEmailDomains.includes(emailDomain)) {
+    return { isSpam: true, reason: 'Suspicious email domain' };
+  }
 
-    // Check if the message is mostly uppercase
-    const uppercaseRatio = (message.match(/[A-Z]/g) || []).length / message.length;
-    if (message.length > 20 && uppercaseRatio > 0.8) {
-        return { isSpam: true, reason: 'Excessive use of uppercase letters' };
-    }
+  // Check if the message is mostly uppercase
+  const uppercaseRatio = (message.match(/[A-Z]/g) || []).length / message.length;
+  if (message.length > 20 && uppercaseRatio > 0.8) {
+    return { isSpam: true, reason: 'Excessive use of uppercase letters' };
+  }
 
-    return { isSpam: false, reason: '' };
+  return { isSpam: false, reason: '' };
 }
 
 // Calculate urgency score based on content and keywords
 function calculateUrgencyScore(name: string, email: string, subject: string, category: string, message: string): 'LOW' | 'MEDIUM' | 'HIGH' {
-    const urgentKeywords = ['urgent', 'asap', 'immediately', 'emergency', 'deadline', 'today', 'tomorrow'];
-    const combinedText = `${subject} ${message}`.toLowerCase();
+  const urgentKeywords = ['urgent', 'asap', 'immediately', 'emergency', 'deadline', 'today', 'tomorrow'];
+  const combinedText = `${subject} ${message}`.toLowerCase();
 
-    let score = 0;
+  let score = 0;
 
-    // Check for urgent keywords
-    urgentKeywords.forEach(keyword => {
-        if (combinedText.includes(keyword)) {
-            score += 2;
-        }
-    });
-
-    // Business or high-value categories
-    if (['ecommerce', 'api-development', 'consultation'].includes(category)) {
-        score += 1;
+  // Check for urgent keywords
+  urgentKeywords.forEach(keyword => {
+    if (combinedText.includes(keyword)) {
+      score += 2;
     }
+  });
 
-    // Email from business domains
-    const businessDomains = ['.com', '.org', '.net', '.biz'];
-    const emailDomain = email.split('@')[1]?.toLowerCase();
-    if (emailDomain && businessDomains.some(domain => emailDomain.endsWith(domain))) {
-        score += 1;
-    }
+  // Business or high-value categories
+  if (['ecommerce', 'api-development', 'consultation'].includes(category)) {
+    score += 1;
+  }
 
-    // Message length (longer messages often indicate serious inquiries)
-    if (message.length > 200) {
-        score += 1;
-    }
+  // Email from business domains
+  const businessDomains = ['.com', '.org', '.net', '.biz'];
+  const emailDomain = email.split('@')[1]?.toLowerCase();
+  if (emailDomain && businessDomains.some(domain => emailDomain.endsWith(domain))) {
+    score += 1;
+  }
 
-    if (score >= 4) return 'HIGH';
-    if (score >= 2) return 'MEDIUM';
-    return 'LOW';
+  // Message length (longer messages often indicate serious inquiries)
+  if (message.length > 200) {
+    score += 1;
+  }
+
+  if (score >= 4) return 'HIGH';
+  if (score >= 2) return 'MEDIUM';
+  return 'LOW';
 }
 
 export async function POST(request: NextRequest) {
-    try {
-        const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0] ||
-            request.headers.get('x-real-ip') ||
-            'unknown';
+  try {
+    const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0] ||
+      request.headers.get('x-real-ip') ||
+      'unknown';
 
-        // Rate limiting
-        if (!rateLimit(clientIp)) {
-            return NextResponse.json(
-                {
-                    error: 'Too many requests. Please wait 15 minutes before sending another message.',
-                    code: 'RATE_LIMIT_EXCEEDED'
-                },
-                { status: 429 });
-        }
+    // Rate limiting
+    if (!rateLimit(clientIp)) {
+      return NextResponse.json(
+        {
+          error: 'Too many requests. Please wait 15 minutes before sending another message.',
+          code: 'RATE_LIMIT_EXCEEDED'
+        },
+        { status: 429 });
+    }
 
-        const body = await request.json();
-        let { name, email, subject, category, message } = body;
+    const body = await request.json();
+    let { name, email, subject, category, message } = body;
 
-        // Validate required fields
-        if (!name || !email || !subject || !category || !message) {
-            return NextResponse.json(
-                {
-                    error: 'Required fields are missing. Please complete all required fields.',
-                    code: 'MISSING_FIELDS'
-                },
-                { status: 400 });
-        }
+    // Validate required fields
+    if (!name || !email || !subject || !category || !message) {
+      return NextResponse.json(
+        {
+          error: 'Required fields are missing. Please complete all required fields.',
+          code: 'MISSING_FIELDS'
+        },
+        { status: 400 });
+    }
 
-        // Sanitize inputs
-        name = sanitizeInput(name);
-        email = sanitizeInput(email);
-        subject = sanitizeInput(subject);
-        category = sanitizeInput(category);
-        message = sanitizeInput(message);
+    // Sanitize inputs
+    name = sanitizeInput(name);
+    email = sanitizeInput(email);
+    subject = sanitizeInput(subject);
+    category = sanitizeInput(category);
+    message = sanitizeInput(message);
 
-        // Validate email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return NextResponse.json(
-                {
-                    error: 'Please enter a valid email address.',
-                    code: 'INVALID_EMAIL'
-                },
-                { status: 400 });
-        }
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        {
+          error: 'Please enter a valid email address.',
+          code: 'INVALID_EMAIL'
+        },
+        { status: 400 });
+    }
 
-        // Enhanced spam detection
-        const spamDetectionResult = detectSpam(name, email, subject, category, message);
+    // Enhanced spam detection
+    const spamDetectionResult = detectSpam(name, email, subject, category, message);
 
-        if (spamDetectionResult.isSpam) {
-            return NextResponse.json(
-                {
-                    error: 'Your message was flagged by our security filters. Please ensure your message is professional and doesn\'t contain spam-like content.',
-                    code: 'SPAM_DETECTED',
-                    reason: spamDetectionResult.reason
-                },
-                { status: 400 });
-        }
+    if (spamDetectionResult.isSpam) {
+      return NextResponse.json(
+        {
+          error: 'Your message was flagged by our security filters. Please ensure your message is professional and doesn\'t contain spam-like content.',
+          code: 'SPAM_DETECTED',
+          reason: spamDetectionResult.reason
+        },
+        { status: 400 });
+    }
 
-        // Calculate urgency and additional metrics
-        const urgencyScore = calculateUrgencyScore(name, email, subject, category, message);
-        const messageWordCount = message.split(/\s+/).length;
+    // Calculate urgency and additional metrics
+    const urgencyScore = calculateUrgencyScore(name, email, subject, category, message);
+    const messageWordCount = message.split(/\s+/).length;
 
-        // Get additional request info  
-        const referer = request.headers.get('referer') || 'Direct visit';
+    // Get additional request info  
+    const referer = request.headers.get('referer') || 'Direct visit';
 
-        // Email to you (notification) - Enhanced
-        const notificationEmailResponse = await resend.emails.send({
-            from: emailConfig.fromEmail,
-            to: emailConfig.toEmail,
-            subject: `${urgencyScore === 'HIGH' ? '🚨 URGENT' : '🚀'} New Portfolio Contact: ${name} - ${subject}`,
-            html: `
+    // Email to you (notification) - Enhanced
+    const notificationEmailResponse = await resend.emails.send({
+      from: emailConfig.fromEmail,
+      to: emailConfig.toEmail,
+      subject: `${urgencyScore === 'HIGH' ? '🚨 URGENT' : '🚀'} New Portfolio Contact: ${name} - ${subject}`,
+      html: `
           <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 700px; margin: 0 auto; background: #f8fafc; padding: 30px; border-radius: 16px;">
             <div style="position: relative; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; border-radius: 12px; margin-bottom: 30px; overflow: hidden;">
               ${urgencyScore === 'HIGH' ? '<div style="position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold; text-transform: uppercase;">🚨 URGENT</div>' : ''}
@@ -273,14 +273,14 @@ export async function POST(request: NextRequest) {
                 <div>
                   <strong>Received:</strong><br>
                   ${new Date().toLocaleString('en-US', {
-                weekday: 'long',
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                timeZoneName: 'short'
-            })}
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short'
+      })}
                 </div>
                 <div>
                   <strong>Client IP:</strong><br>
@@ -294,14 +294,14 @@ export async function POST(request: NextRequest) {
             </div>
           </div>
         `
-        });
+    });
 
-        // Auto-response email to sender
-        const autoResponseEmail = await resend.emails.send({
-            from: emailConfig.fromEmail,
-            to: email,
-            subject: `Thank you for contacting ${personalInfo.name.full} - Message Received`,
-            html: `
+    // Auto-response email to sender
+    const autoResponseEmail = await resend.emails.send({
+      from: emailConfig.fromEmail,
+      to: email,
+      subject: `Thank you for contacting ${personalInfo.name.full} - Message Received`,
+      html: `
         <div style="font-family: system-ui, -apple-system, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center;">
             <h1 style="margin: 0 0 10px 0; font-size: 28px; font-weight: bold;">Message Received!</h1>
@@ -352,58 +352,56 @@ export async function POST(request: NextRequest) {
           </div>
         </div>
       `
-        });
+    });
 
-        let isAttachmentError = false;
+    // Check if there were any errors
+    if (notificationEmailResponse.error || autoResponseEmail.error) {
+      console.error('Email sending errors:', {
+        notification: notificationEmailResponse.error,
+        autoResponse: autoResponseEmail.error
+      });
 
-        // Check if there were any errors
-        if (notificationEmailResponse.error || autoResponseEmail.error) {
-            console.error('Email sending errors:', {
-                notification: notificationEmailResponse.error,
-                autoResponse: autoResponseEmail.error
-            });
-
-            return NextResponse.json(
-                {
-                    error: 'Failed to send email notification. Please try again or contact me directly.',
-                    code: 'EMAIL_SEND_FAILED'
-                },
-                { status: 500 });
-        }
-
-        // Success response
-        const responseData: any = {
-            success: true,
-            message: 'Your message has been sent successfully! Thank you for reaching out.',
-        };
-
-        return NextResponse.json(responseData, { status: 200 });
-
-    } catch (error) {
-        console.error('Contact form error:', error);
-
-        return NextResponse.json(
-            {
-                error: 'An unexpected error occurred. Please try again later or contact me directly.',
-                code: 'INTERNAL_ERROR'
-            },
-            { status: 500 });
+      return NextResponse.json(
+        {
+          error: 'Failed to send email notification. Please try again or contact me directly.',
+          code: 'EMAIL_SEND_FAILED'
+        },
+        { status: 500 });
     }
+
+    // Success response
+    const responseData = {
+      success: true,
+      message: 'Your message has been sent successfully! Thank you for reaching out.',
+    };
+
+    return NextResponse.json(responseData, { status: 200 });
+
+  } catch (error) {
+    console.error('Contact form error:', error);
+
+    return NextResponse.json(
+      {
+        error: 'An unexpected error occurred. Please try again later or contact me directly.',
+        code: 'INTERNAL_ERROR'
+      },
+      { status: 500 });
+  }
 }
 
 export async function GET() {
-    return NextResponse.json(
-        {
-            message: 'Contact API is running',
-            timestamp: new Date().toISOString(),
-            endpoints: {
-                POST: 'Submit contact form',
-            },
-            rateLimit: {
-                limit: 5,
-                window: '15 minutes'
-            }
-        },
-        { status: 200 }
-    );
+  return NextResponse.json(
+    {
+      message: 'Contact API is running',
+      timestamp: new Date().toISOString(),
+      endpoints: {
+        POST: 'Submit contact form',
+      },
+      rateLimit: {
+        limit: 5,
+        window: '15 minutes'
+      }
+    },
+    { status: 200 }
+  );
 }

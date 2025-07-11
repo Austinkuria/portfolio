@@ -1,10 +1,12 @@
 'use client';
 
-import { m } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaCalendarAlt, FaChevronRight } from 'react-icons/fa';
 import { MotionDiv, MotionArticle } from '@/lib/motion';
+
+const MotionHeader = dynamic(() => import('framer-motion').then((mod) => mod.m.header), { ssr: false });
 
 type BlogPost = {
   id: number;

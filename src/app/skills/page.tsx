@@ -1,11 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import { FaReact, FaNodeJs, FaPython, FaDatabase, FaDocker, FaAws, FaGitAlt, FaHtml5, FaCss3Alt } from 'react-icons/fa';
 import { SiTypescript, SiJavascript, SiMongodb, SiPostgresql, SiTailwindcss, SiNextdotjs, SiFastapi, SiSupabase, SiGraphql, SiJenkins } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
 import { MotionDiv, MotionP } from '@/lib/motion';
+
+const MotionButton = dynamic(() => import('framer-motion').then((mod) => mod.m.button), { ssr: false });
+const AnimatePresence = dynamic(() => import('framer-motion').then((mod) => mod.AnimatePresence), { ssr: false });
 
 type SkillCategory = 'frontend' | 'backend' | 'database' | 'devops';
 
@@ -114,7 +117,7 @@ export default function Skills() {
                 <h3 className="font-medium text-center">{skill.name}</h3>
                 
                 {hoveredSkill === skill.name && (
-                  <m.div
+                  <MotionDiv
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     className="absolute -bottom-2 left-0 right-0 flex justify-center"
@@ -128,7 +131,7 @@ export default function Skills() {
                       </div>
                       <span>Proficiency: {skill.proficiency}/10</span>
                     </div>
-                  </m.div>
+                  </MotionDiv>
                 )}
                 
                 {hoveredSkill === skill.name && (
