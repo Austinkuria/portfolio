@@ -103,7 +103,10 @@ export default function Contact() {
     
     // Check for suspicious domains using configuration
     const emailDomain = email.split('@')[1]?.toLowerCase();
-    if (emailDomain && contactConfig.suspiciousEmailDomains.includes(emailDomain)) {
+    if (
+      emailDomain &&
+      contactConfig.suspiciousEmailDomains.some((d: string) => d === emailDomain)
+    ) {
       return 'Please use a valid email address';
     }
     
@@ -128,7 +131,7 @@ export default function Contact() {
 
   const validateCategory = (category: string): string => {
     if (!category.trim()) return 'Please select a project category';
-    if (!contactConfig.validCategories.includes(category)) {
+    if (!(contactConfig.validCategories as string[]).includes(category)) {
       return 'Please select a valid category';
     }
     return '';
@@ -173,7 +176,7 @@ export default function Contact() {
 
   const validatePreferredContactMethod = (method: string): string => {
     if (!method.trim()) return 'Preferred contact method is required';
-    if (!contactConfig.validContactMethods.includes(method)) {
+    if (!(contactConfig.validContactMethods as string[]).includes(method)) {
       return 'Please select a valid contact method';
     }
     return '';
@@ -181,7 +184,7 @@ export default function Contact() {
 
   const validateBudgetRange = (budget: string): string => {
     if (!budget.trim()) return 'Please select a budget range';
-    if (!contactConfig.validBudgetRanges.includes(budget)) {
+    if (!(contactConfig.validBudgetRanges as string[]).includes(budget)) {
       return 'Please select a valid budget range';
     }
     return '';
