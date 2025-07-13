@@ -674,7 +674,7 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      required
+                      // optional
                       className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all peer pl-10 ${
                         validationErrors.name && fieldTouched.name
                           ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
@@ -836,7 +836,7 @@ export default function Contact() {
                       value={formData.category}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      required
+                      // optional
                       className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
                         validationErrors.category && fieldTouched.category
                           ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
@@ -945,7 +945,7 @@ export default function Contact() {
                       value={formData.message}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      required
+                      // optional
                       rows={5}
                       maxLength={2000}
                       className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all resize-y min-h-[120px] pl-10 ${
@@ -1112,7 +1112,7 @@ export default function Contact() {
                       value={formData.phone}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      required
+                      // optional
                       className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all peer pl-10 ${
                         validationErrors.phone && fieldTouched.phone
                           ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
@@ -1164,7 +1164,7 @@ export default function Contact() {
                       value={formData.preferredContactMethod}
                       onChange={handleChange}
                       onBlur={handleBlur}
-                      required
+                      // optional
                       className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
                         validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
                           ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
