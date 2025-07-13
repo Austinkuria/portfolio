@@ -1036,71 +1036,86 @@ export default function Contact() {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </span>
-                  </label>                  <div className="relative">
-                    <div className="flex items-center">
-                      <label htmlFor="file" className="flex-grow px-4 py-3 rounded-lg border bg-background/80 hover:border-primary hover:bg-background/90 transition-all cursor-pointer text-muted-foreground flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                        </svg>
-                        {formData.file ? formData.file.name : "Choose a file..."}
-                      </label>
-                      {formData.file && (
-                        <button
-                          type="button"
-                          onClick={() => setFormData(prev => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }))}
-                          className="ml-2 p-2 text-muted-foreground hover:text-red-500 transition-colors"
-                          title="Remove file"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      )}
-                    </div>
-                    <input
-                      type="file"
-                      id="file"
-                      name="file"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          // Check file size (limit to 10MB)
-                          if (file.size > 10 * 1024 * 1024) {
-                            setValidationErrors(prev => ({
-                              ...prev,
-                              file: "File size exceeds 10MB limit"
-                            }));
-                            return;
+                  </label>
+                  <div className="relative flex items-center gap-2">
+                    <label htmlFor="file" className="px-4 py-2 bg-primary text-primary-foreground rounded-lg font-semibold cursor-pointer shadow hover:bg-primary/90 transition-all">
+                      {formData.fileName ? 'Change File' : 'Choose File'}
+                      <input
+                        type="file"
+                        id="file"
+                        name="file"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const allowedTypes = [
+                              'application/pdf',
+                              'application/msword',
+                              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                              'image/png',
+                              'image/jpeg',
+                            ];
+                            if (!allowedTypes.includes(file.type)) {
+                              setValidationErrors((prev) => ({ ...prev, file: 'Unsupported file type.' }));
+                              setFormData((prev) => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }));
+                              return;
+                            }
+                            if (file.size > 10 * 1024 * 1024) {
+                              setValidationErrors((prev) => ({ ...prev, file: 'File size exceeds 10MB.' }));
+                              setFormData((prev) => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }));
+                              return;
+                            }
+                            const reader = new FileReader();
+                            reader.onload = (ev) => {
+                              setFormData((prev) => ({
+                                ...prev,
+                                file,
+                                fileData: ev.target?.result as string,
+                                fileName: file.name,
+                                fileType: file.type,
+                              }));
+                              setValidationErrors((prev) => ({ ...prev, file: '' }));
+                            };
+                            reader.readAsDataURL(file);
+                          } else {
+                            setFormData((prev) => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }));
+                            setValidationErrors((prev) => ({ ...prev, file: '' }));
                           }
-                          
-                          // Convert file to Base64 for transmission
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            setFormData((prev) => ({ 
-                              ...prev, 
-                              file: file,
-                              fileData: reader.result as string,
-                              fileName: file.name,
-                              fileType: file.type
-                            }));
-                          };
-                          reader.readAsDataURL(file);
-                        } else {
+                        }}
+                        accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                        className="hidden"
+                        aria-describedby="fileHelp"
+                      />
+                    </label>
+                    {formData.fileName && (
+                      <span className="text-xs text-muted-foreground truncate max-w-[160px]" title={formData.fileName}>
+                        {formData.fileName}
+                      </span>
+                    )}
+                    {formData.file && (
+                      <button
+                        type="button"
+                        className="ml-2 text-xs text-red-500 hover:underline"
+                        aria-label="Remove file"
+                        onClick={() => {
                           setFormData((prev) => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }));
-                        }
-                      }}
-                      accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                      className="hidden"
-                    />
+                          setValidationErrors((prev) => ({ ...prev, file: '' }));
+                        }}
+                      >
+                        Remove
+                      </button>
+                    )}
                   </div>
-                  <div className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
+                  <div id="fileHelp" className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                     Supported: PDF, DOC, DOCX, PNG, JPG (Max 10MB)
                   </div>
                   {validationErrors.file && fieldTouched.file && (
-                    <p className="text-sm text-red-500 mt-1">{validationErrors.file}</p>
+                    <p className="text-red-500 text-sm mt-1 flex items-center">
+                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                      {validationErrors.file}
+                    </p>
                   )}
                 </div>
                   <div className="group">                  <label htmlFor="phone" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
@@ -1111,8 +1126,9 @@ export default function Contact() {
                       </svg>
                     </span>
                   </label>
-                  <div className="relative">                    <input
-                      type="text"
+                  <div className="relative">
+                    <input
+                      type="tel"
                       id="phone"
                       name="phone"
                       value={formData.phone}
@@ -1126,7 +1142,9 @@ export default function Contact() {
                           ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
                           : 'border-border focus:ring-primary/30 focus:border-primary'
                       }`}
-                      placeholder="+254712345678"
+                      placeholder="e.g. +254712345678"
+                      aria-describedby="phoneHelp"
+                      autoComplete="tel"
                     />
                     <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${
                       validationErrors.phone && fieldTouched.phone
@@ -1136,10 +1154,9 @@ export default function Contact() {
                         : 'text-muted-foreground peer-focus:text-primary'
                     }`}>
                       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm10-10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
                       </svg>
                     </span>
-                    {/* Validation indicator */}
                     {fieldTouched.phone && (
                       <span className="absolute right-3 top-1/2 -translate-y-1/2">
                         {validationErrors.phone ? (
@@ -1149,13 +1166,9 @@ export default function Contact() {
                         ) : null}
                       </span>
                     )}
-                    {!validationErrors.phone && formData.phone && fieldTouched.phone && (
-                      <p className="text-green-600 text-xs mt-1 flex items-center">
-                        <FaCheck className="w-3 h-3 mr-1" /> Looks good!
-                      </p>
-                    )}
                   </div>
-                  {fieldTouched.phone && validationErrors.phone && (
+                  <div id="phoneHelp" className="text-xs text-muted-foreground mt-1">International format, e.g. +254712345678</div>
+                  {validationErrors.phone && fieldTouched.phone && (
                     <p className="text-red-500 text-sm mt-1 flex items-center">
                       <FaExclamationTriangle className="w-3 h-3 mr-1" />
                       {validationErrors.phone}
