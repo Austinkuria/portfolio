@@ -714,9 +714,10 @@ export default function Contact() {
                   )}
                 </div>
                 
-                <div className="group">                  <label htmlFor="email" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
-                    Your Email
-                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Enter a valid email address for communication. This will be used for project updates and correspondence.">
+                <div className="group">
+                  <label htmlFor="phone" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                    Phone Number
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Please enter your phone number in international format (e.g. +254712345678)">
                       <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
@@ -724,11 +725,220 @@ export default function Contact() {
                   </label>
                   <div className="relative">
                     <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
                       onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all peer pl-10 ${
+                        validationErrors.phone && fieldTouched.phone
+                          ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
+                          : validationErrors.phone === '' && formData.phone && fieldTouched.phone
+                          ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                          : 'border-border focus:ring-primary/30 focus:border-primary'
+                      }`}
+                      placeholder="e.g. +254712345678"
+                    />
+                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${
+                      validationErrors.phone && fieldTouched.phone
+                        ? 'text-red-500'
+                        : validationErrors.phone === '' && formData.phone && fieldTouched.phone
+                        ? 'text-green-500'
+                        : 'text-muted-foreground peer-focus:text-primary'
+                    }`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm10-10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                      </svg>
+                    </span>
+                    {/* Validation indicator */}
+                    {fieldTouched.phone && (
+                      <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                        {validationErrors.phone ? (
+                          <FaExclamationTriangle className="text-red-500 w-4 h-4" />
+                        ) : formData.phone ? (
+                          <FaCheck className="text-green-500 w-4 h-4" />
+                        ) : null}
+                      </span>
+                    )}
+                  </div>
+                  {validationErrors.phone && fieldTouched.phone && (
+                    <p className="text-red-500 text-sm mt-1 flex items-center">
+                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                      {validationErrors.phone}
+                    </p>
+                  )}
+                </div>
+
+                <div className="group">
+                  <label htmlFor="preferredContactMethod" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                    Preferred Contact Method
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="How would you prefer to be contacted?">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="preferredContactMethod"
+                      name="preferredContactMethod"
+                      value={formData.preferredContactMethod}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
+                        validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
+                          ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
+                          : validationErrors.preferredContactMethod === '' && formData.preferredContactMethod && fieldTouched.preferredContactMethod
+                          ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                          : 'border-border focus:ring-primary/30 focus:border-primary'
+                      }`}
+                    >
+                      <option value="">Select a contact method...</option>
+                      <option value="email">Email</option>
+                      <option value="phone">Phone</option>
+                      <option value="whatsapp">WhatsApp</option>
+                    </select>
+                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
+                      validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
+                        ? 'text-red-500'
+                        : validationErrors.preferredContactMethod === '' && formData.preferredContactMethod && fieldTouched.preferredContactMethod
+                        ? 'text-green-500'
+                        : 'text-muted-foreground'
+                    }`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                    </span>
+                    {/* Dropdown arrow */}
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                    {/* Validation indicator */}
+                    {fieldTouched.preferredContactMethod && (
+                      <span className="absolute right-10 top-1/2 -translate-y-1/2">
+                        {validationErrors.preferredContactMethod ? (
+                          <FaExclamationTriangle className="text-red-500 w-4 h-4" />
+                        ) : formData.preferredContactMethod ? (
+                          <FaCheck className="text-green-500 w-4 h-4" />
+                        ) : null}
+                      </span>
+                    )}
+                  </div>
+                  {validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod && (
+                    <p className="text-red-500 text-sm mt-1 flex items-center">
+                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                      {validationErrors.preferredContactMethod}
+                    </p>
+                  )}
+                </div>
+
+                <div className="group">
+                  <label htmlFor="budgetRange" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                    Budget Range
+                    <span className="ml-1 text-muted-foreground cursor-pointer" title="Select your estimated budget for the project">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                  </label>
+                  <div className="relative">
+                    <select
+                      id="budgetRange"
+                      name="budgetRange"
+                      value={formData.budgetRange}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      required
+                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
+                        validationErrors.budgetRange && fieldTouched.budgetRange
+                          ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
+                          : validationErrors.budgetRange === '' && formData.budgetRange && fieldTouched.budgetRange
+                          ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                          : 'border-border focus:ring-primary/30 focus:border-primary'
+                      }`}
+                    >
+                      <option value="">Select a budget range...</option>
+                      <option value="under-500">Under $500</option>
+                      <option value="500-1000">$500 - $1,000</option>
+                      <option value="1000-2500">$1,000 - $2,500</option>
+                      <option value="2500-5000">$2,500 - $5,000</option>
+                      <option value="over-5000">Over $5,000</option>
+                    </select>
+                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
+                      validationErrors.budgetRange && fieldTouched.budgetRange
+                        ? 'text-red-500'
+                        : validationErrors.budgetRange === '' && formData.budgetRange && fieldTouched.budgetRange
+                        ? 'text-green-500'
+                        : 'text-muted-foreground'
+                    }`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                      </svg>
+                    </span>
+                    {/* Dropdown arrow */}
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                      <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </span>
+                    {/* Validation indicator */}
+                    {fieldTouched.budgetRange && (
+                      <span className="absolute right-10 top-1/2 -translate-y-1/2">
+                        {validationErrors.budgetRange ? (
+                          <FaExclamationTriangle className="text-red-500 w-4 h-4" />
+                        ) : formData.budgetRange ? (
+                          <FaCheck className="text-green-500 w-4 h-4" />
+                        ) : null}
+                      </span>
+                    )}
+                  </div>
+                  {validationErrors.budgetRange && fieldTouched.budgetRange && (
+                    <p className="text-red-500 text-sm mt-1 flex items-center">
+                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                      {validationErrors.budgetRange}
+                    </p>
+                  )}
+                </div>
+
+                {/* Submit Button and Status */}
+                <div className="mt-8 flex flex-col gap-2">
+                  <button
+                    type="submit"
+                    className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+                    disabled={isSubmitting || !isFormValid()}
+                    aria-busy={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <span className="animate-spin inline-block w-5 h-5 border-2 border-t-2 border-primary-foreground border-t-transparent rounded-full"></span>
+                        Sending...
+                      </span>
+                    ) : (
+                      <>
+                        <FaPaperPlane className="mr-2" />
+                        Send Message
+                      </>
+                    )}
+                  </button>
+                  {/* Status Message (aria-live) */}
+                  <div aria-live="polite" className="text-sm mt-2 min-h-[24px]">
+                    {submitStatus === 'success' && (
+                      <span className="text-green-600">Message sent successfully!</span>
+                    )}
+                    {submitStatus === 'error' && errorMessage && (
+                      <span className="text-red-600">{errorMessage}</span>
+                    )}
+                    {attachmentWarning && (
+                      <span className="text-yellow-600">{attachmentWarning}</span>
+                    )}
+                  </div>
+                </div>
+              </form>
                       onBlur={handleBlur}
                       required
                       className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all peer pl-10 ${
