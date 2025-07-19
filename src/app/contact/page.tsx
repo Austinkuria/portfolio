@@ -359,7 +359,7 @@ export default function Contact() {
     <>
       <RouteOptimizer pageName="contact" />
       <section id="contact" className="py-20 w-full">
-      <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4">
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1606,12 +1606,13 @@ export default function Contact() {
                         </div>
                       </>
                     )}
+
                   </MotionDiv>
                 )}
               </form>
-            </div>          </m.div>
+            </div>
+          </m.div>
         </div>
-
         {/* FAQ Section */}
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
@@ -1626,7 +1627,6 @@ export default function Contact() {
               Common questions about my services, process, and collaboration approach
             </p>
           </div>
-
           <div className="max-w-3xl mx-auto space-y-4">
             {faqData.map((faq, index) => (
               <div key={index} className="bg-card rounded-lg border border-border/30 overflow-hidden">
@@ -1658,9 +1658,8 @@ export default function Contact() {
             ))}
           </div>
         </MotionDiv>
-
       </div>
     </section>
-    </>
+  </> 
   );
 }
