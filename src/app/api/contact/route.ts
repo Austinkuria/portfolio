@@ -192,7 +192,7 @@ export async function POST(request: NextRequest) {
       const whatsappMessage = encodeURIComponent(
         `Hi ${personalInfo.name.first}! I tried to send a message through your portfolio contact form but it was flagged by your security filters.\n\nMy email: ${email}\nReference ID: ${referenceId}\n\nCould you please help me resolve this issue? Thank you!`
       );
-      const whatsappUrl = `${socialLinks.whatsapp}&text=${whatsappMessage}`;
+      const whatsappUrl = `${socialLinks.whatsapp}?text=${whatsappMessage}`;
 
       const linkedinMessage = encodeURIComponent(
         `Hi ${personalInfo.name.first}! I tried to send a message through your portfolio contact form but it was flagged by your security filters.\n\nMy email: ${email}\nReference ID: ${referenceId}\n\nCould you please help me resolve this issue? Thank you!`
