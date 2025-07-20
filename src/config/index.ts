@@ -15,9 +15,9 @@ export const personalInfo = {
     tagline: 'Building scalable solutions with code & creativity',
     description: 'Full Stack Developer with a passion for building scalable web applications that solve real-world problems',
     location: 'Nairobi, Kenya',
-    email: 'kuriaaustin125@gmail.com',
-    phone: '+254797561978',
-    whatsappNumber: '254797561978', // Without + for WhatsApp URLs
+    email: process.env.NEXT_PUBLIC_EMAIL || '',
+    phone: process.env.NEXT_PUBLIC_PHONE || '',
+    whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP || '', // Without + for WhatsApp URLs
     image: '/images/Passport_Photo_AustinMaina.jpg',
     logo: '/images/am-logo.jpg',
     initials: 'AM',
