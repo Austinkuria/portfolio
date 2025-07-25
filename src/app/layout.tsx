@@ -50,6 +50,7 @@ export default function RootLayout({
             }, true);
           `
         }} />
+        <link rel="icon" href="/images/am-logo.jpg" type="image/jpeg" />
       </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         {/* Google Tag Manager (noscript) */}
