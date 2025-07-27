@@ -90,7 +90,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 📈 Performance & SEO
 
-- **SEO:** Structured data, Open Graph, Twitter cards, sitemap
+- **SEO:** Structured data, Open Graph, sitemap
 - **Accessibility:** ARIA labels, keyboard navigation
 
 ---
