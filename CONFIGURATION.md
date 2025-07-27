@@ -46,7 +46,7 @@ export const projects = [
     liveDemo: 'https://project-demo.com',
     sourceCode: 'https://github.com/yourusername/project-repo',
   },
-  // ...more projects
+  // ...more of your projects
 ];
 ```
 
