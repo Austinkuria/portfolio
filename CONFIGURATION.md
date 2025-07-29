@@ -14,15 +14,23 @@ Edit your personal details and social media links in:
 **Example:**
 ```ts
 export const personalInfo = {
-  name: 'Your Name',
+  name: {
+    first: 'Austin',
+    last: 'Maina',
+    full: 'Austin Maina',
+    display: 'AustinMaina',
+  },
   title: 'Full Stack Developer',
-  location: 'Your City, Country',
-  email: 'your-email@example.com',
-  social: {
-    github: 'https://github.com/yourusername',
-    linkedin: 'https://linkedin.com/in/yourprofile',
-    // ...other links
-  }
+  location: 'Nairobi, Kenya',
+  email: process.env.NEXT_PUBLIC_EMAIL || '',
+  // ...other config
+};
+
+export const socialLinks = {
+  github: 'https://github.com/Austinkuria',
+  linkedin: 'https://www.linkedin.com/in/austin-maina/',
+  discord: 'https://discord.gg/austin.125',
+  // ...other links
 };
 ```
 
@@ -39,14 +47,18 @@ Each project can include a title, description, tech stack, image, live demo link
 ```ts
 export const projects = [
   {
-    title: 'Project Name',
-    description: 'Short description of the project.',
-    image: '/images/project-image.png',
-    tech: ['Next.js', 'TypeScript', 'Tailwind CSS'],
-    liveDemo: 'https://project-demo.com',
-    sourceCode: 'https://github.com/yourusername/project-repo',
+    id: 1,
+    title: 'Clinique Beauty E-Commerce Website',
+    description: 'A full-stack e-commerce application built with the PERN stack.',
+    problem: 'Customers needed an intuitive online shopping experience...',
+    solution: 'Developed a Next.js-based frontend with server-side rendering...',
+    techStack: ['PostgreSQL', 'Express', 'React', 'Node.js', 'M-Pesa API'],
+    metrics: ['Mobile-responsive design with 99% uptime', '...'],
+    image: '/images/clinique-beauty.png',
+    github: projectUrls.clinique.github,
+    demo: projectUrls.clinique.demo
   },
-  // ...more of your projects
+  // ...more projects
 ];
 ```
 
