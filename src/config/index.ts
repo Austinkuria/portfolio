@@ -44,6 +44,7 @@ export const socialLinks = {
     whatsapp: `https://wa.me/${personalInfo.whatsappNumber}`,
     email: `mailto:${personalInfo.email}`,
     phone: `tel:${personalInfo.phone}`,
+    calendly: 'https://calendly.com/austinmaina',
 } as const;
 
 // GitHub Usernames (for different projects)

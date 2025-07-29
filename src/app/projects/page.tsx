@@ -124,7 +124,7 @@ export default function Projects() {
 
           <div className="text-center mt-12">
             <a
-              href="https://github.com/austinmaina"
+              href="https://github.com/Austinkuria"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300"

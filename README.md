@@ -45,7 +45,7 @@ All personal information, project details, and settings are managed centrally in
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/portfolio.git
+git clone https://github.com/Austinkuria/portfolio.git
 cd portfolio
 ```
 
@@ -101,8 +101,7 @@ Use the contact form or reach out via:
 - [GitHub](https://github.com/Austinkuria)
 - [LinkedIn](https://www.linkedin.com/in/austin-maina/)
 - [Discord](https://discord.gg/austin.125)
-- [WhatsApp](https://wa.me/your-number)
-- [Email](mailto:your-email@example.com)
+- [Email](contact@austinmaina.vercel.app)
 
 ---
 
