@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { m, AnimatePresence } from 'framer-motion';
+import { /* m, */ AnimatePresence } from 'framer-motion';
 import { FaReact, FaNodeJs, FaPython, FaDatabase, FaDocker, FaAws, FaGitAlt, FaHtml5, FaCss3Alt } from 'react-icons/fa';
 import { SiTypescript, SiJavascript, SiMongodb, SiPostgresql, SiTailwindcss, SiNextdotjs, SiFastapi, SiSupabase, SiGraphql, SiJenkins } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
-import { MotionDiv, MotionP } from '@/lib/motion';
+import { MotionDiv /*, MotionP*/ } from '@/lib/motion';
 
 type SkillCategory = 'frontend' | 'backend' | 'database' | 'devops';
 
@@ -18,7 +18,7 @@ type Skill = {
 };
 
 const skills: Skill[] = [
-  { name: 'React', icon: <FaReact />, category: 'frontend', proficiency: 9, experience: '3+ years' },
+  { name: 'React', icon: <FaReact />, category: 'frontend', proficiency: 7, experience: '3+ years' },
   { name: 'TypeScript', icon: <SiTypescript />, category: 'frontend', proficiency: 8, experience: '2+ years' },
   { name: 'JavaScript', icon: <SiJavascript />, category: 'frontend', proficiency: 9, experience: '4+ years' },
   { name: 'Next.js', icon: <SiNextdotjs />, category: 'frontend', proficiency: 8, experience: '2+ years' },
@@ -41,7 +41,7 @@ const skills: Skill[] = [
 
 export default function Skills() {
   const [activeCategory, setActiveCategory] = useState<SkillCategory | 'all'>('all');
-  const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
+  // const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
 
   const categories: { value: SkillCategory | 'all'; label: string }[] = [
     { value: 'all', label: 'All Skills' },
@@ -93,26 +93,28 @@ export default function Skills() {
           ))}
         </MotionDiv>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
-          <AnimatePresence>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 relative">
+          <AnimatePresence mode="popLayout">
             {filteredSkills.map((skill) => (
               <MotionDiv
                 key={skill.name}
-                layout
+                // layout (removing to prevent layout shifts)
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
                 transition={{ duration: 0.3 }}
-                className="bg-card p-4 rounded-lg shadow-md flex flex-col items-center justify-center gap-3 hover:shadow-lg transition-shadow"
-                onMouseEnter={() => setHoveredSkill(skill.name)}
-                onMouseLeave={() => setHoveredSkill(null)}
-                whileHover={{ y: -5 }}
+                className="bg-card p-4 rounded-lg shadow-md flex flex-col items-center justify-center gap-3 hover:shadow-lg transition-shadow relative"
+                // onMouseEnter={() => setHoveredSkill(skill.name)}
+                // onMouseLeave={() => setHoveredSkill(null)}
+                whileHover={{ transform: 'translateY(-5px)' }}
+                style={{ transform: 'translateY(0)', willChange: 'transform' }}
               >
                 <div className="text-4xl mb-3 text-primary group-hover:scale-110 transition-transform duration-300">
                   {skill.icon}
                 </div>
                 <h3 className="font-medium text-center">{skill.name}</h3>
                 
+                {/* Proficiency indicator commented out
                 {hoveredSkill === skill.name && (
                   <m.div
                     initial={{ opacity: 0 }}
@@ -130,7 +132,9 @@ export default function Skills() {
                     </div>
                   </m.div>
                 )}
+                */}
                 
+                {/* Experience indicator commented out
                 {hoveredSkill === skill.name && (
                   <MotionP
                     initial={{ opacity: 0 }}
@@ -140,6 +144,7 @@ export default function Skills() {
                     {skill.experience}
                   </MotionP>
                 )}
+                */}
               </MotionDiv>
             ))}
           </AnimatePresence>
