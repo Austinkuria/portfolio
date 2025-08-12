@@ -21,7 +21,7 @@ export const personalInfo = {
   social: {
     github: 'https://github.com/yourusername',
     linkedin: 'https://linkedin.com/in/yourprofile',
-    // ...other links
+    // ....etc
   }
 };
 ```
@@ -46,7 +46,7 @@ export const projects = [
     liveDemo: 'https://project-demo.com',
     sourceCode: 'https://github.com/yourusername/project-repo',
   },
-  // ...more of your projects
+  // ...etc
 ];
 ```
 
