@@ -5,6 +5,7 @@ import HomeProjectsSection from '@/components/sections/HomeProjectsSection';
 import HomeSkillsSection from '@/components/sections/HomeSkillsSection';
 import HomeAboutSection from '@/components/sections/HomeAboutSection';
 import { useSafeRender, setupHydrationFallback, forceRouteRehydration } from '@/lib/renderSafety';
+import { personalInfo } from '@/config';
 
 // Simple fallback component to show when content is loading
 const SectionFallback = () => {
@@ -26,7 +27,7 @@ export default function HomeContent() {
     const imagesToPreload = [
       '/images/clinique-beauty.png',
       '/images/attendance-system.png',
-      '/images/Passport_Photo_AustinMaina.jpg',
+      personalInfo.image,
     ];
 
     imagesToPreload.forEach((src) => {

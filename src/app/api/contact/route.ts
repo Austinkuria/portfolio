@@ -304,7 +304,7 @@ You can also click the WhatsApp button below to send me a quick message with you
               <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <a href="mailto:${email}?subject=Re:%20Your%20Portfolio%20Inquiry&body=Hi%20${name},%0D%0A%0D%0AThank%20you%20for%20reaching%20out!" 
                    style="background: #667eea; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">📧 Reply</a>
-                <a href="https://calendly.com/austinmaina" target="_blank"
+                <a href="${socialLinks.calendly}" target="_blank"
                    style="background: #22c55e; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">📅 Schedule Call</a>
                 <a href="${socialLinks.linkedin}" target="_blank"
                    style="background: #0077b5; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">💼 LinkedIn</a>              </div>
@@ -589,7 +589,7 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <h4 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">📞 Other Ways to Reach Me</h4>
                   <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
                     <a href="${socialLinks.linkedin}" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: 500;">💼 LinkedIn</a>
-                    <a href="https://calendly.com/austinmaina" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500;">📅 Schedule Call</a>
+                    <a href="${socialLinks.calendly}" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500;">📅 Schedule Call</a>
                     <a href="${socialLinks.github}" target="_blank" style="color: #1f2937; text-decoration: none; font-weight: 500;">💻 GitHub</a>
                   </div>
                 </div>

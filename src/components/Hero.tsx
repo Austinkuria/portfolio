@@ -127,7 +127,7 @@ export default function Hero() {
                 View Projects
               </CustomLink>
               <CustomLink 
-                href="https://drive.google.com/file/d/1kVVnj5fCLo0NOxDDC8o1HqVurEvqIpJn/view?usp=drive_link" 
+                href={socialLinks.resume} 
                 target="_blank"
                 className="bg-background text-foreground hover:bg-secondary/20 border border-border px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1"
               >
