@@ -8,6 +8,7 @@ import CanonicalURL from '@/components/CanonicalURL';
 import ProjectSchema from '@/components/ProjectSchema';
 import RouteOptimizer from '@/components/RouteOptimizer';
 import { Project, projects } from '@/data/projects';
+import { socialLinks } from '@/config';
 
 export default function Projects() {
   const [activeProject, setActiveProject] = useState<number | null>(null);
@@ -124,7 +125,7 @@ export default function Projects() {
 
           <div className="text-center mt-12">
             <a
-              href="https://github.com/austinmaina"
+              href={socialLinks.github}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300"
