@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { /* m, */ AnimatePresence } from 'framer-motion';
 import { FaReact, FaNodeJs, FaPython, FaDatabase, FaDocker, FaAws, FaGitAlt, FaHtml5, FaCss3Alt } from 'react-icons/fa';
-import { SiTypescript, SiJavascript, SiMongodb, SiPostgresql, SiTailwindcss, SiNextdotjs, SiFastapi, SiSupabase, SiGraphql, SiJenkins } from 'react-icons/si';
+import { SiTypescript, SiJavascript, SiMongodb, SiPostgresql, SiTailwindcss, SiNextdotjs, SiFastapi, SiSupabase, SiGraphql, SiJenkins, SiFlask, SiDjango } from 'react-icons/si';
 import { TbApi } from 'react-icons/tb';
 import { MotionDiv /*, MotionP*/ } from '@/lib/motion';
 
@@ -13,8 +13,8 @@ type Skill = {
   name: string;
   icon: React.ReactNode;
   category: SkillCategory;
-  proficiency: number; // 1-10
-  experience?: string; // Added experience property
+  proficiency: number;
+  experience?: string;
 };
 
 const skills: Skill[] = [
@@ -25,6 +25,8 @@ const skills: Skill[] = [
   { name: 'Tailwind CSS', icon: <SiTailwindcss />, category: 'frontend', proficiency: 9, experience: '3+ years' },
   { name: 'Node.js', icon: <FaNodeJs />, category: 'backend', proficiency: 8, experience: '3+ years' },
   { name: 'Python', icon: <FaPython />, category: 'backend', proficiency: 7, experience: '2+ years' },
+  { name: 'Django', icon: <SiDjango />, category: 'backend', proficiency: 7, experience: '2+ years' },
+  { name: 'Flask', icon: <SiFlask />, category: 'backend', proficiency: 6, experience: '1+ year' },
   // { name: 'FastAPI', icon: <SiFastapi />, category: 'backend', proficiency: 7, experience: '1+ year' },
   { name: 'MongoDB', icon: <SiMongodb />, category: 'database', proficiency: 8, experience: '2+ years' },
   { name: 'PostgreSQL', icon: <SiPostgresql />, category: 'database', proficiency: 7, experience: '2+ years' },
