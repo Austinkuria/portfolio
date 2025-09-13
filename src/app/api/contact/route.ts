@@ -640,7 +640,7 @@ You can also click the WhatsApp button below to send me a quick message with you
                 <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">🚀 While You Wait</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px;">
                   <a href="${siteConfig.url}/projects" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px;">🚀 View Projects</a>
-                  <a href="${siteConfig.url}/skills" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px;">💻 My Skills</a>
+                  <a href="${siteConfig.url}/skills" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px; margin-bottom: 10px 10px;">💻 My Skills</a>
                   <a href="${siteConfig.url}/about" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px;">👨‍💻 About Me</a>
                 </div>
                 
