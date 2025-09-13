@@ -145,15 +145,26 @@ export const seoConfig = {
 // Email Configuration
 export const emailConfig = {
     from: {
-        default: process.env.FROM_EMAIL || 'onboarding@resend.dev',
+        default: process.env.FROM_EMAIL || 'onboarding@resend.dev', // For notifications to you
+        notification: 'onboarding@resend.dev', // For client messages to you
+        autoReply: process.env.FROM_EMAIL || 'onboarding@resend.dev', // Will be overridden by Gmail
         name: personalInfo.name.full,
-        noreply: process.env.FROM_EMAIL || `noreply@${siteConfig.domain}`,
+        noreply: process.env.FROM_EMAIL || 'kuriaaustin125@gmail.com',
     },
     to: {
         default: process.env.TO_EMAIL || personalInfo.email,
         support: personalInfo.email,
     },
     apiKey: process.env.RESEND_API_KEY || '',
+    // Gmail SMTP Configuration
+    gmail: {
+        user: process.env.GMAIL_USER || '',
+        password: process.env.GMAIL_APP_PASSWORD || '',
+        service: 'gmail',
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // true for 465, false for other ports
+    },
     templates: {
         contactForm: {
             subject: `New contact form submission from ${siteConfig.name}`,
@@ -194,8 +205,15 @@ export const contactConfig = {
         'click here now'
     ],
     suspiciousEmailDomains: [
+        // Known temporary/disposable email services
         '10minutemail.com', 'guerrillamail.com', 'mailinator.com', 'tempmail.org',
-        'throwaway.email', 'temp-mail.org', 'sharklasers.com', 'guerrillamailblock.com'
+        'throwaway.email', 'temp-mail.org', 'sharklasers.com', 'guerrillamailblock.com',
+        'yopmail.com', 'maildrop.cc', 'getnada.com', 'tempail.com',
+
+        // Obvious testing domains
+        'example.com', 'example.org', 'example.net', 'test.com', 'test.org',
+        'fake.com', 'dummy.com', 'sample.com', 'placeholder.com', 'localhost.com',
+        'invalid.com', 'notreal.com', 'faker.com', 'testing.com'
     ]
 } as const;
 

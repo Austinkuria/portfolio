@@ -1,9 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import { personalInfo, socialLinks, contactConfig, siteConfig, emailConfig, appConfig } from '@/config';
 
-// Initialize Resend
+// Initialize Resend for notification emails
 const resend = new Resend(emailConfig.apiKey);
+
+// Initialize Gmail SMTP transporter for auto-reply emails
+const gmailTransporter = nodemailer.createTransport({
+  service: emailConfig.gmail.service,
+  host: emailConfig.gmail.host,
+  port: emailConfig.gmail.port,
+  secure: emailConfig.gmail.secure,
+  auth: {
+    user: emailConfig.gmail.user,
+    pass: emailConfig.gmail.password,
+  },
+});
 
 // Simple in-memory rate limiter (for basic protection)
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -34,8 +47,8 @@ function sanitizeInput(input: string): string {
 }
 
 // Refined spam detection function
-function detectSpam(name: string, email: string, subject: string, category: string, message: string, phone?: string, preferredContactMethod?: string, budgetRange?: string): { isSpam: boolean; reason: string } {
-  const combinedText = `${name} ${email} ${subject} ${category} ${message} ${phone || ''} ${preferredContactMethod || ''} ${budgetRange || ''}`.toLowerCase();
+function detectSpam(name: string, email: string, subject: string, message: string, category?: string, phone?: string, preferredContactMethod?: string, budgetRange?: string): { isSpam: boolean; reason: string } {
+  const combinedText = `${name} ${email} ${subject} ${message} ${category || ''} ${phone || ''} ${preferredContactMethod || ''} ${budgetRange || ''}`.toLowerCase();
 
   // Use spam keywords from configuration
   const spamKeywords = contactConfig.spamKeywords;
@@ -78,6 +91,18 @@ function detectSpam(name: string, email: string, subject: string, category: stri
   return { isSpam: false, reason: '' };
 }
 
+// Helper function to convert budget range codes to readable text
+function getBudgetRangeText(budgetRange: string): string {
+  switch (budgetRange) {
+    case 'under-500': return 'Under Ksh 15,000';
+    case '500-1000': return 'Ksh 15,000 - Ksh 30,000';
+    case '1000-2500': return 'Ksh 30,000 - Ksh 60,000';
+    case '2500-5000': return 'Ksh 60,000 - Ksh 100,000';
+    case 'over-5000': return 'Over Ksh 100,000';
+    default: return 'Not specified';
+  }
+}
+
 // Test endpoint to verify API routes are working
 export async function GET() {
   return NextResponse.json({
@@ -96,7 +121,9 @@ export async function POST(request: NextRequest) {
   console.log('Contact API called at:', new Date().toISOString());
   console.log('Environment check:', {
     hasResendKey: !!emailConfig.apiKey,
-    fromEmail: emailConfig.from.default,
+    notificationFromEmail: emailConfig.from.notification,
+    autoReplyFromEmail: emailConfig.gmail.user + ' (via Gmail SMTP)',
+    hasGmailPassword: !!emailConfig.gmail.password,
     toEmail: emailConfig.to.default
   });
 
@@ -119,8 +146,8 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     let { name, email, subject, category, message, phone, preferredContactMethod, budgetRange } = body;
 
-    // Validate required fields
-    if (!name || !email || !subject || !category || !message || !phone || !preferredContactMethod || !budgetRange) {
+    // Validate required fields (only essential fields are required now)
+    if (!name || !email || !subject || !message) {
       return NextResponse.json(
         {
           error: 'Required fields are missing. Please complete all required fields.',
@@ -129,15 +156,17 @@ export async function POST(request: NextRequest) {
         { status: 400 });
     }
 
-    // Sanitize inputs
+    // Sanitize inputs (essential fields)
     name = sanitizeInput(name);
     email = sanitizeInput(email);
     subject = sanitizeInput(subject);
-    category = sanitizeInput(category);
     message = sanitizeInput(message);
-    phone = sanitizeInput(phone);
-    preferredContactMethod = sanitizeInput(preferredContactMethod);
-    budgetRange = sanitizeInput(budgetRange);
+
+    // Sanitize optional fields if provided
+    category = category ? sanitizeInput(category) : '';
+    phone = phone ? sanitizeInput(phone) : '';
+    preferredContactMethod = preferredContactMethod ? sanitizeInput(preferredContactMethod) : '';
+    budgetRange = budgetRange ? sanitizeInput(budgetRange) : '';
 
     // Validate field lengths
     if (name.length < 2 || name.length > 100) {
@@ -173,7 +202,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Enhanced spam detection system
-    const spamDetectionResult = detectSpam(name, email, subject, category, message, phone, preferredContactMethod, budgetRange);
+    const spamDetectionResult = detectSpam(name, email, subject, message, category, phone, preferredContactMethod, budgetRange);
     if (spamDetectionResult.isSpam) {
       console.log('Spam detected:', spamDetectionResult.reason);
 
@@ -285,7 +314,7 @@ You can also click the WhatsApp button below to send me a quick message with you
     }
 
     const notificationEmail = {
-      from: emailConfig.from.default,
+      from: emailConfig.from.notification, // Use onboarding@resend.dev for notifications
       to: emailConfig.to.default,
       subject: `${urgencyScore === 'HIGH' ? '🚨 URGENT' : '🚀'} New Portfolio Contact: ${name} - ${subject}`,
       attachments: attachments,
@@ -348,41 +377,49 @@ You can also click the WhatsApp button below to send me a quick message with you
                   </p>
                 </div>
                   
+                ${phone ? `
                 <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Phone Number</strong>
-                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${body.phone || 'Not provided'}</p>
+                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${phone}</p>
                 </div>
+                ` : ''}
                   
+                ${preferredContactMethod ? `
                 <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Preferred Contact Method</strong>
-                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${body.preferredContactMethod ? body.preferredContactMethod.charAt(0).toUpperCase() + body.preferredContactMethod.slice(1) : 'Not specified'}</p>
+                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${preferredContactMethod.charAt(0).toUpperCase() + preferredContactMethod.slice(1)}</p>
                 </div>
+                ` : ''}
 
                 <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Subject</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${subject}</p>
                 </div>
 
+                ${category ? `
                 <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Project Category</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
                 </div>
+                ` : ''}
                   
-                  <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                ${budgetRange ? `
+                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
                   <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Budget Range</strong>
                   <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">
                     ${(() => {
-          switch (body.budgetRange) {
-            case 'under-500': return 'Under Ksh 15,000';
-            case '500-1000': return 'Ksh 15,000 - Ksh 30,000';
-            case '1000-2500': return 'Ksh 30,000 - Ksh 60,000';
-            case '2500-5000': return 'Ksh 60,000 - Ksh 100,000';
-            case 'over-5000': return 'Over Ksh 100,000';
-            default: return 'Not specified';
-          }
-        })()}
+            switch (budgetRange) {
+              case 'under-500': return 'Under Ksh 15,000';
+              case '500-1000': return 'Ksh 15,000 - Ksh 30,000';
+              case '1000-2500': return 'Ksh 30,000 - Ksh 60,000';
+              case '2500-5000': return 'Ksh 60,000 - Ksh 100,000';
+              case 'over-5000': return 'Over Ksh 100,000';
+              default: return 'Not specified';
+            }
+          })()}
                   </p>
                 </div>
+                ` : ''}
                   
                   ${body.fileData ? `
                 <div style="background: #eef2ff; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #6366f1;">
@@ -449,9 +486,9 @@ You can also click the WhatsApp button below to send me a quick message with you
           </div>
         </div>
       `,
-    };        // Enhanced auto-reply email to the sender
-    const autoReplyEmail = {
-      from: emailConfig.from.default,
+    };        // Enhanced auto-reply email to the sender (for nodemailer/Gmail)
+    const autoReplyEmailGmail = {
+      from: `${personalInfo.name.full} <${emailConfig.gmail.user}>`, // Your Gmail address
       to: email,
       subject: `✨ Thanks for reaching out, ${name}! - ${personalInfo.name.full}`,
       html: `
@@ -497,19 +534,8 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <p style="margin: 0; color: #6b7280; font-size: 14px;"><strong>From:</strong> ${name}</p>
                   <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Email:</strong> ${email}</p>
                   <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Subject:</strong> ${subject}</p>
-                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Project Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
-                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Budget Range:</strong> 
-                    ${(() => {
-          switch (body.budgetRange) {
-            case 'under-500': return 'Under Ksh 15,000';
-            case '500-1000': return 'Ksh 15,000 - Ksh 30,000';
-            case '1000-2500': return 'Ksh 30,000 - Ksh 60,000';
-            case '2500-5000': return 'Ksh 60,000 - Ksh 100,000';
-            case 'over-5000': return 'Over Ksh 100,000';
-            default: return 'Not specified';
-          }
-        })()}
-                  </p>
+                  ${category ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Project Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>` : ''}
+                  ${budgetRange ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Budget Range:</strong> ${getBudgetRangeText(budgetRange)}</p>` : ''}
                   ${body.fileData ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>File:</strong> <span style="color: #4f46e5;">${body.fileName}</span></p>` : ''}
                   <p style="margin: 15px 0 0 0; color: #374151; font-style: italic; line-height: 1.5;">"${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"</p>
                 </div>
@@ -616,9 +642,13 @@ You can also click the WhatsApp button below to send me a quick message with you
       `,
     };        // Send both emails with improved error handling
     try {
+      console.log('Attempting to send emails...');
+      console.log('Notification email to:', emailConfig.to.default, 'from:', emailConfig.from.notification);
+      console.log('Auto-reply email to:', email, 'from:', emailConfig.gmail.user, '(via Gmail SMTP)');
+
       const [notificationResult, autoReplyResult] = await Promise.allSettled([
         resend.emails.send(notificationEmail),
-        resend.emails.send(autoReplyEmail),
+        gmailTransporter.sendMail(autoReplyEmailGmail),
       ]);      // Check if notification email failed
       if (notificationResult.status === 'rejected') {
         console.error('Notification email failed:', notificationResult.reason);
@@ -668,7 +698,16 @@ You can also click the WhatsApp button below to send me a quick message with you
 
       // Check if auto-reply failed (less critical)
       if (autoReplyResult.status === 'rejected') {
-        console.error('Auto-reply email failed:', autoReplyResult.reason);        // Still return success since notification was sent
+        console.error('Auto-reply email (Gmail) failed:', autoReplyResult.reason);
+        console.error('Auto-reply details:', {
+          to: email,
+          from: emailConfig.gmail.user,
+          subject: autoReplyEmailGmail.subject,
+          timestamp: new Date().toISOString()
+        });
+        // Still return success since notification was sent
+      } else {
+        console.log('Auto-reply email sent successfully via Gmail:', autoReplyResult.value.messageId);
       }
 
       // Build response data
@@ -687,7 +726,7 @@ You can also click the WhatsApp button below to send me a quick message with you
         message: 'Message sent successfully! You should receive a confirmation email shortly.',
         data: {
           notificationId: notificationResult.status === 'fulfilled' ? (notificationResult.value.data?.id || null) : null,
-          autoReplyId: autoReplyResult.status === 'fulfilled' ? (autoReplyResult.value.data?.id || null) : null,
+          autoReplyId: autoReplyResult.status === 'fulfilled' ? (autoReplyResult.value.messageId || null) : null,
           timestamp: new Date().toISOString(),
         }
       };

@@ -1,8 +1,8 @@
 'use client';
 
-import { personalInfo, socialLinks, contactConfig, siteConfig, errorMessages } from '@/config';
+import { personalInfo, socialLinks, contactConfig, errorMessages } from '@/config';
 
-import { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { m } from 'framer-motion';
 import { FaEnvelope, FaMapMarkerAlt, FaCheck, FaExclamationTriangle, FaLinkedin, FaPaperPlane, FaWhatsapp, FaGithub, FaPhone, FaChevronDown, FaCode, FaPalette } from 'react-icons/fa';
 import { MotionDiv, MotionP } from '@/lib/motion';
@@ -29,7 +29,7 @@ export default function Contact() {
   const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
   const [attachmentWarning, setAttachmentWarning] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-  const [fileDragging, setFileDragging] = useState(false);
+  // const [fileDragging, setFileDragging] = useState(false); // Commented out - file upload disabled
 
   // FAQ Data
   const faqData = [
@@ -97,6 +97,35 @@ export default function Contact() {
     return '';
   };
 
+  // Simplified email validation - pattern-based only
+  const validateEmailPattern = useCallback((email: string): { valid: boolean; reason?: string } => {
+    const emailLower = email.toLowerCase();
+    const emailParts = emailLower.split('@');
+    const localPart = emailParts[0] || '';
+    
+    // Block obvious fake patterns
+    if (
+      emailLower.includes('test@test.') ||
+      emailLower.includes('fake@fake.') ||
+      emailLower.includes('dummy@dummy.') ||
+      emailLower.includes('sample@sample.') ||
+      emailLower === 'test@test.com' ||
+      emailLower === 'fake@fake.com' ||
+      emailLower === 'admin@admin.com' ||
+      /^(test|fake|dummy|sample)\d*@(test|fake|dummy|sample)\d*\.(com|org|net)$/.test(emailLower) ||
+      
+      // Block common test patterns that are clearly not real
+      /^(user|student|admin|testuser)\d+@/.test(emailLower) || // user123@, student5@, admin1@, testuser2@
+      /^(test|fake|dummy|sample)\d*@/.test(emailLower) // test@, test123@, fake2@, etc.
+    ) {
+      console.log('Email rejected due to obvious fake pattern:', email, 'localPart:', localPart);
+      return { valid: false, reason: 'Please use your real email address' };
+    }
+
+    // All other emails are considered valid (pattern-based validation only)
+    return { valid: true };
+  }, []);
+
   const validateEmail = (email: string): string => {
     if (!email.trim()) return 'Email is required';
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -108,11 +137,21 @@ export default function Contact() {
       emailDomain &&
       contactConfig.suspiciousEmailDomains.some((d: string) => d === emailDomain)
     ) {
+      console.log('Email rejected due to suspicious domain:', emailDomain);
       return 'Please use a valid email address';
     }
     
+    // Use pattern-based validation
+    const patternResult = validateEmailPattern(email);
+    if (!patternResult.valid) {
+      return patternResult.reason || 'Please use your real email address';
+    }
+    
+    console.log('Email validation passed for:', email);
     return '';
   };
+
+  // Debounced email verification
   const validateSubject = (subject: string): string => {
     if (!subject.trim()) return 'Subject is required';
     if (subject.length < 3) return 'Subject must be at least 3 characters';
@@ -131,8 +170,8 @@ export default function Contact() {
   };
 
   const validateCategory = (category: string): string => {
-    if (!category.trim()) return 'Please select a project category';
-    if (!Array.prototype.includes.call(contactConfig.validCategories, category)) {
+    // Category is now optional, only validate if provided
+    if (category.trim() && !Array.prototype.includes.call(contactConfig.validCategories, category)) {
       return 'Please select a valid category';
     }
     return '';
@@ -192,23 +231,19 @@ export default function Contact() {
       return 'Please select a valid budget range';
     }
     return '';
-  };  // Check if form is valid for submission
+  };
+
+  // Check if form is valid for submission (simplified - only essential fields, category is optional)
   const isFormValid = () => {
     return formData.name.trim() && 
            formData.email.trim() && 
            formData.subject.trim() &&
-           formData.category.trim() &&
            formData.message.trim() &&
            !validationErrors.name && 
            !validationErrors.email && 
            !validationErrors.subject &&
            !validationErrors.category &&
-           !validationErrors.message &&
-           !validationErrors.budgetRange &&
-           // Only validate phone if preferred contact method is phone or whatsapp
-           (formData.preferredContactMethod === 'email' || (!validationErrors.phone && formData.phone.trim())) &&
-           // validate preferredContactMethod if it is not selected
-           (formData.preferredContactMethod.trim() && !validationErrors.preferredContactMethod);
+           !validationErrors.message;
   };  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -251,51 +286,49 @@ export default function Contact() {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name } = e.target;
     setFieldTouched(prev => ({ ...prev, [name]: true }));
-  };const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {    e.preventDefault();    // Mark all fields as touched to show validation errors
-    setFieldTouched({ name: true, email: true, subject: true, category: true, message: true, phone: true, preferredContactMethod: true, budgetRange: true, file: true });
+  };const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {    
+    e.preventDefault();
     
-    // Validate all fields
+    // Mark essential fields as touched to show validation errors
+    setFieldTouched({ 
+      name: true, 
+      email: true, 
+      subject: true, 
+      category: true, 
+      message: true, 
+      phone: false, // These fields are commented out
+      preferredContactMethod: false, 
+      budgetRange: false, 
+      file: false 
+    });
+    
+    // Validate essential fields only
     const nameError = validateName(formData.name);
     const emailError = validateEmail(formData.email);
     const subjectError = validateSubject(formData.subject);
     const categoryError = validateCategory(formData.category);
     const messageError = validateMessage(formData.message);
-    const phoneError = validatePhone(formData.phone);
-    const preferredContactMethodError = validatePreferredContactMethod(formData.preferredContactMethod);
-    const budgetRangeError = validateBudgetRange(formData.budgetRange);
-      setValidationErrors({
+    
+    setValidationErrors({
       name: nameError,
       email: emailError,
       subject: subjectError,
       category: categoryError,
       message: messageError,
-      phone: phoneError,
-      preferredContactMethod: preferredContactMethodError,
-      budgetRange: budgetRangeError,
-      file: '', // File is optional, so no direct validation error to set here
+      phone: '', // Not validating since commented out
+      preferredContactMethod: '', // Not validating since commented out
+      budgetRange: '', // Not validating since commented out
+      file: '', // Not validating since commented out
     });
     
-    // If there are validation errors, don't submit
-    if (
-      nameError || 
-      emailError || 
-      subjectError || 
-      categoryError || 
-      messageError || 
-      phoneError || 
-      preferredContactMethodError || 
-      budgetRangeError
-    ) {
+    // If there are validation errors, don't submit (category is optional)
+    if (nameError || emailError || subjectError || messageError) {
       // Scroll to first error field
       const firstErrorField = 
         nameError ? 'name' : 
         emailError ? 'email' : 
         subjectError ? 'subject' : 
-        categoryError ? 'category' : 
-        messageError ? 'message' : 
-        phoneError ? 'phone' : 
-        budgetRangeError ? 'budgetRange' : 
-        'preferredContactMethod';
+        'message';
       document.getElementById(firstErrorField)?.focus();
       return;
     }
@@ -362,6 +395,8 @@ export default function Contact() {
     }
   };
 
+  // Drag handlers commented out - file upload disabled
+  /*
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setFileDragging(true);
@@ -376,9 +411,16 @@ export default function Contact() {
     e.preventDefault();
     setFileDragging(false);
     const files = e.dataTransfer.files;
-    handleFileChange({ target: { files } });
+    // Create a synthetic event-like object for the file handler
+    const syntheticEvent = {
+      target: { files }
+    } as React.ChangeEvent<HTMLInputElement>;
+    handleFileChange(syntheticEvent);
   };
+  */
 
+  // File change handler commented out - file upload disabled
+  /*
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -416,6 +458,7 @@ export default function Contact() {
       setValidationErrors((prev) => ({ ...prev, file: '' }));
     }
   };
+  */
 
   return (
     <>
@@ -889,7 +932,7 @@ export default function Contact() {
 
                 <div className="group">
                   <label htmlFor="category" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
-                    Project Category
+                    Project Category <span className="text-muted-foreground text-xs">(Optional)</span>
                   </label>
                   <div className="relative">
                     <select
@@ -1067,305 +1110,320 @@ export default function Contact() {
                     </span>
                   </div>
                 </div>
-                  <div className="group">                  <label htmlFor="file" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
-                    Upload File (Optional)
-                    <span className="ml-1 text-muted-foreground cursor-pointer group" title="Attach any relevant files like project briefs, design mockups, or detailed requirements (PDF, DOC, DOCX, PNG, JPG - Max 10MB).">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </span>
-                  </label>
-                  <div className="relative">
-                    <label
-                      htmlFor="file"
-                      className={`flex flex-col items-center justify-center w-full h-32 rounded-lg border-2 border-dashed cursor-pointer bg-background/80 hover:bg-muted/50 transition-colors ${fileDragging ? 'border-primary ring-2 ring-primary/30' : 'border-border'}`}
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                    >
-                      {formData.fileName ? (
-                        <div className="flex items-center gap-2 text-primary">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                          </svg>
-                          <span className="text-sm font-medium truncate max-w-[200px]">{formData.fileName}</span>
-                          <button
-                            type="button"
-                            className="ml-2 text-xs text-red-500 hover:underline"
-                            aria-label="Remove file"
-                            onClick={() => {
-                              setFormData((prev) => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }));
-                              setValidationErrors((prev) => ({ ...prev, file: '' }));
-                            }}
-                          >
-                            Remove
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="flex flex-col items-center justify-center pt-5 pb-6 text-muted-foreground">
-                          <svg className="w-8 h-8 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                          </svg>
-                          <p className="mb-2 text-sm">
-                            <span className="font-semibold text-primary">Click to upload</span> or drag and drop
-                          </p>
-                          <p className="text-xs text-center">(PDF, DOC, DOCX, PNG, JPG - Max 10MB)</p>
-                        </div>
-                      )}
-                      <input
-                        type="file"
-                        id="file"
-                        name="file"
-                        onChange={handleFileChange}
-                        accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
-                        className="hidden"
-                        aria-describedby="fileHelp"
-                      />
-                    </label>
-                  </div>
-                  {validationErrors.file && fieldTouched.file && (
-                    <p className="text-red-500 text-sm mt-1 flex items-center">
-                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
-                      {validationErrors.file}
-                    </p>
-                  )}
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                {/* Simplified form - phone, file upload, and budget fields commented out to reduce form complexity */}
+                {/*
                   <div className="group">
-                    <label htmlFor="phone" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
-                      Phone Number
-                      <span className="ml-1 text-muted-foreground cursor-pointer" title="Enter your phone number in international format (e.g., +254712345678). This is required if you select 'Phone' or 'WhatsApp' as your preferred contact method.">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <label htmlFor="file" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                      Upload File (Optional)
+                      <span className="ml-1 text-muted-foreground cursor-pointer group" title="Attach any relevant files like project briefs, design mockups, or detailed requirements (PDF, DOC, DOCX, PNG, JPG - Max 10MB).">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </span>
                     </label>
                     <div className="relative">
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all peer pl-10 ${
-                          validationErrors.phone && fieldTouched.phone
-                            ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
-                            : validationErrors.phone === '' && formData.phone && fieldTouched.phone
-                            ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
-                            : 'border-border focus:ring-primary/30 focus:border-primary'
-                        }`}
-                        placeholder="e.g. +254712345678"
-                        aria-describedby="phoneHelp"
-                        autoComplete="tel"
-                      />
-                      <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${
-                        validationErrors.phone && fieldTouched.phone
-                          ? 'text-red-500'
-                          : validationErrors.phone === '' && formData.phone && fieldTouched.phone
-                          ? 'text-green-500'
-                          : 'text-muted-foreground peer-focus:text-primary'
-                      }`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm10-10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-                        </svg>
-                      </span>
-                      {fieldTouched.phone && (
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2">
-                          {validationErrors.phone ? (
-                            <FaExclamationTriangle className="text-red-500 w-4 h-4" />
-                          ) : formData.phone ? (
-                            <FaCheck className="text-green-500 w-4 h-4" />
-                          ) : null}
-                        </span>
-                      )}
+                      <label
+                        htmlFor="file"
+                        className={`flex flex-col items-center justify-center w-full h-32 rounded-lg border-2 border-dashed cursor-pointer bg-background/80 hover:bg-muted/50 transition-colors ${fileDragging ? 'border-primary ring-2 ring-primary/30' : 'border-border'}`}
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                      >
+                        {formData.fileName ? (
+                          <div className="flex items-center gap-2 text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                            </svg>
+                            <span className="text-sm font-medium truncate max-w-[200px]">{formData.fileName}</span>
+                            <button
+                              type="button"
+                              className="ml-2 text-xs text-red-500 hover:underline"
+                              aria-label="Remove file"
+                              onClick={() => {
+                                setFormData((prev) => ({ ...prev, file: null, fileData: null, fileName: null, fileType: null }));
+                                setValidationErrors((prev) => ({ ...prev, file: '' }));
+                              }}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center justify-center pt-5 pb-6 text-muted-foreground">
+                            <svg className="w-8 h-8 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 0115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            <p className="mb-2 text-sm">
+                              <span className="font-semibold text-primary">Click to upload</span> or drag and drop
+                            </p>
+                            <p className="text-xs text-center">(PDF, DOC, DOCX, PNG, JPG - Max 10MB)</p>
+                          </div>
+                        )}
+                        <input
+                          type="file"
+                          id="file"
+                          name="file"
+                          onChange={handleFileChange}
+                          accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                          className="hidden"
+                          aria-describedby="fileHelp"
+                        />
+                      </label>
                     </div>
-                    <div id="phoneHelp" className="text-xs text-muted-foreground mt-1">International format, e.g. +254712345678</div>
-                    {validationErrors.phone && fieldTouched.phone && (
+                    {validationErrors.file && fieldTouched.file && (
                       <p className="text-red-500 text-sm mt-1 flex items-center">
                         <FaExclamationTriangle className="w-3 h-3 mr-1" />
-                        {validationErrors.phone}
+                        {validationErrors.file}
                       </p>
                     )}
                   </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="group">
+                      <label htmlFor="phone" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                        Phone Number
+                        <span className="ml-1 text-muted-foreground cursor-pointer" title="Enter your phone number in international format (e.g., +254712345678). This is required if you select 'Phone' or 'WhatsApp' as your preferred contact method.">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          type="tel"
+                          id="phone"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all peer pl-10 ${
+                            validationErrors.phone && fieldTouched.phone
+                              ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
+                              : validationErrors.phone === '' && formData.phone && fieldTouched.phone
+                              ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                              : 'border-border focus:ring-primary/30 focus:border-primary'
+                          }`}
+                          placeholder="e.g. +254712345678"
+                          aria-describedby="phoneHelp"
+                          autoComplete="tel"
+                        />
+                        <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${
+                          validationErrors.phone && fieldTouched.phone
+                            ? 'text-red-500'
+                            : validationErrors.phone === '' && formData.phone && fieldTouched.phone
+                            ? 'text-green-500'
+                            : 'text-muted-foreground peer-focus:text-primary'
+                        }`}>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm0 10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-2zm10-10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zm0 10a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                          </svg>
+                        </span>
+                        {fieldTouched.phone && (
+                          <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                            {validationErrors.phone ? (
+                              <FaExclamationTriangle className="text-red-500 w-4 h-4" />
+                            ) : formData.phone ? (
+                              <FaCheck className="text-green-500 w-4 h-4" />
+                            ) : null}
+                          </span>
+                        )}
+                      </div>
+                      <div id="phoneHelp" className="text-xs text-muted-foreground mt-1">International format, e.g. +254712345678</div>
+                      {validationErrors.phone && fieldTouched.phone && (
+                        <p className="text-red-500 text-sm mt-1 flex items-center">
+                          <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                          {validationErrors.phone}
+                        </p>
+                      )}
+                    </div>
+                    <div className="group">
+                      <label htmlFor="preferredContactMethod" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                        Preferred Contact Method
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="preferredContactMethod"
+                          name="preferredContactMethod"
+                          value={formData.preferredContactMethod}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
+                            validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
+                              ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
+                              : validationErrors.preferredContactMethod === '' && formData.preferredContactMethod && fieldTouched.preferredContactMethod
+                              ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                              : 'border-border focus:ring-primary/30 focus:border-primary'
+                          }`}
+                        >
+                          <option value="">Select a method...</option>
+                          <option value="email">Email</option>
+                          <option value="phone">Phone</option>
+                          <option value="whatsapp">WhatsApp</option>
+                        </select>
+                        <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
+                          validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
+                            ? 'text-red-500'
+                            : validationErrors.preferredContactMethod === '' && formData.preferredContactMethod && fieldTouched.preferredContactMethod
+                            ? 'text-green-500'
+                            : 'text-muted-foreground'
+                          }`}>
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                          </svg>
+                        </span>
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                          <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </span>
+                        {fieldTouched.preferredContactMethod && (
+                          <span className="absolute right-10 top-1/2 -translate-y-1/2">
+                            {validationErrors.preferredContactMethod ? (
+                              <FaExclamationTriangle className="text-red-500 w-4 h-4" />
+                            ) : formData.preferredContactMethod ? (
+                              <FaCheck className="text-green-500 w-4 h-4" />
+                            ) : null}
+                          </span>
+                        )}
+                      </div>
+                      {validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod && (
+                        <p className="text-red-500 text-sm mt-1 flex items-center">
+                          <FaExclamationTriangle className="w-3 h-3 mr-1" />
+                          {validationErrors.preferredContactMethod}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
                   <div className="group">
-                    <label htmlFor="preferredContactMethod" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
-                      Preferred Contact Method
+                    <label htmlFor="budgetRange" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
+                      Budget Range
+                      <span className="ml-1 text-muted-foreground cursor-pointer group" title="Select your estimated project budget in Kenyan Shillings (KSH). This helps me tailor my proposal to your needs.">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      </span>
                     </label>
                     <div className="relative">
                       <select
-                        id="preferredContactMethod"
-                        name="preferredContactMethod"
-                        value={formData.preferredContactMethod}
+                        id="budgetRange"
+                        name="budgetRange"
+                        value={formData.budgetRange}
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        required
                         className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
-                          validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
+                          validationErrors.budgetRange && fieldTouched.budgetRange
                             ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
-                            : validationErrors.preferredContactMethod === '' && formData.preferredContactMethod && fieldTouched.preferredContactMethod
+                            : validationErrors.budgetRange === '' && formData.budgetRange && fieldTouched.budgetRange
                             ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
                             : 'border-border focus:ring-primary/30 focus:border-primary'
                         }`}
                       >
-                        <option value="">Select a method...</option>
-                        <option value="email">Email</option>
-                        <option value="phone">Phone</option>
-                        <option value="whatsapp">WhatsApp</option>
+                        <option value="">Select a budget range...</option>
+                        <option value="under-500">Under Ksh 15,000</option>
+                        <option value="500-1000">Ksh 15,000 - Ksh 30,000</option>
+                        <option value="1000-2500">Ksh 30,000 - Ksh 60,000</option>
+                        <option value="2500-5000">Ksh 60,000 - Ksh 100,000</option>
+                        <option value="over-5000">Over Ksh 100,000</option>
                       </select>
                       <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
-                        validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod
+                        validationErrors.budgetRange && fieldTouched.budgetRange
                           ? 'text-red-500'
-                          : validationErrors.preferredContactMethod === '' && formData.preferredContactMethod && fieldTouched.preferredContactMethod
+                          : validationErrors.budgetRange === '' && formData.budgetRange && fieldTouched.budgetRange
                           ? 'text-green-500'
                           : 'text-muted-foreground'
-                        }`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" className="w-5 h-5">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                        </svg>
+                      }`}>
+                        <FaPalette className="w-5 h-5" />
                       </span>
-                      {/* Dropdown arrow */}
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                       </span>
-                      {/* Validation indicator */}
-                      {fieldTouched.preferredContactMethod && (
-                        <span className="absolute right-10 top-1/2 -translate-y-1/2">
-                          {validationErrors.preferredContactMethod ? (
+                      {fieldTouched.budgetRange && (
+                        <span className="absolute right-8 top-1/2 -translate-y-1/2">
+                          {validationErrors.budgetRange ? (
                             <FaExclamationTriangle className="text-red-500 w-4 h-4" />
-                          ) : formData.preferredContactMethod ? (
+                          ) : formData.budgetRange ? (
                             <FaCheck className="text-green-500 w-4 h-4" />
                           ) : null}
                         </span>
                       )}
                     </div>
-                    {validationErrors.preferredContactMethod && fieldTouched.preferredContactMethod && (
+                    {validationErrors.budgetRange && fieldTouched.budgetRange && (
                       <p className="text-red-500 text-sm mt-1 flex items-center">
                         <FaExclamationTriangle className="w-3 h-3 mr-1" />
-                        {validationErrors.preferredContactMethod}
+                        {validationErrors.budgetRange}
+                      </p>
+                    )}
+                    {!validationErrors.budgetRange && formData.budgetRange && fieldTouched.budgetRange && (
+                      <p className="text-green-600 text-xs mt-1 flex items-center">
+                        <FaCheck className="w-3 h-3 mr-1" /> Looks good!
                       </p>
                     )}
                   </div>
-                </div>
-                <div className="group">                  <label htmlFor="budgetRange" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">                    Budget Range                    <span className="ml-1 text-muted-foreground cursor-pointer group" title="Select your estimated project budget in Kenyan Shillings (KSH). This helps me tailor my proposal to your needs.">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="inline w-4 h-4 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                    </span>
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="budgetRange"
-                      name="budgetRange"
-                      value={formData.budgetRange}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      required
-                      className={`w-full px-4 py-3 rounded-lg border bg-background/80 focus:outline-none focus:ring-2 transition-all pl-10 appearance-none cursor-pointer ${
-                        validationErrors.budgetRange && fieldTouched.budgetRange
-                          ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
-                          : validationErrors.budgetRange === '' && formData.budgetRange && fieldTouched.budgetRange
-                          ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
-                          : 'border-border focus:ring-primary/30 focus:border-primary'
-                      }`}
-                    >
-                      <option value="">Select a budget range...</option>
-                      <option value="under-500">Under Ksh 15,000</option>
-                      <option value="500-1000">Ksh 15,000 - Ksh 30,000</option>
-                      <option value="1000-2500">Ksh 30,000 - Ksh 60,000</option>
-                      <option value="2500-5000">Ksh 60,000 - Ksh 100,000</option>
-                      <option value="over-5000">Over Ksh 100,000</option>
-                    </select>
-                    <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
-                      validationErrors.budgetRange && fieldTouched.budgetRange
-                        ? 'text-red-500'
-                        : validationErrors.budgetRange === '' && formData.budgetRange && fieldTouched.budgetRange
-                        ? 'text-green-500'
-                        : 'text-muted-foreground'
-                    }`}>
-                      <FaPalette className="w-5 h-5" />
-                    </span>
-                    {/* Dropdown arrow */}
-                    <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                    </span>
-                    {/* Validation indicator */}
-                    {fieldTouched.budgetRange && (
-                      <span className="absolute right-8 top-1/2 -translate-y-1/2">
-                        {validationErrors.budgetRange ? (
-                          <FaExclamationTriangle className="text-red-500 w-4 h-4" />
-                        ) : formData.budgetRange ? (
-                          <FaCheck className="text-green-500 w-4 h-4" />
-                        ) : null}
-                      </span>
-                    )}
-                  </div>
-                  {validationErrors.budgetRange && fieldTouched.budgetRange && (
-                    <p className="text-red-500 text-sm mt-1 flex items-center">
-                      <FaExclamationTriangle className="w-3 h-3 mr-1" />
-                      {validationErrors.budgetRange}
-                    </p>
-                  )}
-                  {/* Real-time feedback for valid input */}
-                  {!validationErrors.budgetRange && formData.budgetRange && fieldTouched.budgetRange && (
-                    <p className="text-green-600 text-xs mt-1 flex items-center">
-                      <FaCheck className="w-3 h-3 mr-1" /> Looks good!
-                    </p>
-                  )}
-                </div>
-                  <m.button
-                  type="submit"
-                  disabled={isSubmitting || !isFormValid()}
-                  whileHover={!isSubmitting && isFormValid() ? { scale: 1.02 } : {}}
-                  whileTap={!isSubmitting && isFormValid() ? { scale: 0.98 } : {}}
-                  className={`w-full py-3 px-6 rounded-lg font-medium flex items-center justify-center transition-all duration-300 shadow-md ${
-                    isSubmitting || !isFormValid()
-                      ? 'bg-muted text-muted-foreground cursor-not-allowed opacity-70' 
-                      : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg'
-                  }`}
+                */}
+
+                {/* Submit Button */}
+                <MotionDiv
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
                 >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                      </svg>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <FaPaperPlane className="mr-2" />
-                      Send Message
-                    </>
-                  )}
-                </m.button>                {/* Form validation summary */}
-                {!isFormValid() && (fieldTouched.name || fieldTouched.email || fieldTouched.subject || fieldTouched.category || fieldTouched.message || fieldTouched.phone || fieldTouched.preferredContactMethod || fieldTouched.budgetRange) && (
-                  <div className="text-sm text-muted-foreground bg-muted/50 p-3 rounded-lg">
-                    <p className="font-medium mb-1">Please complete the following:</p>
-                    <ul className="space-y-1">
-                      {!formData.name.trim() && <li>• Enter your name</li>}
-                      {!formData.email.trim() && <li>• Enter your email address</li>}
-                      {!formData.subject.trim() && <li>• Enter a subject</li>}
-                      {!formData.category.trim() && <li>• Select a project category</li>}
-                      {!formData.message.trim() && <li>• Write your message</li>}
-                      {!formData.phone.trim() && <li>• Enter your phone number</li>}
-                      {!formData.preferredContactMethod.trim() && <li>• Select a preferred contact method</li>}
-                      {!formData.budgetRange.trim() && <li>• Select a budget range</li>}
-                      {validationErrors.name && <li>• Fix name validation errors</li>}
-                      {validationErrors.email && <li>• Fix email validation errors</li>}
-                      {validationErrors.subject && <li>• Fix subject validation errors</li>}
-                      {validationErrors.category && <li>• Fix category validation errors</li>}
-                      {validationErrors.message && <li>• Fix message validation errors</li>}
-                      {validationErrors.phone && <li>• Fix phone validation errors</li>}
-                      {validationErrors.preferredContactMethod && <li>• Fix preferred contact method validation errors</li>}
-                      {validationErrors.budgetRange && <li>• Fix budget range validation errors</li>}
-                    </ul>
+                  <m.button
+                    type="submit"
+                    disabled={isSubmitting || !isFormValid()}
+                    whileHover={!isSubmitting && isFormValid() ? { scale: 1.02 } : {}}
+                    whileTap={!isSubmitting && isFormValid() ? { scale: 0.98 } : {}}
+                    className={`w-full py-3 px-6 rounded-lg font-medium flex items-center justify-center transition-all duration-300 shadow-md ${
+                      isSubmitting || !isFormValid()
+                        ? 'bg-muted text-muted-foreground cursor-not-allowed opacity-70' 
+                        : 'bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg'
+                    }`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-muted-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <FaPaperPlane className="mr-2" />
+                        Send Message
+                      </>
+                    )}
+                  </m.button>
+                </MotionDiv>
+
+                {/* Form validation summary - simplified for essential fields only */}
+                {!isFormValid() && (fieldTouched.name || fieldTouched.email || fieldTouched.subject || fieldTouched.category || fieldTouched.message) && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg p-4 mt-4">
+                    <div className="flex items-start">
+                      <FaExclamationTriangle className="text-red-400 mt-0.5 mr-3 flex-shrink-0" />
+                      <div>
+                        <h4 className="text-sm font-medium text-red-800 mb-1">Please complete the following:</h4>
+                        <ul className="text-sm text-red-700 space-y-1">
+                          {!formData.name.trim() && <li>• Enter your name</li>}
+                          {!formData.email.trim() && <li>• Enter your email address</li>}
+                          {!formData.subject.trim() && <li>• Enter a subject</li>}
+                          {!formData.message.trim() && <li>• Write your message</li>}
+                          {validationErrors.name && <li>• {validationErrors.name}</li>}
+                          {validationErrors.email && <li>• {validationErrors.email}</li>}
+                          {validationErrors.subject && <li>• {validationErrors.subject}</li>}
+                          {validationErrors.category && <li>• {validationErrors.category}</li>}
+                          {validationErrors.message && <li>• {validationErrors.message}</li>}
+                        </ul>
+                      </div>
+                    </div>
                   </div>
                 )}
                 
                 {submitStatus !== 'idle' && (
-                  <MotionDiv                    initial={{ opacity: 0, scale: 0.95 }}
+                  <MotionDiv
+                    initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.3, ease: "easeOut" }}
@@ -1374,7 +1432,8 @@ export default function Contact() {
                         ? 'bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-400' 
                         : 'bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400'
                     } flex items-center`}
-                  >                    {                      submitStatus === 'success' ? (
+                  >
+                    {submitStatus === 'success' ? (
                       <div className="w-full">
                         <div className="flex items-center justify-center mb-4">
                           <div className="relative">
@@ -1386,7 +1445,8 @@ export default function Contact() {
                               <div className="w-16 h-16 border-2 border-green-500 rounded-full animate-[ripple_1s_cubic-bezier(0.65,0,0.45,1)_forwards]" />
                             </div>
                           </div>
-                        </div>                        <div className="text-center">
+                        </div>
+                        <div className="text-center">
                           <h4 className="text-xl font-semibold mb-2 animate-[fadeSlideUp_0.5s_0.5s_both]">Message Sent Successfully!</h4>
                           <p className="text-muted-foreground animate-[fadeSlideUp_0.5s_0.7s_both]">
                             Thank you for reaching out! I'll review your message and get back to you within 24-48 hours.
@@ -1405,7 +1465,8 @@ export default function Contact() {
                             </div>
                           )}
                         </div>
-                      </div>) : (
+                      </div>
+                    ) : (
                       <>
                         <FaExclamationTriangle className="mr-2 flex-shrink-0 mt-1" />
                         <div className="flex-1">
@@ -1431,7 +1492,8 @@ export default function Contact() {
                   </MotionDiv>
                 )}
               </form>
-            </div>          </m.div>
+            </div>
+          </m.div>
         </div>
 
         {/* FAQ Section */}
