@@ -91,8 +91,8 @@ function detectSpam(name: string, email: string, subject: string, message: strin
   return { isSpam: false, reason: '' };
 }
 
-// Get personalized project information based on category and budget
-function getPersonalizedProjectInfo(category?: string, budgetRange?: string): string {
+// Get personalized project information based on category
+function getPersonalizedProjectInfo(category?: string): string {
   const categoryInfo: { [key: string]: { timeline: string; features: string[]; samples: string[] } } = {
     'web-development': {
       timeline: '3-6 weeks for full websites',
@@ -121,22 +121,9 @@ function getPersonalizedProjectInfo(category?: string, budgetRange?: string): st
     }
   };
 
-  const budgetInfo: { [key: string]: { range: string; suitable: string[] } } = {
-    'under-500': { range: 'Under $500', suitable: ['Simple landing pages', 'Small fixes', 'Consultations'] },
-    '500-1000': { range: '$500 - $1,000', suitable: ['Portfolio sites', 'Small business websites'] },
-    '1000-2500': { range: '$1,000 - $2,500', suitable: ['Multi-page websites', 'Basic e-commerce'] },
-    '2500-5000': { range: '$2,500 - $5,000', suitable: ['Complex websites', 'Full e-commerce platforms'] },
-    'over-5000': { range: '$5,000+', suitable: ['Enterprise solutions', 'Complex integrations', 'Custom applications'] }
-  };
-
   const info = categoryInfo[category || 'web-development'];
-  const budget = budgetInfo[budgetRange || 'under-500'];
 
   return `
-    <div style="margin-bottom: 15px;">
-      <strong style="color: #1e293b;">💰 Your Budget Range:</strong>
-      <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${budget?.range || 'To be discussed'} - ${budget?.suitable.join(', ')}</p>
-    </div>
     <div style="margin-bottom: 15px;">
       <strong style="color: #1e293b;">⏱️ Estimated Timeline:</strong>
       <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${info?.timeline || 'Varies by project scope'}</p>
@@ -152,18 +139,6 @@ function getPersonalizedProjectInfo(category?: string, budgetRange?: string): st
     </div>
     ` : ''}
   `;
-}
-
-// Helper function to get budget range text
-function getBudgetRangeText(budgetRange: string): string {
-  switch (budgetRange) {
-    case 'under-500': return 'Under Ksh 15,000';
-    case '500-1000': return 'Ksh 15,000 - Ksh 30,000';
-    case '1000-2500': return 'Ksh 30,000 - Ksh 60,000';
-    case '2500-5000': return 'Ksh 60,000 - Ksh 100,000';
-    case 'over-5000': return 'Over Ksh 100,000';
-    default: return 'Not specified';
-  }
 }
 
 // Test endpoint to verify API routes are working
@@ -595,12 +570,6 @@ You can also click the WhatsApp button below to send me a quick message with you
                       <span style="color: #1e293b;">${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</span>
                     </div>
                     ` : ''}
-                    ${budgetRange ? `
-                    <div style="display: grid; grid-template-columns: 80px 1fr; gap: 10px; font-size: 14px;">
-                      <span style="color: #6b7280; font-weight: 500;">Budget:</span>
-                      <span style="color: #1e293b;">${getBudgetRangeText(budgetRange)}</span>
-                    </div>
-                    ` : ''}
                   </div>
                   <div style="border-top: 1px solid #f1f5f9; padding-top: 12px;">
                     <p style="margin: 0; color: #374151; font-size: 14px; line-height: 1.5; font-style: italic;">
@@ -610,7 +579,7 @@ You can also click the WhatsApp button below to send me a quick message with you
                 </div>
               </div>
               
-              ${getPersonalizedProjectInfo(category, budgetRange)}
+              ${getPersonalizedProjectInfo(category)}
                 
               <!-- What Happens Next -->
               <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #22c55e;">

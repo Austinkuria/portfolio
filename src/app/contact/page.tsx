@@ -1321,11 +1321,11 @@ export default function Contact() {
                         }`}
                       >
                         <option value="">Select a budget range...</option>
-                        <option value="under-500">Under Ksh 15,000</option>
-                        <option value="500-1000">Ksh 15,000 - Ksh 30,000</option>
-                        <option value="1000-2500">Ksh 30,000 - Ksh 60,000</option>
-                        <option value="2500-5000">Ksh 60,000 - Ksh 100,000</option>
-                        <option value="over-5000">Over Ksh 100,000</option>
+                        <option value="under-500">Under KSH 15,000</option>
+                        <option value="500-1000">KSH 15,000 - KSH 30,000</option>
+                        <option value="1000-2500">KSH 30,000 - KSH 60,000</option>
+                        <option value="2500-5000">KSH 60,000 - KSH 100,000</option>
+                        <option value="over-5000">Over KSH 100,000</option>
                       </select>
                       <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
                         validationErrors.budgetRange && fieldTouched.budgetRange
