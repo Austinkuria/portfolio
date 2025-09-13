@@ -3,8 +3,8 @@ import { Resend } from 'resend';
 import nodemailer from 'nodemailer';
 import { personalInfo, socialLinks, contactConfig, siteConfig, emailConfig, appConfig } from '@/config';
 
-// Initialize Resend for notification emails
-const resend = new Resend(emailConfig.apiKey);
+// Initialize Resend for notification emails (with fallback)
+const resend = emailConfig.apiKey ? new Resend(emailConfig.apiKey) : null;
 
 // Initialize Gmail SMTP transporter for auto-reply emails
 const gmailTransporter = nodemailer.createTransport({
@@ -679,7 +679,7 @@ You can also click the WhatsApp button below to send me a quick message with you
       console.log('Auto-reply email to:', email, 'from:', emailConfig.gmail.user, '(via Gmail SMTP)');
 
       const [notificationResult, autoReplyResult] = await Promise.allSettled([
-        resend.emails.send(notificationEmail),
+        resend ? resend.emails.send(notificationEmail) : Promise.resolve({ data: null }),
         gmailTransporter.sendMail(autoReplyEmailGmail),
       ]);      // Check if notification email failed
       if (notificationResult.status === 'rejected') {
@@ -702,8 +702,8 @@ You can also click the WhatsApp button below to send me a quick message with you
           };
 
           try {
-            const retryResult = await resend.emails.send(notificationWithoutAttachment);
-            if (retryResult.data?.id) {
+            const retryResult = resend ? await resend.emails.send(notificationWithoutAttachment) : null;
+            if (retryResult?.data?.id) {
               return NextResponse.json({
                 success: true,
                 message: 'Message sent successfully, but we could not include your attachment due to technical issues.',

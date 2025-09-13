@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Critical CSS - inline for faster FCP */
 :root {
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;
@@ -21,24 +22,9 @@
   --ring: 221.2 83.2% 53.3%;
   --radius: 0.5rem;
 
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --radius: var(--radius);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Font variables */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 }
 
 .dark {
@@ -48,160 +34,218 @@
   --card-foreground: 0 0% 98%;
   --primary: 217.2 91.2% 59.8%;
   --primary-foreground: 210 40% 98%;
-  --secondary: 217.2 32.6% 17.5%;
-  --secondary-foreground: 210 40% 98%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
   --accent: 262.1 83.3% 57.8%;
   --accent-foreground: 210 40% 98%;
   --muted: 240 3.7% 15.9%;
   --muted-foreground: 240 5% 64.9%;
   --border: 240 3.7% 15.9%;
   --input: 240 3.7% 15.9%;
-  --ring: 217.2 91.2% 59.8%;
+  --ring: 221.2 83.2% 53.3%;
 }
 
+/* Base styles - critical for preventing CLS */
 * {
-  @apply border-border;
+  border-color: hsl(var(--border));
 }
 
 body {
-  @apply bg-background text-foreground transition-colors duration-300;
-  font-family: var(--font-sans, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: var(--font-sans);
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-height: 100vh;
-  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+}
+
+/* Prevent layout shift on load */
+html {
+  scroll-behavior: smooth;
   overflow-x: hidden;
 }
 
-::selection {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
+body {
+  overflow-x: hidden;
+  min-height: 100vh;
 }
 
-/* Smooth scrolling for the entire page */
-html {
-  scroll-behavior: smooth;
+/* Critical layout classes */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
-/* Base link styling */
-a {
-  color: var(--primary);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-a:hover {
-  color: var(--secondary);
-}
-
-/* Typography scale */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 700;
-  line-height: 1.1;
-  margin: 1.5rem 0 1rem;
-}
-
-h1 {
-  font-size: 2.5rem;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.75rem;
-}
-
-h4 {
-  font-size: 1.5rem;
-}
-
-/* Container for animations */
-.framer-container {
-  position: relative;
-  overflow: hidden;
-}
-
-/* Custom animations for loading indicator */
-@keyframes loading-dots {
-
-  0%,
-  20% {
-    opacity: 0;
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
   }
+}
 
-  50% {
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+/* Optimize animations for performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Loading states to prevent CLS */
+.skeleton {
+  background: linear-gradient(90deg, hsl(var(--muted)) 25%, transparent 50%, hsl(var(--muted)) 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Optimized pulse animation */
+.animate-pulse-slow {
+  animation: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
     opacity: 1;
   }
+  50% {
+    opacity: 0.7;
+  }
+}
 
-  80%,
+/* Performance optimized animations */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Success animation for contact form */
+@keyframes successCheckmark {
+  0% {
+    stroke-dasharray: 0 78;
+  }
+  50% {
+    stroke-dasharray: 39 78;
+  }
   100% {
+    stroke-dasharray: 78 78;
+  }
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
     opacity: 0;
   }
 }
 
-@keyframes progress-glow {
-  0% {
-    box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-
-  50% {
-    box-shadow: 0 0 20px hsl(var(--primary) / 0.6), 0 0 30px hsl(var(--primary) / 0.3);
-  }
-
-  100% {
-    box-shadow: 0 0 5px hsl(var(--primary) / 0.3);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-@keyframes loading-shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(100%);
-  }
+/* Optimized focus states */
+.focus-visible:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
 }
 
-.loading-dot-1 {
-  animation: loading-dots 1.5s infinite 0s;
+/* Optimize image loading */
+img {
+  height: auto;
+  max-width: 100%;
 }
 
-.loading-dot-2 {
-  animation: loading-dots 1.5s infinite 0.3s;
+/* Prevent horizontal scroll */
+.overflow-x-hidden {
+  overflow-x: hidden;
 }
 
-.loading-dot-3 {
-  animation: loading-dots 1.5s infinite 0.6s;
+/* Typography optimization */
+h1, h2, h3, h4, h5, h6 {
+  font-feature-settings: "rlig" 1, "calt" 1, "kern" 1;
+  text-rendering: optimizeLegibility;
 }
 
-.progress-glow {
-  animation: progress-glow 2s ease-in-out infinite;
+/* Button base styles for consistency */
+button {
+  touch-action: manipulation;
 }
 
-/* Shimmer effect for loading states */
-.loading-shimmer {
-  position: relative;
-  overflow: hidden;
+/* Improved scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-.loading-shimmer::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg,
-      transparent,
-      hsl(var(--primary) / 0.1),
-      transparent);
-  animation: loading-shimmer 2s infinite;
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--foreground));
 }

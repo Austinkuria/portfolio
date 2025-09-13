@@ -4,21 +4,23 @@ import { personalInfo, socialLinks } from '@/config';
 import { FaGithub, FaLinkedin, FaArrowDown } from 'react-icons/fa';
 import { HiDownload } from 'react-icons/hi';
 import CustomLink from '@/components/CustomLink';
-import { useRef } from 'react';
-import { TypeAnimation } from 'react-type-animation';
+import { useRef, useMemo, lazy, Suspense } from 'react';
 import { MotionDiv, MotionH1, MotionP } from '@/lib/motion';
 
-// Pre-generate random values outside of render
-const circles = Array.from({ length: 20 }, (_, i) => ({
+// Lazy load TypeAnimation to reduce initial bundle size
+const TypeAnimation = lazy(() => import('react-type-animation').then(module => ({ default: module.TypeAnimation })));
+
+// Pre-generate fewer circles for better performance
+const circles = Array.from({ length: 8 }, (_, i) => ({
   id: i,
-  width: Math.random() * 300 + 50,
-  height: Math.random() * 300 + 50,
+  width: Math.random() * 200 + 50,
+  height: Math.random() * 200 + 50,
   left: Math.random() * 100,
   top: Math.random() * 100,
   scale: Math.random() * 0.5 + 0.5,
-  x: Math.random() * 100 - 50,
-  y: Math.random() * 100 - 50,
-  duration: Math.random() * 10 + 10,
+  x: Math.random() * 50 - 25,
+  y: Math.random() * 50 - 25,
+  duration: Math.random() * 8 + 12,
 }));
 
 export default function Hero() {
@@ -35,6 +37,36 @@ export default function Hero() {
       }
     }
   };
+
+  // Memoize the code animation sequences to prevent recreation
+  const codeSequences = useMemo(() => [
+    `function Developer() {\n`, 120, 200,
+    `function Developer() {\n  // Skills I work with\n`, 110, 500,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n`, 100, 400,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n`, 120, 150,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n`, 110, 200,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n`, 115, 180,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n`, 120, 250,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n`, 110, 300,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n`, 90, 1200,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n`, 80, 1200,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n`, 70, 800,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n`, 38, 450,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n`, 38, 450,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n`, 38, 450,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n`, 40, 1800,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n`, 110, 700,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n`, 120, 550,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n      {skills.map(skill => <Technology name={skill} />)}\n`, 45, 600,
+    `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n      {skills.map(skill => <Technology name={skill} />)}\n      {createProject('Your Next Idea')}\n    </Portfolio>\n  );\n}`, 70, 6000,
+  ], []);
+
+  // Simple fallback for TypeAnimation
+  const TypeAnimationFallback = () => (
+    <span className="text-primary inline-block relative z-10" style={{ minWidth: '180px' }}>
+      Code
+    </span>
+  );
 
   return (
     <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden px-4 pt-28">
@@ -90,18 +122,20 @@ export default function Hero() {
             >
               {personalInfo.tagline.split(' ').slice(0, 3).join(' ')} with{' '}
               <span className="relative">
-                <span className="text-primary inline-block relative z-10" style={{ minWidth: '180px' }}>
-                  <TypeAnimation
-                    sequence={[
-                      'Code', 2000,
-                      'Creativity', 2000,
-                      'Passion', 2000,
-                    ]}
-                    wrapper="span"
-                    speed={50}
-                    repeat={Infinity}
-                  />
-                </span>
+                <Suspense fallback={<TypeAnimationFallback />}>
+                  <span className="text-primary inline-block relative z-10" style={{ minWidth: '180px' }}>
+                    <TypeAnimation
+                      sequence={[
+                        'Code', 2000,
+                        'Creativity', 2000,
+                        'Passion', 2000,
+                      ]}
+                      wrapper="span"
+                      speed={50}
+                      repeat={Infinity}
+                    />
+                  </span>
+                </Suspense>
                 <span className="absolute bottom-0 left-0 w-full h-3 bg-primary/20 -z-0"></span>
               </span>         
             </MotionH1>
@@ -169,9 +203,9 @@ export default function Hero() {
           >
             <div className="relative w-72 h-72 md:w-96 md:h-96">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg animate-pulse-slow"></div>
-              <div className="absolute inset-4 rounded-lg border border-primary/20 backdrop-blur-sm bg-background/50 overflow-auto">                
+              <div className="absolute inset-4 rounded-lg border border-primary/20 backdrop-blur-sm bg-background/50 overflow-hidden">                
                 <MotionDiv
-                  className="p-4 font-mono text-xs md:text-sm text-foreground/70 h-full"
+                  className="p-4 font-mono text-xs md:text-sm text-foreground/70 h-full overflow-hidden"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 1, delay: 1 }}
@@ -182,37 +216,27 @@ export default function Hero() {
                     <div className="w-3 h-3 rounded-full bg-green-400"></div>
                     <span className="ml-2 text-xs text-foreground/60">DevPortfolio.tsx</span>
                   </div>                  
-                  <TypeAnimation
-                    sequence={[
-                      `function Developer() {\n`, 120, 200,
-                      `function Developer() {\n  // Skills I work with\n`, 110, 500,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n`, 100, 400,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n`, 120, 150,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n`, 110, 200,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n`, 115, 180,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n`, 120, 250,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n`, 110, 300,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n`, 90, 1200,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n`, 80, 1200,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n`, 70, 800,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n`, 38, 450,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n`, 38, 450,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n`, 38, 450,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n`, 40, 1800,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n`, 110, 700,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n`, 120, 550,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n      {skills.map(skill => <Technology name={skill} />)}\n`, 45, 600,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n      {skills.map(skill => <Technology name={skill} />)}\n      {createProject('Your Next Idea')}\n    </Portfolio>\n  );\n}`, 70, 6000,
-                    ]}
-                    wrapper="div"
-                    cursor={true}
-                    repeat={Infinity}
-                    className="text-primary/80 whitespace-pre"
-                    style={{
-                      display: 'block',
-                      minHeight: '320px'
-                    }}
-                  />
+                  <Suspense fallback={
+                    <div className="text-primary/80 whitespace-pre">
+                      function Developer() {'{'}
+                      <br />  // Skills I work with
+                      <br />  const skills = ['React', 'Next.js'];
+                      <br />  return &lt;Portfolio /&gt;;
+                      <br />{'}'}
+                    </div>
+                  }>
+                    <TypeAnimation
+                      sequence={codeSequences}
+                      wrapper="div"
+                      cursor={true}
+                      repeat={Infinity}
+                      className="text-primary/80 whitespace-pre"
+                      style={{
+                        display: 'block',
+                        minHeight: '320px'
+                      }}
+                    />
+                  </Suspense>
                 </MotionDiv>
               </div>
               
