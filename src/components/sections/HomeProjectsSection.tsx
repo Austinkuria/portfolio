@@ -1,8 +1,8 @@
 'use client';
 
-import Image from 'next/image';
 import { FaArrowRight } from 'react-icons/fa';
 import CustomLink from '@/components/CustomLink';
+import OptimizedImage from '@/components/OptimizedImage';
 import { MotionDiv } from '@/lib/motion';
 
 const featuredProjects = [
@@ -14,6 +14,8 @@ const featuredProjects = [
 		image: '/images/clinique-beauty.png',
 		link: '/projects',
 		technologies: ['PostgreSQL', 'Express', 'React', 'Node.js', 'M-Pesa'],
+		width: 600,
+		height: 400,
 	},
 	{
 		id: 2,
@@ -23,6 +25,8 @@ const featuredProjects = [
 		image: '/images/attendance-system.png',
 		link: '/projects',
 		technologies: ['MongoDB', 'Express', 'React', 'Node.js', 'QR Code'],
+		width: 600,
+		height: 400,
 	},
 ];
 
@@ -56,12 +60,14 @@ export default function HomeProjectsSection() {
 							className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
 						>
 							<div className="relative h-52 overflow-hidden">
-								<Image
+								<OptimizedImage
 									src={project.image}
 									alt={project.title}
-									fill
-									className="object-contain transition-transform duration-500 hover:scale-105 bg-white dark:bg-background"
+									width={project.width}
+									height={project.height}
+									className="object-contain transition-transform duration-500 hover:scale-105 bg-white dark:bg-background w-full h-full"
 									sizes="(max-width: 768px) 100vw, 50vw"
+									priority={index === 0} // Prioritize first image
 								/>
 							</div>
 							<div className="p-6">

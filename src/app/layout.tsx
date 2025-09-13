@@ -10,6 +10,7 @@ import { Analytics } from '@vercel/analytics/next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
+import { FontPreloader, FontDisplayStyles } from '@/components/FontOptimization';
 
 export default function RootLayout({
   children,
@@ -19,6 +20,10 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Font optimization */}
+        <FontPreloader />
+        <FontDisplayStyles />
+        
         {/* Preconnect to critical domains early */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://vitals.vercel-insights.com" />
