@@ -35,11 +35,11 @@ export default function Contact() {
   const faqData = [
     {
       question: "What types of projects do you work on?",
-      answer: "I specialize in web development (React, Next.js), UI/UX design, API development, backend development, and technical consultation. I work on everything from simple landing pages to complex full-stack applications."
+      answer: "I create professional websites, online stores, mobile-responsive designs, and business automation solutions. I work on everything from simple business websites to complex custom applications that help grow your business."
     },
     {
       question: "What is your typical project timeline?",
-      answer: "Project timelines vary based on complexity: Simple websites (1-2 weeks), Complex web applications (4-8 weeks), UI/UX design projects (2-3 weeks), API development (2-4 weeks). I always provide detailed timelines during our initial consultation."
+      answer: "Project timelines vary based on complexity: Simple websites (1-2 weeks), Online stores and custom applications (4-8 weeks), Design projects (2-3 weeks), System integrations (2-4 weeks). I always provide detailed timelines during our initial consultation."
     },
     {
       question: "Do you offer ongoing maintenance and support?",
@@ -951,12 +951,12 @@ export default function Contact() {
                       }`}
                     >
                       <option value="">Select a category...</option>
-                      <option value="web-development">Web Development</option>
-                      <option value="ui-ux-design">UI/UX Design</option>
-                      <option value="ecommerce">E-Commerce Development</option>
-                      <option value="backend-development">Backend Development</option>
-                      <option value="api-development">API Development</option>
-                      <option value="consultation">Technical Consultation</option>
+                      <option value="web-development">Website Development</option>
+                      <option value="ui-ux-design">Website Design</option>
+                      <option value="ecommerce">Online Store</option>
+                      <option value="backend-development">Custom Systems</option>
+                      <option value="api-development">System Integration</option>
+                      <option value="consultation">Project Consultation</option>
                       <option value="maintenance">Website Maintenance</option>
                       <option value="other">Other</option>
                     </select>
@@ -994,31 +994,31 @@ export default function Contact() {
                   )}
                 </div>
                 
-                {/* Skills Match Indicator */}
+                {/* Benefits for Selected Category */}
                 {formData.category && (
                   <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
                     <h4 className="font-medium text-primary mb-3 flex items-center">
-                      <FaCode className="w-4 h-4 mr-2" />
-                      Skills Match for {formData.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                      <FaCheck className="w-4 h-4 mr-2" />
+                      What You'll Get with {formData.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                     </h4>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {(() => {
-                        const skillsMap = {
-                          'web-development': ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'Node.js', 'Express'],
-                          'ui-ux-design': ['Figma', 'Adobe XD', 'User Research', 'Wireframing', 'Prototyping', 'Design Systems'],
-                          'api-development': ['REST APIs', 'Node.js', 'Express', 'Database Design', 'Authentication', 'M-Pesa Integration'],
-                          'ecommerce': ['Full-Stack Development', 'Payment Integration', 'User Management', 'Product Management', 'Shopping Cart'],
-                          'backend-development': ['Django', 'Python', 'PHP', 'MySQL', 'PostgreSQL', 'MongoDB'],
-                          'consultation': ['Code Review', 'Architecture', 'Performance', 'Best Practices', 'Team Training'],
-                          'maintenance': ['Bug Fixes', 'Updates', 'Security', 'Performance', 'Monitoring'],
-                          'other': ['Full-Stack', 'Problem Solving', 'Custom Solutions', 'Technical Analysis']
+                        const benefitsMap = {
+                          'web-development': ['Mobile-responsive design', 'Fast loading speed', 'Search engine optimized', 'Professional appearance', 'Easy to update', 'Secure & reliable'],
+                          'ui-ux-design': ['User-friendly interface', 'Professional branding', 'Easy navigation', 'Mobile-responsive', 'Modern design', 'Brand consistency'],
+                          'api-development': ['Automated processes', 'Real-time updates', 'Third-party integrations', 'Data synchronization', 'Secure connections', 'Payment processing'],
+                          'ecommerce': ['Secure online payments', 'Inventory management', 'Customer accounts', 'Mobile shopping', 'Order tracking', 'Sales reporting'],
+                          'backend-development': ['Custom functionality', 'Data management', 'User authentication', 'Automated workflows', 'Scalable solutions', 'Secure storage'],
+                          'consultation': ['Expert guidance', 'Cost-effective solutions', 'Risk assessment', 'Project planning', 'Best practices', 'Growth strategies'],
+                          'maintenance': ['Regular updates', 'Security monitoring', 'Performance optimization', 'Bug fixes', 'Backup services', 'Technical support'],
+                          'other': ['Custom solutions', 'Problem solving', 'Business automation', 'Growth-focused features']
                         };
                         
-                        const skills = skillsMap[formData.category as keyof typeof skillsMap] || [];
-                        return skills.map((skill, index) => (
+                        const benefits = benefitsMap[formData.category as keyof typeof benefitsMap] || [];
+                        return benefits.map((benefit, index) => (
                           <div key={index} className="flex items-center text-sm bg-primary/10 px-2 py-1 rounded">
                             <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                            {skill}
+                            {benefit}
                           </div>
                         ));
                       })()}

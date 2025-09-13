@@ -91,7 +91,70 @@ function detectSpam(name: string, email: string, subject: string, message: strin
   return { isSpam: false, reason: '' };
 }
 
-// Helper function to convert budget range codes to readable text
+// Get personalized project information based on category and budget
+function getPersonalizedProjectInfo(category?: string, budgetRange?: string): string {
+  const categoryInfo: { [key: string]: { timeline: string; features: string[]; samples: string[] } } = {
+    'web-development': {
+      timeline: '3-6 weeks for full websites',
+      features: ['Mobile-responsive design', 'Fast loading speeds', 'Search engine optimized', 'User-friendly interface'],
+      samples: ['Portfolio websites', 'Business websites', 'Landing pages']
+    },
+    'ecommerce': {
+      timeline: '4-8 weeks for e-commerce platforms',
+      features: ['Secure payment processing', 'Inventory management', 'Mobile shopping experience', 'Customer accounts'],
+      samples: ['Online stores', 'Product catalogs', 'Booking systems']
+    },
+    'backend-development': {
+      timeline: '2-5 weeks for backend systems',
+      features: ['Secure data storage', 'Fast performance', 'Reliable uptime', 'Scalable architecture'],
+      samples: ['Database systems', 'User authentication', 'Data processing']
+    },
+    'ui-ux-design': {
+      timeline: '2-4 weeks for design work',
+      features: ['User-centered design', 'Professional appearance', 'Easy navigation', 'Brand consistency'],
+      samples: ['Website designs', 'App interfaces', 'Brand guidelines']
+    },
+    'api-development': {
+      timeline: '1-4 weeks for system integration',
+      features: ['Secure data exchange', 'Automated processes', 'Third-party integrations', 'Real-time updates'],
+      samples: ['Payment systems', 'Social media integration', 'Email automation']
+    }
+  };
+
+  const budgetInfo: { [key: string]: { range: string; suitable: string[] } } = {
+    'under-500': { range: 'Under $500', suitable: ['Simple landing pages', 'Small fixes', 'Consultations'] },
+    '500-1000': { range: '$500 - $1,000', suitable: ['Portfolio sites', 'Small business websites'] },
+    '1000-2500': { range: '$1,000 - $2,500', suitable: ['Multi-page websites', 'Basic e-commerce'] },
+    '2500-5000': { range: '$2,500 - $5,000', suitable: ['Complex websites', 'Full e-commerce platforms'] },
+    'over-5000': { range: '$5,000+', suitable: ['Enterprise solutions', 'Complex integrations', 'Custom applications'] }
+  };
+
+  const info = categoryInfo[category || 'web-development'];
+  const budget = budgetInfo[budgetRange || 'under-500'];
+
+  return `
+    <div style="margin-bottom: 15px;">
+      <strong style="color: #1e293b;">💰 Your Budget Range:</strong>
+      <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${budget?.range || 'To be discussed'} - ${budget?.suitable.join(', ')}</p>
+    </div>
+    <div style="margin-bottom: 15px;">
+      <strong style="color: #1e293b;">⏱️ Estimated Timeline:</strong>
+      <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${info?.timeline || 'Varies by project scope'}</p>
+    </div>
+    <div style="margin-bottom: 0;">
+      <strong style="color: #1e293b;">✨ What You'll Get:</strong>
+      <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${info?.features.join(', ') || 'Custom features based on your needs'}</p>
+    </div>
+    ${info?.samples ? `
+    <div style="margin-top: 15px;">
+      <strong style="color: #1e293b;">📋 Similar Projects:</strong>
+      <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${info.samples.join(', ')}</p>
+    </div>
+    ` : ''}
+  `;
+}
+
+// Helper function to get budget range text
 function getBudgetRangeText(budgetRange: string): string {
   switch (budgetRange) {
     case 'under-500': return 'Under Ksh 15,000';
@@ -493,148 +556,148 @@ You can also click the WhatsApp button below to send me a quick message with you
       subject: `✨ Thanks for reaching out, ${name}! - ${personalInfo.name.full}`,
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
-          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 40px 20px; text-align: center; position: relative; overflow: hidden;">
-            <div style="position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-            <div style="position: absolute; bottom: -30px; left: -30px; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
-            <h1 style="margin: 0; font-size: 32px; color: white; font-weight: 700; position: relative; z-index: 1;">👋 Hello ${name}!</h1>
-            <p style="margin: 15px 0 0 0; font-size: 18px; color: rgba(255,255,255,0.95); font-weight: 400; position: relative, z-index: 1;">Thank you for reaching out!</p>
+          <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; top: -30px; right: -30px; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+            <div style="position: absolute; bottom: -20px; left: -20px; width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
+            <div style="background: rgba(255,255,255,0.15); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center;">
+              <span style="font-size: 36px;">👋</span>
+            </div>
+            <h1 style="margin: 0; font-size: 28px; color: white; font-weight: 600; position: relative; z-index: 1;">Hello ${name}!</h1>
+            <p style="margin: 10px 0 0 0; font-size: 16px; color: rgba(255,255,255,0.9); position: relative; z-index: 1;">Your message has been received successfully</p>
           </div>
           
-          <div style="padding: 40px 30px; background: #f8fafc;">
-            <div style="background: white; padding: 30px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
-              <div style="text-align: center; margin-bottom: 30px;">
-                <div style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); width: 60px; height: 60px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px;">
-                  <span style="font-size: 24px;">✅</span>
-                </div>
-                <h2 style="color: #1e293b; margin: 0; font-size: 24px; font-weight: 600;">Message Received Successfully!</h2>
-              </div>
+          <div style="padding: 30px 20px; background: #f8fafc;">
+            <div style="background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
               
-              <!-- Personalized Response Time -->
-              <div style="background: linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%); padding: 20px; border-radius: 12px; border-left: 4px solid #f97316; margin: 25px 0; text-align: center;">
-                <h3 style="margin: 0 0 10px 0; color: #1e293b; font-size: 18px;">⏰ Expected Response Time</h3>
-                <p style="margin: 0; color: #374151; font-size: 16px;">
-                  ${urgencyScore === 'HIGH' ?
-          '<strong style="color: #ef4444;">Within 12 hours</strong> - I understand this is urgent!' :
-          '<strong style="color: #22c55e;">24-48 hours</strong> - I\'ll craft a thoughtful response'
-        }
+              <!-- Quick Status Card -->
+              <div style="text-align: center; margin-bottom: 25px; background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); padding: 20px; border-radius: 10px;">
+                <div style="background: #22c55e; width: 50px; height: 50px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 15px;">
+                  <span style="font-size: 20px; color: white;">✓</span>
+                </div>
+                <h2 style="color: #1e293b; margin: 0 0 8px 0; font-size: 20px; font-weight: 600;">Message Received!</h2>
+                <p style="margin: 0; color: #059669; font-size: 14px; font-weight: 500;">
+                  I'll respond within ${urgencyScore === 'HIGH' ? '12 hours' : '24-48 hours'}
                 </p>
               </div>
               
-              <p style="color: #475569; line-height: 1.7; margin: 0 0 25px 0; font-size: 16px; text-align: center;">
-                I've received your message and I'm excited to learn more about your project! I'll review your inquiry carefully and get back to you soon.
-              </p>
-              
-              <div style="background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); padding: 25px; border-radius: 12px; border-left: 4px solid #3b82f6; margin: 25px 0;">
-                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
-                  <span style="background: #3b82f6; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">📋</span>
-                  Your Message Summary
-                </h3>
-                
-                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
-                  <p style="margin: 0; color: #6b7280; font-size: 14px;"><strong>From:</strong> ${name}</p>
-                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Email:</strong> ${email}</p>
-                  <p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Subject:</strong> ${subject}</p>
-                  ${category ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Project Category:</strong> ${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>` : ''}
-                  ${budgetRange ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>Budget Range:</strong> ${getBudgetRangeText(budgetRange)}</p>` : ''}
-                  ${body.fileData ? `<p style="margin: 5px 0; color: #6b7280; font-size: 14px;"><strong>File:</strong> <span style="color: #4f46e5;">${body.fileName}</span></p>` : ''}
-                  <p style="margin: 15px 0 0 0; color: #374151; font-style: italic; line-height: 1.5;">"${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"</p>
-                </div>
-              </div>
-              
-              <div style="background: linear-gradient(135deg, #fef3c7 0%, #fbbf24 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #f59e0b;">
-                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
-                  <span style="background: #f59e0b; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">❓</span>
-                  Quick Answers While You Wait
-                </h3>
-                <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
-                  <div style="margin-bottom: 15px;">
-                    <strong style="color: #1e293b;">💰 Project Budget:</strong>
-                    <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">I work with budgets ranging from Ksh 15,000 to Ksh 150,000+ depending on project scope.</p>
+              <!-- Your Message Summary -->
+              <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #3b82f6;">
+                <h3 style="margin: 0 0 12px 0; color: #1e293b; font-size: 16px; font-weight: 600;">📋 Your Message Summary</h3>
+                <div style="background: white; padding: 15px; border-radius: 8px;">
+                  <div style="display: grid; gap: 8px; margin-bottom: 12px;">
+                    <div style="display: grid; grid-template-columns: 80px 1fr; gap: 10px; font-size: 14px;">
+                      <span style="color: #6b7280; font-weight: 500;">Subject:</span>
+                      <span style="color: #1e293b;">${subject}</span>
+                    </div>
+                    ${category ? `
+                    <div style="display: grid; grid-template-columns: 80px 1fr; gap: 10px; font-size: 14px;">
+                      <span style="color: #6b7280; font-weight: 500;">Category:</span>
+                      <span style="color: #1e293b;">${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</span>
+                    </div>
+                    ` : ''}
+                    ${budgetRange ? `
+                    <div style="display: grid; grid-template-columns: 80px 1fr; gap: 10px; font-size: 14px;">
+                      <span style="color: #6b7280; font-weight: 500;">Budget:</span>
+                      <span style="color: #1e293b;">${getBudgetRangeText(budgetRange)}</span>
+                    </div>
+                    ` : ''}
                   </div>
-                  <div style="margin-bottom: 15px;">
-                    <strong style="color: #1e293b;">⏱️ Timeline:</strong>
-                    <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">Most projects take 2-8 weeks from start to completion.</p>
-                  </div>
-                  <div style="margin-bottom: 0;">
-                    <strong style="color: #1e293b;">🔧 Technologies:</strong>
-                    <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">React, Next.js, TypeScript, Node.js, PostgreSQL, AWS, and more.</p>
+                  <div style="border-top: 1px solid #f1f5f9; padding-top: 12px;">
+                    <p style="margin: 0; color: #374151; font-size: 14px; line-height: 1.5; font-style: italic;">
+                      "${message.substring(0, 120)}${message.length > 120 ? '...' : ''}"
+                    </p>
                   </div>
                 </div>
               </div>
+              
+              ${getPersonalizedProjectInfo(category, budgetRange)}
                 
-                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #22c55e;">
-                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
-                  <span style="background: #22c55e; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">⚡</span>
-                  What Happens Next?
-                </h3>
+              <!-- What Happens Next -->
+              <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #22c55e;">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">⚡ What Happens Next</h3>
+                <div style="display: grid; gap: 10px;">
+                  <div style="display: flex; align-items: start; padding: 8px 0;">
+                    <span style="background: #22c55e; color: white; min-width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 12px; font-weight: bold;">1</span>
+                    <div>
+                      <strong style="color: #1e293b; font-size: 14px;">Initial Review</strong>
+                      <p style="margin: 2px 0 0 0; color: #374151; font-size: 13px;">I'll analyze your requirements (1-2 days)</p>
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: start; padding: 8px 0;">
+                    <span style="background: #22c55e; color: white; min-width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 12px; font-weight: bold;">2</span>
+                    <div>
+                      <strong style="color: #1e293b; font-size: 14px;">Custom Proposal</strong>
+                      <p style="margin: 2px 0 0 0; color: #374151; font-size: 13px;">Detailed plan with timeline & pricing (2-3 days)</p>
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: start; padding: 8px 0;">
+                    <span style="background: #22c55e; color: white; min-width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 12px; font-weight: bold;">3</span>
+                    <div>
+                      <strong style="color: #1e293b; font-size: 14px;">Discovery Call</strong>
+                      <p style="margin: 2px 0 0 0; color: #374151; font-size: 13px;">Discuss details and finalize scope (30-60 mins)</p>
+                    </div>
+                  </div>
+                  <div style="display: flex; align-items: start; padding: 8px 0;">
+                    <span style="background: #22c55e; color: white; min-width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 12px; font-weight: bold;">4</span>
+                    <div>
+                      <strong style="color: #1e293b; font-size: 14px;">Project Kickoff</strong>
+                      <p style="margin: 2px 0 0 0; color: #374151; font-size: 13px;">Contract signing and development begins</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Top 3 FAQ -->
+              <div style="background: #fef7f0; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #f97316;">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">❓ Quick Answers</h3>
                 <div style="display: grid; gap: 12px;">
-                  <div style="display: flex; align-items: center;">
-                    <span style="color: #22c55e; margin-right: 10px; font-size: 18px;">1️⃣</span>
-                    <span style="color: #374151;">I'll review your message and research your project needs</span>
+                  <div style="background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #f97316;">
+                    <strong style="color: #1e293b; font-size: 14px;">🤝 How do you work with clients?</strong>
+                    <p style="margin: 4px 0 0 0; color: #374151; font-size: 13px; line-height: 1.4;">Transparent collaboration with regular updates. You're always in the loop via email, WhatsApp, or calls.</p>
                   </div>
-                  <div style="display: flex; align-items: center;">
-                    <span style="color: #22c55e; margin-right: 10px; font-size: 18px;">2️⃣</span>
-                    <span style="color: #374151;">Personalized response with initial thoughts and questions</span>
+                  <div style="background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #f97316;">
+                    <strong style="color: #1e293b; font-size: 14px;">📱 Mobile-responsive included?</strong>
+                    <p style="margin: 4px 0 0 0; color: #374151; font-size: 13px; line-height: 1.4;">Absolutely! All projects work perfectly on desktop, tablet, and mobile devices.</p>
                   </div>
-                  <div style="display: flex; align-items: center;">
-                    <span style="color: #22c55e; margin-right: 10px; font-size: 18px;">3️⃣</span>
-                    <span style="color: #374151;">Schedule a discovery call to discuss details</span>
-                  </div>
-                  <div style="display: flex; align-items: center;">
-                    <span style="color: #22c55e; margin-right: 10px; font-size: 18px;">4️⃣</span>
-                    <span style="color: #374151;">Create a detailed proposal with timeline and pricing</span>
+                  <div style="background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #f97316;">
+                    <strong style="color: #1e293b; font-size: 14px;">� What about revisions?</strong>
+                    <p style="margin: 4px 0 0 0; color: #374151; font-size: 13px; line-height: 1.4;">Reasonable revisions included. We'll discuss specifics during our initial call.</p>
                   </div>
                 </div>
               </div>
               
-              <div style="background: linear-gradient(135deg, #f3e8ff 0%, #ddd6fe 100%); padding: 25px; border-radius: 12px; margin: 25px 0; border-left: 4px solid #8b5cf6;">
-                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 18px; display: flex; align-items: center;">
-                  <span style="background: #8b5cf6; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">🌟</span>
-                  Recent Success Story
-                </h3>
-                <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
-                  <p style="margin: 0; color: #374151; font-style: italic; line-height: 1.6;">
-                    "Austin delivered an exceptional e-commerce platform that increased our online sales by 300%. His attention to detail and technical expertise made all the difference."
-                  </p>
-                  <p style="margin: 15px 0 0 0; color: #6b7280; font-size: 14px; text-align: right;">
-                    <strong>— Recent Client</strong>
-                  </p>
-                </div>
-              </div>
-              
-              <div style="text-align: center; margin: 30px 0 20px 0;">
-                <p style="color: #6b7280; margin: 0 0 20px 0; font-size: 16px;">In the meantime, feel free to explore my work or connect:</p>
-                <div style="display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;">
-                  <a href="${siteConfig.url}/projects" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">🚀 My Projects</a>
-                  <a href="${siteConfig.url}/skills" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">💻 My Skills</a>
-                  <a href="${siteConfig.url}/about" style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 12px 20px; border-radius: 25px; text-decoration: none; font-weight: 500; font-size: 14px; margin: 5px;">👨‍💻 About Me</a>
+              <!-- Action Center -->
+              <div style="text-align: center; margin: 25px 0 20px 0;">
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">🚀 While You Wait</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px;">
+                  <a href="${siteConfig.url}/projects" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px;">🚀 View Projects</a>
+                  <a href="${siteConfig.url}/skills" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px;">💻 My Skills</a>
+                  <a href="${siteConfig.url}/about" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px;">👨‍💻 About Me</a>
                 </div>
                 
-                <!-- Alternative Contact Methods -->
-                <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin: 20px 0;">
-                  <h4 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">📞 Other Ways to Reach Me</h4>
+                <!-- Quick Contact -->
+                <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
+                  <p style="margin: 0 0 10px 0; color: #1e293b; font-size: 14px; font-weight: 600;">📞 Need Urgent Help?</p>
                   <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                    <a href="${socialLinks.linkedin}" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: 500;">💼 LinkedIn</a>
-                    <a href="${socialLinks.calendly}" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500;">📅 Schedule Call</a>
-                    <a href="${socialLinks.github}" target="_blank" style="color: #1f2937; text-decoration: none; font-weight: 500;">💻 GitHub</a>
+                    <a href="${socialLinks.whatsapp}" target="_blank" style="color: #25d366; text-decoration: none; font-weight: 500; font-size: 13px;">� WhatsApp</a>
+                    <a href="${socialLinks.linkedin}" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: 500; font-size: 13px;">💼 LinkedIn</a>
+                    <a href="${socialLinks.calendly}" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500; font-size: 13px;">� Schedule Call</a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           
-          <div style="background: #1e293b; padding: 30px 20px; text-align: center;">
-            <p style="margin: 0 0 15px 0; color: white; font-size: 18px; font-weight: 600;">Best regards,</p>
-            <p style="margin: 0 0 20px 0; color: #667eea; font-size: 24px; font-weight: 700;">${personalInfo.name.full}</p>
-            <p style="margin: 0 0 20px 0; color: #94a3b8; font-size: 14px; font-style: italic;">Full-Stack Developer & Digital Solutions Expert</p>
-            <div style="border-top: 1px solid #374151; padding-top: 20px; margin-top: 20px;">
-              <p style="margin: 0; color: #94a3b8; font-size: 14px;">
-                📧 <a href="mailto:${personalInfo.email}" style="color: #667eea; text-decoration: none;">${personalInfo.email}</a><br>
-                🔗 <a href="${socialLinks.linkedin}" style="color: #667eea; text-decoration: none;">LinkedIn</a> | 
-                🌐 <a href="${siteConfig.url}" style="color: #667eea; text-decoration: none;">Portfolio</a>
+          <div style="background: #1e293b; padding: 20px; text-align: center;">
+            <p style="margin: 0 0 8px 0; color: white; font-size: 16px; font-weight: 600;">Best regards,</p>
+            <p style="margin: 0 0 12px 0; color: #667eea; font-size: 20px; font-weight: 700;">${personalInfo.name.full}</p>
+            <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 13px;">Full-Stack Developer & Digital Solutions Expert</p>
+            <div style="border-top: 1px solid #374151; padding-top: 15px;">
+              <p style="margin: 0; color: #94a3b8; font-size: 12px;">
+                📧 ${personalInfo.email} | 🌐 <a href="${siteConfig.url}" style="color: #667eea; text-decoration: none;">Portfolio</a>
               </p>
-              <p style="margin: 15px 0 0 0; color: #64748b; font-size: 12px;">
-                This is an automated response. Please don't reply to this email - I'll respond personally soon!
+              <p style="margin: 8px 0 0 0; color: #64748b; font-size: 11px;">
+                This is an automated confirmation. I'll respond personally soon!
               </p>
             </div>
           </div>
