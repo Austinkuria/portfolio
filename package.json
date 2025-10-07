@@ -23,7 +23,7 @@
     "geist": "^1.2.0",
     "next": "15.4.7",
     "next-themes": "^0.2.1",
-    "nodemailer": "^7.0.6",
+    "nodemailer": "^7.0.7",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-icons": "^4.11.0",
