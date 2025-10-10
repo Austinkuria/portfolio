@@ -4,7 +4,7 @@ import { personalInfo, seoConfig } from '@/config';
 
 export const metadata = {
   title: seoConfig.defaultTitle,
-  description: `${personalInfo.tagline}. Portfolio, projects, and contact for ${personalInfo.name.full}, a ${personalInfo.title.toLowerCase()} based in ${personalInfo.location}.`,
+  description: personalInfo.description,
 };
 
 export default function Home() {

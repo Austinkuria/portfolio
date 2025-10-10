@@ -10,7 +10,7 @@ export const metadata = {
         template: seoConfig.titleTemplate,
         default: seoConfig.defaultTitle,
     },
-    description: personalInfo.tagline,
+    description: personalInfo.description,
 };
 
 // App router configuration

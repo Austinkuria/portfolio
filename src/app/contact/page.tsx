@@ -1,15 +1,29 @@
 'use client';
 
-import { personalInfo, socialLinks, contactConfig, errorMessages } from '@/config';
-
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { m } from 'framer-motion';
-import { FaEnvelope, FaMapMarkerAlt, FaCheck, FaExclamationTriangle, FaLinkedin, FaPaperPlane, FaWhatsapp, FaGithub, FaPhone, FaChevronDown, FaCode, FaPalette } from 'react-icons/fa';
-import { MotionDiv, MotionP } from '@/lib/motion';
-import Image from 'next/image';
+import { 
+  FaPaperPlane, 
+  FaWhatsapp, 
+  FaMapMarkerAlt, 
+  FaEnvelope, 
+  FaPhone, 
+  FaLinkedin, 
+  FaGithub, 
+  FaExclamationTriangle, 
+  FaCheck, 
+  FaCode,
+  FaChevronDown
+} from 'react-icons/fa';
+import { MotionDiv } from '@/lib/motion';
 import RouteOptimizer from '@/components/RouteOptimizer';
+import { socialLinks, contactConfig, personalInfo } from '@/config';
+import { ContactForm, ContactInformation, FAQComponent } from '@/components/contact';
 
-export default function Contact() {  
+export default function Contact() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -30,6 +44,29 @@ export default function Contact() {
   const [attachmentWarning, setAttachmentWarning] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   // const [fileDragging, setFileDragging] = useState(false); // Commented out - file upload disabled
+
+  // Loading effect with progress bar
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // 2 second loading time
+
+    // Progress simulation
+    const progressInterval = setInterval(() => {
+      setLoadingProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + Math.random() * 15; // Random progress increment
+      });
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(progressInterval);
+    };
+  }, []);
 
   // FAQ Data
   const faqData = [
@@ -595,7 +632,7 @@ export default function Contact() {
                   href={socialLinks.whatsapp}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold inline-flex items-center shadow-lg hover:shadow-xl transition-all duration-300"
+                 
                 >
                   <FaWhatsapp className="mr-2" />
                   Quick WhatsApp
@@ -1340,7 +1377,7 @@ export default function Contact() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                       </span>
                       {fieldTouched.budgetRange && (
-                        <span className="absolute right-8 top-1/2 -translate-y-1/2">
+                        <span className="absolute right-8 top-1/2">
                           {validationErrors.budgetRange ? (
                             <FaExclamationTriangle className="text-red-500 w-4 h-4" />
                           ) : formData.budgetRange ? (
@@ -1471,7 +1508,7 @@ export default function Contact() {
                         <FaExclamationTriangle className="mr-2 flex-shrink-0 mt-1" />
                         <div className="flex-1">
                           <div className="whitespace-pre-line">
-                            {errorMessage || errorMessages.generic}
+                            {errorMessage}
                           </div>
                           {whatsappUrl && (
                             <div className="mt-3">

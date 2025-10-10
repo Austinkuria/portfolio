@@ -13,7 +13,7 @@ export const personalInfo = {
     },
     title: 'Full Stack Developer',
     tagline: 'Building scalable solutions with code & creativity',
-    description: 'Full Stack Developer with a passion for building scalable web applications that solve real-world problems',
+    description: 'Building scalable solutions with code & creativity. Portfolio, projects, and contact for Austin Maina, a full stack developer based in Nairobi, Kenya.',
     location: 'Nairobi, Kenya',
     email: process.env.NEXT_PUBLIC_EMAIL || '',
     phone: process.env.NEXT_PUBLIC_PHONE || '',

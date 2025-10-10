@@ -21,7 +21,7 @@ export const siteMetadata: Metadata = {
   },
   openGraph: {
     title: seoConfig.defaultTitle,
-    description: `${personalInfo.title} specializing in scalable web applications built with React, Node.js, and modern cloud architecture.`,
+    description: personalInfo.description,
     url: siteConfig.url,
     siteName: siteConfig.siteName,
     images: [

@@ -7,7 +7,7 @@ const { personalInfo, seoConfig } = require('@/config');
 // From page.metadata.ts
 export const metadata = {
     title: seoConfig.defaultTitle,
-    description: personalInfo.tagline,
+    description: personalInfo.description,
 };
 
 // SEO and performance settings

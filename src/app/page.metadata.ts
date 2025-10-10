@@ -3,13 +3,13 @@ import { personalInfo, siteConfig, seoConfig } from '@/config';
 // Page-specific metadata for the homepage
 export const homeMetadata = {
   title: seoConfig.defaultTitle,
-  description: `${personalInfo.tagline}. Portfolio, projects, and contact for ${personalInfo.name.full}, a ${personalInfo.title.toLowerCase()} based in ${personalInfo.location}.`,
+  description: personalInfo.description,
   alternates: {
     canonical: siteConfig.url
   },
   openGraph: {
     title: seoConfig.defaultTitle,
-    description: personalInfo.tagline,
+    description: personalInfo.description,
     images: [
       {
         url: seoConfig.openGraph.images.url,
