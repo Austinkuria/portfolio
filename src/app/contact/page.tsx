@@ -629,10 +629,10 @@ export default function Contact() {
                 </m.button>
                 
                 <a
-                  href={socialLinks.whatsapp}
+                  href={`https://wa.me/${personalInfo.whatsappNumber}?text=${encodeURIComponent(contactConfig.whatsappMessage)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                 
+                  className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold inline-flex items-center shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <FaWhatsapp className="mr-2" />
                   Quick WhatsApp
@@ -705,7 +705,7 @@ export default function Contact() {
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">Email</h5>
                       <a 
-                        href={socialLinks.email}
+                        href={`mailto:${personalInfo.email}?subject=${encodeURIComponent(`Project Inquiry from ${personalInfo.name.full} Portfolio`)}&body=${encodeURIComponent(`Hi ${personalInfo.name.first},\n\nI found your portfolio and would like to discuss a project with you.\n\nBest regards,`)}`}
                         className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
                       >
                         Send Email
@@ -720,7 +720,7 @@ export default function Contact() {
                     <div className="min-w-0 flex-1">
                       <h5 className="font-medium text-sm sm:text-base">WhatsApp</h5>
                       <a 
-                        href={socialLinks.whatsapp}
+                        href={`https://wa.me/${personalInfo.whatsappNumber}?text=${encodeURIComponent(contactConfig.whatsappMessage)}`}
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
