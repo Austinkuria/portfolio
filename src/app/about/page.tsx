@@ -46,16 +46,17 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="text-2xl font-bold mb-4">{personalInfo.title} with a Passion for Innovation</h3>
+            <h3 className="text-2xl font-bold mb-4">I'm {personalInfo.name.full} - {personalInfo.title} with a Passion for Innovation</h3>
             <p className="text-muted-foreground mb-6">
-              {personalInfo.description}. With several years of experience 
-              in both frontend and backend development, I enjoy bringing ideas to life through clean code 
-              and thoughtful design.
+              {personalInfo.name.full} is a professional Full Stack Developer based in {personalInfo.location}. 
+              With several years of experience in both frontend and backend development, I specialize in 
+              creating modern web applications using React, Next.js, Node.js, TypeScript, Python, and Django. 
+              I enjoy bringing ideas to life through clean code and thoughtful design.
             </p>
             <p className="text-muted-foreground mb-6">
-              My journey in software development has taken me from creating simple websites to 
-              architecting complex systems. I thrive in collaborative environments where I can 
-              contribute my technical expertise while learning from others.
+              My journey as {personalInfo.name.full} in software development has taken me from creating simple 
+              websites to architecting complex systems. I thrive in collaborative environments where I can 
+              contribute my technical expertise while continuously learning and growing.
             </p>
             
             <div>

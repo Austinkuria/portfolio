@@ -80,7 +80,7 @@ export default function Hero() {
               transition={{ duration: 0.8 }}
               className="mb-6"
             >
-              <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">{personalInfo.title}</span>
+              <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">{personalInfo.name.full} - {personalInfo.title}</span>
             </MotionDiv>
             <MotionH1 
               className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight"
@@ -88,6 +88,8 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
             >
+              Hi, I'm <span className="text-primary">{personalInfo.name.first}</span>
+              <br />
               {personalInfo.tagline.split(' ').slice(0, 3).join(' ')} with{' '}
               <span className="relative">
                 <span className="text-primary inline-block relative z-10" style={{ minWidth: '180px' }}>
@@ -111,6 +113,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
+              <strong>{personalInfo.name.full}</strong> - A passionate Full Stack Developer based in {personalInfo.location}. 
               I craft modern web applications with a focus on performance, 
               accessibility, and exceptional user experience.
             </MotionP>

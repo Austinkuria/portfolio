@@ -10,6 +10,7 @@ import { Analytics } from '@vercel/analytics/next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
+import StructuredData from '@/components/StructuredData';
 
 export default function RootLayout({
   children,
@@ -37,6 +38,9 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://vitals.vercel-insights.com" crossOrigin="anonymous" />
         
+        {/* Humans.txt link */}
+        <link rel="author" href="/humans.txt" />
+        
         {/* Improved chunk loading error detection */}
         <script dangerouslySetInnerHTML={{
           __html: `
@@ -51,6 +55,7 @@ export default function RootLayout({
           `
         }} />
         <link rel="icon" href="/images/am-logo.jpg" type="image/jpeg" />
+        <StructuredData />
       </head>
       <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
         {/* Google Tag Manager (noscript) */}

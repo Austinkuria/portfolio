@@ -1,0 +1,21 @@
+/* TEAM */
+Developer: Austin Maina
+Site: https://austinmaina.vercel.app
+Title: Full Stack Developer & Software Engineer
+Location: Nairobi, Kenya
+GitHub: https://github.com/Austinkuria
+LinkedIn: https://www.linkedin.com/in/austin-maina/
+
+/* SITE */
+Last update: 2025/10/10
+Standards: HTML5, CSS3, JavaScript ES6+
+Components: React, Next.js 14, TypeScript
+Styling: TailwindCSS
+Deployment: Vercel
+Software: VS Code, Git
+
+/* TECHNOLOGIES */
+Frontend: React, Next.js, TypeScript, TailwindCSS
+Backend: Node.js, Python, Django
+Database: PostgreSQL, MongoDB
+Tools: Git, Docker, Vercel, Postman

@@ -1,7 +1,29 @@
 {
-  "name": "portfolio",
+  "name": "austin-maina-portfolio",
   "version": "0.1.0",
   "private": true,
+  "description": "Austin Maina - Professional Full Stack Developer & Software Engineer Portfolio. Showcasing modern web applications built with React, Next.js, TypeScript, Node.js, Python & Django. Based in Nairobi, Kenya.",
+  "author": "Austin Maina <austinmaina.dev@gmail.com>",
+  "homepage": "https://austinmaina.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Austinkuria/portfolio"
+  },
+  "keywords": [
+    "Austin Maina",
+    "portfolio",
+    "full stack developer",
+    "software engineer",
+    "web developer",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Node.js",
+    "Python",
+    "Django",
+    "Kenya",
+    "Nairobi"
+  ],
   "type": "module",
   "packageManager": "pnpm@8.15.5",
   "scripts": {

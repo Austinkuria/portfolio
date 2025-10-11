@@ -1,17 +1,24 @@
 # https://austinmaina.vercel.app robots.txt
+# Austin Maina - Full Stack Developer Portfolio
+
 User-agent: *
-Allow: /*
-Disallow: /api/*
-Disallow: /_next/*
-Disallow: /static/*
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+Disallow: /static/
 
 # Allow crawling of content
 Allow: /*.js
 Allow: /*.css
-Allow: /images/*
+Allow: /images/
+Allow: /about
+Allow: /projects
+Allow: /skills
+Allow: /contact
+Allow: /blog
 
 # Sitemaps
 Sitemap: https://austinmaina.vercel.app/sitemap.xml
 
-# Crawl delay
-Crawl-delay: 10
+# No crawl delay for better indexing
+# Crawl-delay: 10
