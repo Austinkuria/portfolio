@@ -72,7 +72,7 @@ export default function Hero() {
       </div>
       
       <div className="container mx-auto max-w-6xl z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-start gap-16">
           <div>
             <MotionDiv
               initial={{ opacity: 0, scale: 0.9 }}
@@ -83,7 +83,7 @@ export default function Hero() {
               <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">{personalInfo.name.full} - {personalInfo.title}</span>
             </MotionDiv>
             <MotionH1 
-              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-6 leading-tight"
+              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-12 md:mb-12 leading-tight min-h-[280px] md:min-h-[320px] lg:min-h-[440px]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -91,19 +91,15 @@ export default function Hero() {
               Hi, I'm <span className="text-primary">{personalInfo.name.first}</span>
               <br />
               I transform ideas into{' '}
-              <span className="relative">
-                <span className="text-primary inline-block relative z-10" style={{ minWidth: '280px' }}>
+              <span className="relative inline-block align-top" style={{ minWidth: '100%', maxWidth: '100%' }}>
+                <span className="text-primary relative z-10 inline-block">
                   <TypeAnimation
-                    sequence={[
-                      'Web Apps', 2000,
-                      'React Solutions', 2000,
-                      'Django APIs', 2000,
-                      'Full Stack Apps', 2000,
-                      'Modern UIs', 2000,
-                    ]}
+                    sequence={[...personalInfo.hero.typingAnimation]}
                     wrapper="span"
                     speed={50}
                     repeat={Infinity}
+                    cursor={true}
+                    style={{ display: 'inline-block' }}
                   />
                 </span>
                 <span className="absolute bottom-0 left-0 w-full h-3 bg-primary/20 -z-0"></span>
@@ -115,9 +111,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              I'm <strong>{personalInfo.name.full}</strong>, a Software Engineer and Full Stack Developer from {personalInfo.location} 
-              specializing in MERN Stack (MongoDB, Express, React, Node.js) and PERN Stack (PostgreSQL, Express, React, Node.js). 
-              I transform ideas into high-performance web applications using React, Next.js, TypeScript, and Python.
+              Software Engineer specializing in MERN and PERN stacks, building high-performance web applications.
             </MotionP>
             <MotionDiv 
               className="flex flex-col sm:flex-row gap-4 mb-10 md:justify-start justify-center"

@@ -21,6 +21,15 @@ export const personalInfo = {
     image: '/images/Passport_Photo_AustinMaina.jpg',
     logo: '/images/am-logo.jpg',
     initials: 'AM',
+    hero: {
+        typingAnimation: [
+            'Interactive Web Apps', 2000,
+            'Scalable APIs', 2000,
+            'Modern Interfaces', 2000,
+            'Robust Full-Stack Apps', 2500,
+            'Seamless User Experiences', 2500,
+        ] as const,
+    },
 } as const;
 
 // Website Configuration
