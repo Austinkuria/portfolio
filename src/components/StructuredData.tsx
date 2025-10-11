@@ -11,7 +11,7 @@ export default function StructuredData() {
     name: personalInfo.name.full,
     givenName: personalInfo.name.first,
     familyName: personalInfo.name.last,
-    jobTitle: personalInfo.title,
+    jobTitle: 'Software Engineer and Full Stack Developer',
     description: personalInfo.description,
     image: `${siteConfig.url}${personalInfo.image}`,
     url: siteConfig.url,

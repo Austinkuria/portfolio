@@ -13,7 +13,7 @@ export const personalInfo = {
     },
     title: 'Full Stack Developer & Software Engineer',
     tagline: 'Transforming ideas into powerful web applications',
-    description: 'Austin Maina - Full Stack Developer & Software Engineer based in Nairobi, Kenya. Experienced in React, Next.js, Node.js, TypeScript, Python & Django. View my portfolio, projects, and get in touch for web development services.',
+    description: 'Austin Maina - Software Engineer & Full Stack Developer based in Nairobi, Kenya. Experienced in React, Next.js, Node.js, TypeScript, Python & Django. View my portfolio, projects, and get in touch for web development services.',
     location: 'Nairobi, Kenya',
     email: process.env.NEXT_PUBLIC_EMAIL || '',
     phone: process.env.NEXT_PUBLIC_PHONE || '',
@@ -98,8 +98,8 @@ export const navigation = {
 
 // SEO Configuration
 export const seoConfig = {
-    defaultTitle: `Austin Maina - Full Stack Developer | Software Engineer Portfolio`,
-    titleTemplate: `%s | Austin Maina`,
+    defaultTitle: `Austin Maina - Software Engineer & Full Stack Developer Portfolio`,
+    titleTemplate: `%s | Austin Maina - Software Engineer`,
     keywords: [
         'Austin Maina',
         'Austin Maina Portfolio',

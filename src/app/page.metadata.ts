@@ -2,24 +2,27 @@ import { siteConfig, seoConfig } from '@/config';
 
 // Page-specific metadata for the homepage
 export const homeMetadata = {
-  title: 'Austin Maina - Full Stack Developer | Software Engineer Portfolio',
-  description: 'Austin Maina - Professional Full Stack Developer & Software Engineer in Nairobi, Kenya. Specializing in React, Next.js, Node.js, TypeScript, Python & Django. Explore my portfolio of web applications and projects.',
+  title: 'Austin Maina - Software Engineer & Full Stack Developer Portfolio',
+  description: 'Austin Maina - Software Engineer & Full Stack Developer in Nairobi, Kenya. Specializing in React, Next.js, Node.js, TypeScript, Python & Django. Explore my portfolio of web applications and projects.',
   alternates: {
     canonical: siteConfig.url
   },
   keywords: [
     'Austin Maina',
+    'Austin Maina Software Engineer',
+    'Austin Maina Full Stack Developer',
     'Austin Maina Portfolio',
     'Austin Maina Developer',
-    'Full Stack Developer Kenya',
+    'Software Engineer Kenya',
     'Software Engineer Nairobi',
+    'Full Stack Developer Kenya',
     'React Developer Kenya',
     'Next.js Developer',
     'Web Developer Kenya',
   ],
   openGraph: {
-    title: 'Austin Maina - Full Stack Developer | Software Engineer Portfolio',
-    description: 'Austin Maina - Professional Full Stack Developer & Software Engineer in Nairobi, Kenya. Specializing in React, Next.js, Node.js, TypeScript, Python & Django.',
+    title: 'Austin Maina - Software Engineer & Full Stack Developer',
+    description: 'Austin Maina - Software Engineer & Full Stack Developer in Nairobi, Kenya. Specializing in React, Next.js, Node.js, TypeScript, Python & Django.',
     type: 'website',
     url: siteConfig.url,
     images: [
@@ -33,8 +36,8 @@ export const homeMetadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Austin Maina - Full Stack Developer',
-    description: 'Professional Full Stack Developer & Software Engineer in Nairobi, Kenya',
+    title: 'Austin Maina - Software Engineer & Full Stack Developer',
+    description: 'Software Engineer & Full Stack Developer in Nairobi, Kenya',
   },
   other: {
     'application-name': siteConfig.applicationName,
