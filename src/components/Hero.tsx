@@ -157,8 +157,8 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <div className="relative w-80 h-64 md:w-[400px] md:h-80 lg:w-[440px] lg:h-[360px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg animate-pulse-slow"></div>
-              <div className="absolute inset-4 rounded-lg border border-primary/20 backdrop-blur-sm bg-background/50 overflow-y-auto overflow-x-hidden">                
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl animate-pulse-slow"></div>
+              <div className="absolute inset-4 rounded-xl border border-primary/20 backdrop-blur-sm bg-background/50 overflow-y-auto overflow-x-hidden">                
                 <MotionDiv
                   className="p-4 font-mono text-xs md:text-sm text-foreground/70 h-full"
                   initial={{ opacity: 0 }}
