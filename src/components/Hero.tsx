@@ -37,7 +37,7 @@ export default function Hero() {
   };
 
   return (
-    <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden px-4 pt-28">
+    <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden px-4 pt-20 md:pt-24">
       <div className="absolute inset-0 -z-10">
         <MotionDiv 
           className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20"
@@ -83,7 +83,7 @@ export default function Hero() {
               <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">{personalInfo.name.full} - {personalInfo.title}</span>
             </MotionDiv>
             <MotionH1 
-              className="text-4xl md:text-5xl lg:text-7xl font-bold mb-12 md:mb-12 leading-tight min-h-[280px] md:min-h-[320px] lg:min-h-[440px]"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-3 leading-tight min-h-[280px] md:min-h-[300px] lg:min-h-[320px]"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
@@ -105,59 +105,49 @@ export default function Hero() {
                 <span className="absolute bottom-0 left-0 w-full h-3 bg-primary/20 -z-0"></span>
               </span>         
             </MotionH1>
-            <MotionP 
-              className="text-xl text-muted-foreground mb-8 max-w-xl"
+            <MotionDiv 
+              className="flex flex-col sm:flex-row items-center gap-4 md:justify-start justify-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Software Engineer specializing in MERN and PERN stacks, building high-performance web applications.
-            </MotionP>
-            <MotionDiv 
-              className="flex flex-col sm:flex-row gap-4 mb-10 md:justify-start justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <CustomLink 
-                href="/projects" 
-                className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-all duration-300 text-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1"
-              >
-                View Projects
-              </CustomLink>
-              <CustomLink 
-                href={socialLinks.resume} 
-                target="_blank"
-                className="bg-background text-foreground hover:bg-secondary/20 border border-border px-6 py-3 rounded-lg font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1"
-              >
-                <HiDownload className="h-5 w-5" />
-                Resume
-              </CustomLink>
-            </MotionDiv>
-            <MotionDiv 
-              className="flex gap-4 md:justify-start justify-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              <a 
-                href={socialLinks.github}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-foreground hover:text-white hover:bg-[#24292e] transition-all p-3 rounded-full border border-border hover:border-[#24292e]"
-                aria-label="GitHub"
-              >
-                <FaGithub className="h-5 w-5" />
-              </a>
-              <a 
-                href={socialLinks.linkedin}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-foreground hover:text-white hover:bg-[#0a66c2] transition-all p-3 rounded-full border border-border hover:border-[#0a66c2]"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin className="h-5 w-5" />
-              </a>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <CustomLink 
+                  href="/projects" 
+                  className="bg-primary text-primary-foreground hover:bg-primary/80 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 text-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1"
+                >
+                  View Projects
+                </CustomLink>
+                <CustomLink 
+                  href={socialLinks.resume} 
+                  target="_blank"
+                  className="bg-background text-foreground hover:bg-secondary/20 border border-border px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1"
+                >
+                  <HiDownload className="h-5 w-5" />
+                  Resume
+                </CustomLink>
+              </div>
+              <div className="hidden sm:block w-px h-10 bg-border"></div>
+              <div className="flex gap-3">
+                <a 
+                  href={socialLinks.github}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:text-white hover:bg-[#24292e] transition-all p-3 rounded-full border border-border hover:border-[#24292e]"
+                  aria-label="GitHub"
+                >
+                  <FaGithub className="h-5 w-5" />
+                </a>
+                <a 
+                  href={socialLinks.linkedin}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-foreground hover:text-white hover:bg-[#0a66c2] transition-all p-3 rounded-full border border-border hover:border-[#0a66c2]"
+                  aria-label="LinkedIn"
+                >
+                  <FaLinkedin className="h-5 w-5" />
+                </a>
+              </div>
             </MotionDiv>
           </div>
           <MotionDiv 
@@ -166,7 +156,7 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="relative w-80 h-72 md:w-[420px] md:h-96 lg:w-[460px] lg:h-[420px]">
+            <div className="relative w-80 h-64 md:w-[400px] md:h-80 lg:w-[440px] lg:h-[360px]">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg animate-pulse-slow"></div>
               <div className="absolute inset-4 rounded-lg border border-primary/20 backdrop-blur-sm bg-background/50 overflow-y-auto overflow-x-hidden">                
                 <MotionDiv
