@@ -8,7 +8,7 @@ import { personalInfo } from '@/config';
 
 export default function HomeAboutSection() {
   return (
-    <section id="home-about" className="py-20 w-full">
+    <section id="home-about" className="pt-2 pb-20 w-full">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           <MotionDiv

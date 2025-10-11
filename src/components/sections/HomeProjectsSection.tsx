@@ -28,7 +28,7 @@ const featuredProjects = [
 
 export default function HomeProjectsSection() {
 	return (
-		<section id="home-projects" className="py-20 w-full">
+		<section id="home-projects" className="py-12 w-full">
 			<div className="container mx-auto px-4">
 				<MotionDiv
 					initial={{ opacity: 0, y: 20 }}
@@ -45,7 +45,7 @@ export default function HomeProjectsSection() {
 						and design
 					</p>
 				</MotionDiv>
-				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 max-w-4xl mx-auto">
 					{featuredProjects.map((project, index) => (
 						<MotionDiv
 							key={project.id}
@@ -53,18 +53,18 @@ export default function HomeProjectsSection() {
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true }}
 							transition={{ duration: 0.6, delay: index * 0.2 }}
-							className="bg-card rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+							className="bg-card rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
 						>
-							<div className="relative h-52 overflow-hidden">
+							<div className="relative h-44 overflow-hidden bg-white dark:bg-background mx-3 mt-3 -mb-2 rounded-lg">
 								<Image
 									src={project.image}
 									alt={project.title}
 									fill
-									className="object-contain transition-transform duration-500 hover:scale-105 bg-white dark:bg-background"
+									className="object-contain transition-transform duration-500 hover:scale-105 rounded-lg"
 									sizes="(max-width: 768px) 100vw, 50vw"
 								/>
 							</div>
-							<div className="p-6">
+							<div className="px-5 pb-5 pt-0">
 								<h3 className="text-xl font-bold mb-2">{project.title}</h3>
 								<p className="text-muted-foreground mb-4">
 									{project.description}

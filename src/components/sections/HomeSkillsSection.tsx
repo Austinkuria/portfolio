@@ -16,7 +16,8 @@ const skills = [
 
 export default function HomeSkillsSection() {
   return (
-    <section id="home-skills" className="py-20 w-full bg-muted/20">
+
+<section id="home-skills" className="pt-2 pb-20 w-full bg-muted/20">
       <div className="container mx-auto px-4">
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
