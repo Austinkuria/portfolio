@@ -166,9 +166,9 @@ export default function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            <div className="relative w-72 h-72 md:w-96 md:h-96">
+            <div className="relative w-80 h-72 md:w-[420px] md:h-96 lg:w-[460px] lg:h-[420px]">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-lg animate-pulse-slow"></div>
-              <div className="absolute inset-4 rounded-lg border border-primary/20 backdrop-blur-sm bg-background/50 overflow-auto">                
+              <div className="absolute inset-4 rounded-lg border border-primary/20 backdrop-blur-sm bg-background/50 overflow-y-auto overflow-x-hidden">                
                 <MotionDiv
                   className="p-4 font-mono text-xs md:text-sm text-foreground/70 h-full"
                   initial={{ opacity: 0 }}
