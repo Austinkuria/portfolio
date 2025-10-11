@@ -28,6 +28,11 @@ export default function StructuredData() {
     knowsAbout: [
       'Full Stack Development',
       'Web Development',
+      'MERN Stack',
+      'PERN Stack',
+      'MongoDB',
+      'PostgreSQL',
+      'Express.js',
       'React',
       'Next.js',
       'Node.js',

@@ -2,8 +2,8 @@ import { siteConfig, seoConfig } from '@/config';
 
 // Page-specific metadata for the homepage
 export const homeMetadata = {
-  title: 'Austin Maina - Software Engineer & Full Stack Developer Portfolio',
-  description: 'Austin Maina - Software Engineer & Full Stack Developer in Nairobi, Kenya. Specializing in React, Next.js, Node.js, TypeScript, Python & Django. Explore my portfolio of web applications and projects.',
+  title: 'Austin Maina - Software Engineer & Full Stack Developer | MERN & PERN Stack Expert',
+  description: 'Austin Maina - Software Engineer & Full Stack Developer in Nairobi, Kenya. Expert in MERN Stack (MongoDB, Express, React, Node.js) and PERN Stack (PostgreSQL, Express, React, Node.js). Specializing in React, Next.js, TypeScript, Python & Django.',
   alternates: {
     canonical: siteConfig.url
   },
@@ -11,8 +11,14 @@ export const homeMetadata = {
     'Austin Maina',
     'Austin Maina Software Engineer',
     'Austin Maina Full Stack Developer',
+    'Austin Maina MERN Stack',
+    'Austin Maina PERN Stack',
+    'Austin Maina MERN',
+    'Austin Maina PERN',
     'Austin Maina Portfolio',
     'Austin Maina Developer',
+    'MERN Stack Developer Kenya',
+    'PERN Stack Developer Kenya',
     'Software Engineer Kenya',
     'Software Engineer Nairobi',
     'Full Stack Developer Kenya',
@@ -21,8 +27,8 @@ export const homeMetadata = {
     'Web Developer Kenya',
   ],
   openGraph: {
-    title: 'Austin Maina - Software Engineer & Full Stack Developer',
-    description: 'Austin Maina - Software Engineer & Full Stack Developer in Nairobi, Kenya. Specializing in React, Next.js, Node.js, TypeScript, Python & Django.',
+    title: 'Austin Maina - Software Engineer & Full Stack Developer | MERN & PERN Stack',
+    description: 'Austin Maina - Software Engineer & Full Stack Developer in Nairobi, Kenya. Expert in MERN Stack and PERN Stack. Specializing in React, Next.js, Node.js, TypeScript, Python & Django.',
     type: 'website',
     url: siteConfig.url,
     images: [
@@ -36,8 +42,8 @@ export const homeMetadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Austin Maina - Software Engineer & Full Stack Developer',
-    description: 'Software Engineer & Full Stack Developer in Nairobi, Kenya',
+    title: 'Austin Maina - Software Engineer & Full Stack Developer | MERN & PERN Stack',
+    description: 'Software Engineer & Full Stack Developer in Nairobi, Kenya. MERN & PERN Stack Expert',
   },
   other: {
     'application-name': siteConfig.applicationName,

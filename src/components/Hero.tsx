@@ -115,9 +115,9 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              I'm <strong>{personalInfo.name.full}</strong>, a Full Stack Developer from {personalInfo.location} 
-              who transforms ideas into high-performance web applications. Specializing in React, Next.js, 
-              TypeScript, and Python, I build scalable solutions that combine elegant code with outstanding user experiences.
+              I'm <strong>{personalInfo.name.full}</strong>, a Software Engineer and Full Stack Developer from {personalInfo.location} 
+              specializing in MERN Stack (MongoDB, Express, React, Node.js) and PERN Stack (PostgreSQL, Express, React, Node.js). 
+              I transform ideas into high-performance web applications using React, Next.js, TypeScript, and Python.
             </MotionP>
             <MotionDiv 
               className="flex flex-col sm:flex-row gap-4 mb-10 md:justify-start justify-center"
