@@ -90,14 +90,16 @@ export default function Hero() {
             >
               Hi, I'm <span className="text-primary">{personalInfo.name.first}</span>
               <br />
-              {personalInfo.tagline.split(' ').slice(0, 3).join(' ')} with{' '}
+              I transform ideas into{' '}
               <span className="relative">
-                <span className="text-primary inline-block relative z-10" style={{ minWidth: '180px' }}>
+                <span className="text-primary inline-block relative z-10" style={{ minWidth: '280px' }}>
                   <TypeAnimation
                     sequence={[
-                      'Code', 2000,
-                      'Creativity', 2000,
-                      'Passion', 2000,
+                      'Web Apps', 2000,
+                      'React Solutions', 2000,
+                      'Django APIs', 2000,
+                      'Full Stack Apps', 2000,
+                      'Modern UIs', 2000,
                     ]}
                     wrapper="span"
                     speed={50}
@@ -113,9 +115,9 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <strong>{personalInfo.name.full}</strong> - A passionate Full Stack Developer based in {personalInfo.location}. 
-              I craft modern web applications with a focus on performance, 
-              accessibility, and exceptional user experience.
+              I'm <strong>{personalInfo.name.full}</strong>, a Full Stack Developer from {personalInfo.location} 
+              who transforms ideas into high-performance web applications. Specializing in React, Next.js, 
+              TypeScript, and Python, I build scalable solutions that combine elegant code with outstanding user experiences.
             </MotionP>
             <MotionDiv 
               className="flex flex-col sm:flex-row gap-4 mb-10 md:justify-start justify-center"

@@ -1,5 +1,26 @@
+# Austin Maina - Full Stack Developer Portfolio
 
-# Portfolio Website
+🚀 **Live Site**: [austinmaina.vercel.app](https://austinmaina.vercel.app)
+
+[![Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://austinmaina.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-blue?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
+
+---
+
+## 👨‍💻 About Austin Maina
+
+This is the personal portfolio website of **Austin Maina**, a professional Full Stack Developer and Software Engineer based in **Nairobi, Kenya**. The site showcases my skills, projects, and experience in modern web development.
+
+**Austin Maina** specializes in:
+- ⚛️ React & Next.js Development
+- 📘 TypeScript & JavaScript
+- 🎨 Modern UI/UX with TailwindCSS
+- 🖥️ Full Stack Applications
+- 🐍 Python & Django Backend Development
+- ☁️ Cloud Deployment & DevOps
+
+---
 
 This is a personal portfolio website showcasing my skills, projects, and experience as a Full Stack Developer. Built with [Next.js](https://nextjs.org), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/), it features a modern, responsive design and interactive UI.
 
@@ -89,6 +110,39 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ---
 
 ## 📈 Performance & SEO
+
+- ✅ **Google Search Console Verified**: Optimized for search engines
+- ✅ **Structured Data (JSON-LD)**: Enhanced search results with rich snippets
+- ✅ **Open Graph & Twitter Cards**: Beautiful social media previews
+- ✅ **Sitemap & Robots.txt**: Proper indexing by search engines
+- ✅ **Semantic HTML**: Accessibility and SEO best practices
+- ✅ **Fast Load Times**: Optimized images and code splitting
+- ✅ **Mobile-First Design**: Responsive across all devices
+
+---
+
+## 📞 Contact Austin Maina
+
+- 🌐 **Portfolio**: [austinmaina.vercel.app](https://austinmaina.vercel.app)
+- 💼 **LinkedIn**: [linkedin.com/in/austin-maina](https://www.linkedin.com/in/austin-maina/)
+- 🐙 **GitHub**: [github.com/Austinkuria](https://github.com/Austinkuria)
+- 📧 **Email**: Available on portfolio website
+- 📍 **Location**: Nairobi, Kenya
+
+---
+
+## 📄 License
+
+© 2025 Austin Maina. All rights reserved.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with ❤️ by **Austin Maina** using modern web technologies.
+
+**Keywords**: Austin Maina, Full Stack Developer, Software Engineer, React Developer, Next.js Developer, TypeScript, Web Developer Kenya, Nairobi Developer, Portfolio Website
+
 
 - **SEO:** Structured data, Open Graph, sitemap
 - **Accessibility:** ARIA labels, keyboard navigation

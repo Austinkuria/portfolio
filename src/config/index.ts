@@ -11,8 +11,8 @@ export const personalInfo = {
         full: 'Austin Maina',
         display: 'AustinMaina', // Used in URLs and specific contexts
     },
-    title: 'Full Stack Developer',
-    tagline: 'Building scalable solutions with code & creativity',
+    title: 'Full Stack Developer & Software Engineer',
+    tagline: 'Transforming ideas into powerful web applications',
     description: 'Austin Maina - Full Stack Developer & Software Engineer based in Nairobi, Kenya. Experienced in React, Next.js, Node.js, TypeScript, Python & Django. View my portfolio, projects, and get in touch for web development services.',
     location: 'Nairobi, Kenya',
     email: process.env.NEXT_PUBLIC_EMAIL || '',

@@ -1,4 +1,4 @@
-import { personalInfo, siteConfig, seoConfig } from '@/config';
+import { siteConfig, seoConfig } from '@/config';
 
 // Page-specific metadata for the homepage
 export const homeMetadata = {
