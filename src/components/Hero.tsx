@@ -121,7 +121,7 @@ export default function Hero() {
                 <CustomLink 
                   href={socialLinks.resume} 
                   target="_blank"
-                  className="bg-background text-foreground hover:bg-secondary/20 border border-border px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1"
+                  className="bg-secondary/10 text-foreground hover:bg-secondary/30 border border-border px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1"
                 >
                   <HiDownload className="h-5 w-5" />
                   Resume
