@@ -182,7 +182,59 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    let { name, email, subject, category, message, phone, preferredContactMethod, budgetRange } = body;
+    let { name, email, subject, category, message, phone, preferredContactMethod, budgetRange, recaptchaToken } = body;
+
+    // Verify reCAPTCHA token
+    if (!recaptchaToken) {
+      return NextResponse.json(
+        {
+          error: 'reCAPTCHA verification failed. Please refresh the page and try again.',
+          code: 'RECAPTCHA_MISSING'
+        },
+        { status: 400 }
+      );
+    }
+
+    // Verify reCAPTCHA with Google
+    const recaptchaResponse = await fetch(
+      `https://www.google.com/recaptcha/api/siteverify`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+      }
+    );
+
+    const recaptchaData = await recaptchaResponse.json();
+
+    // Log reCAPTCHA score for monitoring
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+    console.log('reCAPTCHA Score:', recaptchaData.score);
+    console.log('Success:', recaptchaData.success);
+    console.log('Action:', recaptchaData.action);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
+    // Check if reCAPTCHA verification was successful
+    if (!recaptchaData.success || recaptchaData.score < 0.5) {
+      console.log('reCAPTCHA verification failed:', {
+        success: recaptchaData.success,
+        score: recaptchaData.score,
+        errorCodes: recaptchaData['error-codes']
+      });
+
+      return NextResponse.json(
+        {
+          error: 'Security verification failed. You may be identified as a bot. Please try again or contact us directly.',
+          code: 'RECAPTCHA_FAILED',
+          score: recaptchaData.score
+        },
+        { status: 403 }
+      );
+    }
+
+    console.log(' reCAPTCHA verification successful - User appears human!');
 
     // Validate required fields (only essential fields are required now)
     if (!name || !email || !subject || !message) {

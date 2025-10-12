@@ -15,12 +15,14 @@ import {
   FaCode,
   FaChevronDown
 } from 'react-icons/fa';
+import { useReCaptcha } from 'next-recaptcha-v3';
 import { MotionDiv } from '@/lib/motion';
 import RouteOptimizer from '@/components/RouteOptimizer';
 import { socialLinks, contactConfig, personalInfo } from '@/config';
 import { ContactForm, ContactInformation, FAQComponent } from '@/components/contact';
 
 export default function Contact() {
+  const { executeRecaptcha } = useReCaptcha();
   const [isLoading, setIsLoading] = useState(true);
   const [loadingProgress, setLoadingProgress] = useState(0);
   
@@ -373,12 +375,18 @@ export default function Contact() {
     setIsSubmitting(true);
     
     try {
+      // Execute reCAPTCHA v3
+      const recaptchaToken = await executeRecaptcha('contact_form');
+      
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken, // Include reCAPTCHA token
+        }),
       });      const result = await response.json();
 
       if (!response.ok) {
@@ -565,7 +573,7 @@ export default function Contact() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="mb-16"
         >
-          <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-background p-4 md:p-6 border-2 border-red-500 shadow-lg relative overflow-hidden max-w-4xl mx-auto">
+          <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-background p-4 md:p-6 border border-primary/20 shadow-lg relative overflow-hidden max-w-4xl mx-auto">
             <div className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 bg-primary/10 rounded-full"></div>
             <div className="absolute bottom-0 left-0 w-24 h-24 -ml-12 -mb-12 bg-primary/5 rounded-full"></div>
             
