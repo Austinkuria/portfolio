@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState } from 'react';
 import { m } from 'framer-motion';
 import { 
   FaPaperPlane, 
@@ -23,8 +23,6 @@ import { ContactForm, ContactInformation, FAQComponent } from '@/components/cont
 
 export default function Contact() {
   const { executeRecaptcha } = useReCaptcha();
-  const [isLoading, setIsLoading] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -46,29 +44,6 @@ export default function Contact() {
   const [attachmentWarning, setAttachmentWarning] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   // const [fileDragging, setFileDragging] = useState(false); // Commented out - file upload disabled
-
-  // Loading effect with progress bar
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000); // 2 second loading time
-
-    // Progress simulation
-    const progressInterval = setInterval(() => {
-      setLoadingProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
-        }
-        return prev + Math.random() * 15; // Random progress increment
-      });
-    }, 100);
-
-    return () => {
-      clearTimeout(timer);
-      clearInterval(progressInterval);
-    };
-  }, []);
 
   // FAQ Data
   const faqData = [
@@ -123,154 +98,226 @@ export default function Contact() {
   });
 
   // Real-time validation functions
-  const validateName = (name: string): string => {
-    if (!name.trim()) return 'Name is required';
-    if (name.length < 2) return 'Name must be at least 2 characters';
-    if (name.length > 50) return 'Name must be less than 50 characters';
-
-    // Adjust regex to allow valid names with spaces and hyphens
-    if (/[^a-zA-Z\s-]/.test(name)) {
-      return 'Name should only contain letters, spaces, and hyphens';
-    }
-
-    return '';
+  // Validation rule type
+  type ValidationRule = {
+    required?: boolean;
+    minLength?: number;
+    maxLength?: number;
+    pattern?: RegExp;
+    custom?: (value: string) => string;
+    messages: {
+      required?: string;
+      minLength?: string;
+      maxLength?: string;
+      pattern?: string;
+    };
   };
 
-  // Simplified email validation - pattern-based only
-  const validateEmailPattern = useCallback((email: string): { valid: boolean; reason?: string } => {
-    const emailLower = email.toLowerCase();
-    const emailParts = emailLower.split('@');
-    const localPart = emailParts[0] || '';
-    
-    // Block obvious fake patterns
-    if (
-      emailLower.includes('test@test.') ||
-      emailLower.includes('fake@fake.') ||
-      emailLower.includes('dummy@dummy.') ||
-      emailLower.includes('sample@sample.') ||
-      emailLower === 'test@test.com' ||
-      emailLower === 'fake@fake.com' ||
-      emailLower === 'admin@admin.com' ||
-      /^(test|fake|dummy|sample)\d*@(test|fake|dummy|sample)\d*\.(com|org|net)$/.test(emailLower) ||
-      
-      // Block common test patterns that are clearly not real
-      /^(user|student|admin|testuser)\d+@/.test(emailLower) || // user123@, student5@, admin1@, testuser2@
-      /^(test|fake|dummy|sample)\d*@/.test(emailLower) // test@, test123@, fake2@, etc.
-    ) {
-      console.log('Email rejected due to obvious fake pattern:', email, 'localPart:', localPart);
-      return { valid: false, reason: 'Please use your real email address' };
-    }
-
-    // All other emails are considered valid (pattern-based validation only)
-    return { valid: true };
-  }, []);
-
-  const validateEmail = (email: string): string => {
-    if (!email.trim()) return 'Email is required';
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return 'Please enter a valid email address';
-    
-    // Check for suspicious domains using configuration
-    const emailDomain = email.split('@')[1]?.toLowerCase();
-    if (
-      emailDomain &&
-      contactConfig.suspiciousEmailDomains.some((d: string) => d === emailDomain)
-    ) {
-      console.log('Email rejected due to suspicious domain:', emailDomain);
-      return 'Please use a valid email address';
-    }
-    
-    // Use pattern-based validation
-    const patternResult = validateEmailPattern(email);
-    if (!patternResult.valid) {
-      return patternResult.reason || 'Please use your real email address';
-    }
-    
-    console.log('Email validation passed for:', email);
-    return '';
-  };
-
-  // Debounced email verification
-  const validateSubject = (subject: string): string => {
-    if (!subject.trim()) return 'Subject is required';
-    if (subject.length < 3) return 'Subject must be at least 3 characters';
-    if (subject.length > 100) return 'Subject must be less than 100 characters';
-    
-    // Basic spam check for subject using configuration
-    const lowerSubject = subject.toLowerCase();
-    const spamWords = contactConfig.spamKeywords;
-    for (const word of spamWords) {
-      if (lowerSubject.includes(word)) {
-        return 'Subject contains inappropriate content';
+  // Validation rules configuration
+  const validationRules: Record<string, ValidationRule> = {
+    name: {
+      required: true,
+      minLength: 2,
+      maxLength: 50,
+      pattern: /^[a-zA-Z\s-]+$/,
+      messages: {
+        required: 'Name is required',
+        minLength: 'Name must be at least 2 characters',
+        maxLength: 'Name must be less than 50 characters',
+        pattern: 'Name should only contain letters, spaces, and hyphens'
+      }
+    },
+    email: {
+      required: true,
+      pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+      custom: (value: string) => {
+        const emailLower = value.toLowerCase();
+        const emailDomain = value.split('@')[1]?.toLowerCase();
+        
+        // Block obvious fake patterns
+        const fakePatterns = [
+          'test@test.',
+          'fake@fake.',
+          'dummy@dummy.',
+          'sample@sample.',
+        ];
+        
+        const exactFakes = [
+          'test@test.com',
+          'fake@fake.com',
+          'admin@admin.com'
+        ];
+        
+        if (fakePatterns.some(pattern => emailLower.includes(pattern)) ||
+            exactFakes.includes(emailLower) ||
+            /^(test|fake|dummy|sample)\d*@(test|fake|dummy|sample)\d*\.(com|org|net)$/.test(emailLower) ||
+            /^(user|student|admin|testuser)\d+@/.test(emailLower) ||
+            /^(test|fake|dummy|sample)\d*@/.test(emailLower)) {
+          return 'Please use your real email address';
+        }
+        
+        // Check suspicious domains
+        if (emailDomain && contactConfig.suspiciousEmailDomains.some((d: string) => d === emailDomain)) {
+          return 'Please use a valid email address';
+        }
+        
+        return '';
+      },
+      messages: {
+        required: 'Email is required',
+        pattern: 'Please enter a valid email address'
+      }
+    },
+    subject: {
+      required: true,
+      minLength: 3,
+      maxLength: 100,
+      custom: (value: string) => {
+        const lowerSubject = value.toLowerCase();
+        for (const word of contactConfig.spamKeywords) {
+          if (lowerSubject.includes(word)) {
+            return 'Subject contains inappropriate content';
+          }
+        }
+        return '';
+      },
+      messages: {
+        required: 'Subject is required',
+        minLength: 'Subject must be at least 3 characters',
+        maxLength: 'Subject must be less than 100 characters'
+      }
+    },
+    category: {
+      required: false,
+      custom: (value: string) => {
+        if (value.trim() && !Array.prototype.includes.call(contactConfig.validCategories, value)) {
+          return 'Please select a valid category';
+        }
+        return '';
+      },
+      messages: {}
+    },
+    message: {
+      required: true,
+      minLength: 10,
+      maxLength: 2000,
+      custom: (value: string) => {
+        const lowerMessage = value.toLowerCase();
+        
+        // Spam keyword check
+        for (const spam of contactConfig.spamKeywords) {
+          if (lowerMessage.includes(spam)) {
+            return 'Message contains suspicious content';
+          }
+        }
+        
+        // URL check
+        const urlMatches = value.match(/https?:\/\/[^\s]+/g) || [];
+        if (urlMatches.length > 2) {
+          return 'Too many links in message';
+        }
+        
+        // Capitalization check
+        const capsRatio = (value.match(/[A-Z]/g) || []).length / value.length;
+        if (value.length > 20 && capsRatio > 0.7) {
+          return 'Please avoid excessive capitalization';
+        }
+        
+        return '';
+      },
+      messages: {
+        required: 'Message is required',
+        minLength: 'Message must be at least 10 characters',
+        maxLength: 'Message must be less than 2000 characters'
+      }
+    },
+    phone: {
+      required: false,
+      pattern: /^\+?[1-9]\d{1,14}$/,
+      custom: (value: string) => {
+        if (formData.preferredContactMethod === 'phone' || formData.preferredContactMethod === 'whatsapp') {
+          if (!value.trim()) return 'Phone number is required for the selected contact method';
+        }
+        return '';
+      },
+      messages: {
+        pattern: 'Please enter a valid international phone number (e.g. +254712345678)'
+      }
+    },
+    preferredContactMethod: {
+      required: false,
+      custom: (value: string) => {
+        if (value.trim() && !Array.prototype.includes.call(contactConfig.validContactMethods, value)) {
+          return 'Please select a valid contact method';
+        }
+        return '';
+      },
+      messages: {
+        required: 'Preferred contact method is required'
+      }
+    },
+    budgetRange: {
+      required: false,
+      custom: (value: string) => {
+        if (value.trim() && !Array.prototype.includes.call(contactConfig.validBudgetRanges, value)) {
+          return 'Please select a valid budget range';
+        }
+        return '';
+      },
+      messages: {
+        required: 'Please select a budget range'
       }
     }
-    
+  };
+
+  // Unified validation function
+  const validateField = (fieldName: string, value: string): string => {
+    const rules = validationRules[fieldName];
+    if (!rules) return '';
+
+    // Required check
+    if (rules.required && !value.trim()) {
+      return rules.messages.required || `${fieldName} is required`;
+    }
+
+    // Skip other validations if field is empty and not required
+    if (!value.trim() && !rules.required) {
+      return '';
+    }
+
+    // Min length check
+    if (rules.minLength !== undefined && value.length < rules.minLength) {
+      return rules.messages.minLength || `Must be at least ${rules.minLength} characters`;
+    }
+
+    // Max length check
+    if (rules.maxLength !== undefined && value.length > rules.maxLength) {
+      return rules.messages.maxLength || `Must be less than ${rules.maxLength} characters`;
+    }
+
+    // Pattern check
+    if (rules.pattern && !rules.pattern.test(value)) {
+      return rules.messages.pattern || 'Invalid format';
+    }
+
+    // Custom validation
+    if (rules.custom) {
+      const customError = rules.custom(value);
+      if (customError) return customError;
+    }
+
     return '';
   };
 
-  const validateCategory = (category: string): string => {
-    // Category is now optional, only validate if provided
-    if (category.trim() && !Array.prototype.includes.call(contactConfig.validCategories, category)) {
-      return 'Please select a valid category';
-    }
-    return '';
-  };
-
-  const validateMessage = (message: string): string => {
-    if (!message.trim()) return 'Message is required';
-    if (message.length < 10) return 'Message must be at least 10 characters';
-    if (message.length > 2000) return 'Message must be less than 2000 characters';
-    
-    // Basic spam detection for real-time feedback using configuration
-    const lowerMessage = message.toLowerCase();
-    const quickSpamCheck = contactConfig.spamKeywords;
-    
-    for (const spam of quickSpamCheck) {
-      if (lowerMessage.includes(spam)) {
-        return 'Message contains suspicious content';
-      }
-    }
-    
-    // Check for excessive URLs
-    const urlMatches = message.match(/https?:\/\/[^\s]+/g) || [];
-    if (urlMatches.length > 2) {
-      return 'Too many links in message';
-    }
-    
-    // Check for excessive capitalization
-    const capsRatio = (message.match(/[A-Z]/g) || []).length / message.length;
-    if (message.length > 20 && capsRatio > 0.7) {
-      return 'Please avoid excessive capitalization';
-    }
-    
-    return '';
-  };
-
-  const validatePhone = (phone: string): string => {
-    // Phone is required only if preferred contact method is 'phone' or 'whatsapp'
-    if (formData.preferredContactMethod === 'phone' || formData.preferredContactMethod === 'whatsapp') {
-      if (!phone.trim()) return 'Phone number is required for the selected contact method';
-      const phoneRegex = /^\+?[1-9]\d{1,14}$/; // E.164 format
-      if (!phoneRegex.test(phone)) return 'Please enter a valid international phone number (e.g. +254712345678)';
-    }
-    return '';
-  };
-
-  const validatePreferredContactMethod = (method: string): string => {
-    if (!method.trim()) return 'Preferred contact method is required';
-    if (!Array.prototype.includes.call(contactConfig.validContactMethods, method)) {
-      return 'Please select a valid contact method';
-    }
-    return '';
-  };
-
-  const validateBudgetRange = (budget: string): string => {
-    if (!budget.trim()) return 'Please select a budget range';
-    if (!Array.prototype.includes.call(contactConfig.validBudgetRanges, budget)) {
-      return 'Please select a valid budget range';
-    }
-    return '';
-  };
+  // Individual validation functions (now using unified validator)
+  const validateName = (name: string): string => validateField('name', name);
+  const validateEmail = (email: string): string => validateField('email', email);
+  const validateSubject = (subject: string): string => validateField('subject', subject);
+  const validateCategory = (category: string): string => validateField('category', category);
+  const validateMessage = (message: string): string => validateField('message', message);
+  const validatePhone = (phone: string): string => validateField('phone', phone);
+  const validatePreferredContactMethod = (method: string): string => validateField('preferredContactMethod', method);
+  const validateBudgetRange = (budget: string): string => validateField('budgetRange', budget);
 
   // Check if form is valid for submission (simplified - only essential fields, category is optional)
   const isFormValid = () => {
