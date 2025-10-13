@@ -245,6 +245,32 @@ export const contactConfig = {
         'example.com', 'example.org', 'example.net', 'test.com', 'test.org',
         'fake.com', 'dummy.com', 'sample.com', 'placeholder.com', 'localhost.com',
         'invalid.com', 'notreal.com', 'faker.com', 'testing.com'
+    ],
+    faq: [
+        {
+            question: "What types of projects do you work on?",
+            answer: "I create professional websites, online stores, mobile-responsive designs, and business automation solutions. I work on everything from simple business websites to complex custom applications that help grow your business."
+        },
+        {
+            question: "What is your typical project timeline?",
+            answer: "Project timelines vary based on complexity: Simple websites (1-2 weeks), Online stores and custom applications (4-8 weeks), Design projects (2-3 weeks), System integrations (2-4 weeks). I always provide detailed timelines during our initial consultation."
+        },
+        {
+            question: "Do you offer ongoing maintenance and support?",
+            answer: "Yes! I provide ongoing maintenance packages including bug fixes, security updates, performance optimization, content updates, and feature enhancements. Maintenance plans are customized based on your specific needs."
+        },
+        {
+            question: "What is your development process?",
+            answer: "My process includes: 1) Discovery & Planning, 2) Design & Wireframing, 3) Development & Testing, 4) Review & Feedback, 5) Deployment & Launch, 6) Training & Handover. I maintain regular communication throughout each phase."
+        },
+        {
+            question: "How do you handle project pricing?",
+            answer: "I offer both fixed-price and hourly arrangements depending on project scope. For fixed-price projects, I provide detailed proposals after understanding your requirements. Hourly rates apply for ongoing maintenance and consultation work."
+        },
+        {
+            question: "Do you work with international clients?",
+            answer: "Absolutely! I work with clients globally and am experienced in remote collaboration. I'm based in Nairobi (EAT timezone) but accommodate different time zones for meetings and communication."
+        }
     ]
 } as const;
 
@@ -295,3 +321,4 @@ export type NavigationItem = typeof navigation.mainMenu[number];
 export type SkillCategory = typeof skillsConfig.categories[number];
 export type GithubUsername = keyof typeof githubUsernames;
 export type ProjectKey = keyof typeof projectUrls;
+export type FAQItem = typeof contactConfig.faq[number];

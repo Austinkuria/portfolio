@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { m } from 'framer-motion';
 import { 
   FaPaperPlane, 
@@ -24,6 +24,9 @@ import { ContactForm, ContactInformation, FAQComponent } from '@/components/cont
 export default function Contact() {
   const { executeRecaptcha } = useReCaptcha();
   
+  // Debounce timer refs for performance optimization
+  const debounceTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -45,33 +48,13 @@ export default function Contact() {
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   // const [fileDragging, setFileDragging] = useState(false); // Commented out - file upload disabled
 
-  // FAQ Data
-  const faqData = [
-    {
-      question: "What types of projects do you work on?",
-      answer: "I create professional websites, online stores, mobile-responsive designs, and business automation solutions. I work on everything from simple business websites to complex custom applications that help grow your business."
-    },
-    {
-      question: "What is your typical project timeline?",
-      answer: "Project timelines vary based on complexity: Simple websites (1-2 weeks), Online stores and custom applications (4-8 weeks), Design projects (2-3 weeks), System integrations (2-4 weeks). I always provide detailed timelines during our initial consultation."
-    },
-    {
-      question: "Do you offer ongoing maintenance and support?",
-      answer: "Yes! I provide ongoing maintenance packages including bug fixes, security updates, performance optimization, content updates, and feature enhancements. Maintenance plans are customized based on your specific needs."
-    },
-    {
-      question: "What is your development process?",
-      answer: "My process includes: 1) Discovery & Planning, 2) Design & Wireframing, 3) Development & Testing, 4) Review & Feedback, 5) Deployment & Launch, 6) Training & Handover. I maintain regular communication throughout each phase."
-    },
-    {
-      question: "How do you handle project pricing?",
-      answer: "I offer both fixed-price and hourly arrangements depending on project scope. For fixed-price projects, I provide detailed proposals after understanding your requirements. Hourly rates apply for ongoing maintenance and consultation work."
-    },
-    {
-      question: "Do you work with international clients?",
-      answer: "Absolutely! I work with clients globally and am experienced in remote collaboration. I'm based in Nairobi (EAT timezone) but accommodate different time zones for meetings and communication."
-    }
-  ];
+  // Cleanup debounce timers on unmount
+  useEffect(() => {
+    const timers = debounceTimers.current;
+    return () => {
+      Object.values(timers).forEach(timer => clearTimeout(timer));
+    };
+  }, []);
 
   // Real-time validation states
   const [validationErrors, setValidationErrors] = useState({
@@ -270,8 +253,8 @@ export default function Contact() {
     }
   };
 
-  // Unified validation function
-  const validateField = (fieldName: string, value: string): string => {
+  // Unified validation function (memoized for stable reference)
+  const validateField = useCallback((fieldName: string, value: string): string => {
     const rules = validationRules[fieldName];
     if (!rules) return '';
 
@@ -307,7 +290,8 @@ export default function Contact() {
     }
 
     return '';
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.preferredContactMethod]); // validationRules is stable (defined above), formData.preferredContactMethod needed for phone validation
 
   // Individual validation functions (now using unified validator)
   const validateName = (name: string): string => validateField('name', name);
@@ -315,9 +299,9 @@ export default function Contact() {
   const validateSubject = (subject: string): string => validateField('subject', subject);
   const validateCategory = (category: string): string => validateField('category', category);
   const validateMessage = (message: string): string => validateField('message', message);
-  const validatePhone = (phone: string): string => validateField('phone', phone);
-  const validatePreferredContactMethod = (method: string): string => validateField('preferredContactMethod', method);
-  const validateBudgetRange = (budget: string): string => validateField('budgetRange', budget);
+  const _validatePhone = (phone: string): string => validateField('phone', phone); // Kept for future use
+  const _validatePreferredContactMethod = (method: string): string => validateField('preferredContactMethod', method); // Kept for future use
+  const _validateBudgetRange = (budget: string): string => validateField('budgetRange', budget); // Kept for future use
 
   // Check if form is valid for submission (simplified - only essential fields, category is optional)
   const isFormValid = () => {
@@ -330,43 +314,43 @@ export default function Contact() {
            !validationErrors.subject &&
            !validationErrors.category &&
            !validationErrors.message;
-  };  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  };
+
+  // Debounced validation function for performance
+  const debouncedValidate = useCallback((fieldName: string, value: string, delay: number = 300) => {
+    // Clear existing timer for this field
+    if (debounceTimers.current[fieldName]) {
+      clearTimeout(debounceTimers.current[fieldName]);
+    }
+
+    // Set new timer
+    debounceTimers.current[fieldName] = setTimeout(() => {
+      // Directly use validateField instead of wrapper functions
+      const error = validateField(fieldName, value);
+
+      // Special case: re-validate phone when preferredContactMethod changes
+      if (fieldName === 'preferredContactMethod') {
+        setValidationErrors(prev => ({ 
+          ...prev, 
+          [fieldName]: error,
+          phone: validateField('phone', formData.phone)
+        }));
+      } else {
+        setValidationErrors(prev => ({ ...prev, [fieldName]: error }));
+      }
+    }, delay);
+  }, [formData.phone, validateField]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Perform real-time validation
-    let error = '';
-    switch (name) {
-      case 'name':
-        error = validateName(value);
-        break;
-      case 'email':
-        error = validateEmail(value);
-        break;
-      case 'subject':
-        error = validateSubject(value);
-        break;
-      case 'category':
-        error = validateCategory(value);
-        break;
-      case 'message':
-        error = validateMessage(value);
-        break;
-      case 'phone':
-        // Re-validate phone when preferredContactMethod changes or phone field changes
-        error = validatePhone(value);
-        break;
-      case 'preferredContactMethod':
-        error = validatePreferredContactMethod(value);
-        // If preferred contact method changes, re-validate phone
-        setValidationErrors(prev => ({ ...prev, phone: validatePhone(formData.phone) }));
-        break;
-      case 'budgetRange':
-        error = validateBudgetRange(value);
-        break;
-    }
-
-    setValidationErrors(prev => ({ ...prev, [name]: error }));
+    // Use different debounce delays based on field complexity
+    // Message field has complex validation (spam, URLs, caps) - longer delay
+    // Other fields have simpler validation - shorter delay
+    const debounceDelay = name === 'message' ? 500 : name === 'email' ? 400 : 300;
+    
+    debouncedValidate(name, value, debounceDelay);
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -1343,7 +1327,7 @@ export default function Contact() {
           </div>
 
           <div className="max-w-3xl mx-auto space-y-4">
-            {faqData.map((faq, index) => (
+            {contactConfig.faq.map((faq, index) => (
               <div key={index} className="bg-card rounded-lg border border-border/30 overflow-hidden">
                 <button
                   onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
