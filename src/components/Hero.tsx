@@ -75,7 +75,7 @@ export default function Hero() {
       
       <div className="container mx-auto max-w-6xl z-10">
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-start gap-16">
-          <div className="min-h-[510px] md:min-h-[460px] flex flex-col">
+          <div className="min-h-[540px] md:min-h-[460px] flex flex-col">
             <MotionDiv
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -165,34 +165,35 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl"></div>
               <div className="absolute inset-4 rounded-xl border border-primary/20 backdrop-blur-sm bg-background/50 overflow-y-auto overflow-x-hidden">                
                 <MotionDiv
-                  className="p-3 font-mono text-[0.7rem] md:text-xs text-foreground/70 h-full"
+                  className="p-4 font-mono text-xs md:text-sm text-foreground/70 h-full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                  <div className="flex items-center gap-2 mb-2 border-b border-border pb-2">
-                    <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
-                    <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
-                    <span className="ml-2 text-[0.65rem] text-foreground/60">DevPortfolio.tsx</span>
+                  <div className="flex items-center gap-2 mb-3 border-b border-border pb-2">
+                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                    <span className="ml-2 text-xs text-foreground/60">DevPortfolio.tsx</span>
                   </div>                  
                   <TypeAnimation
                     sequence={[
-                      `const Developer = () => {\n`, 150,
-                      `const Developer = () => {\n  const skills = {\n`, 130,
-                      `const Developer = () => {\n  const skills = {\n    frontend: [\n      'React', 'Next.js',\n      'TypeScript'\n    ],\n`, 120,
-                      `const Developer = () => {\n  const skills = {\n    frontend: [\n      'React', 'Next.js',\n      'TypeScript'\n    ],\n    backend: [\n      'Node.js', 'Python',\n      'Django'\n    ]\n  };\n\n`, 110,
-                      `const Developer = () => {\n  const skills = {\n    frontend: [\n      'React', 'Next.js',\n      'TypeScript'\n    ],\n    backend: [\n      'Node.js', 'Python',\n      'Django'\n    ]\n  };\n\n  const build = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .code()\n      .test()\n      .deploy();\n  };\n\n`, 110,
-                      `const Developer = () => {\n  const skills = {\n    frontend: [\n      'React', 'Next.js',\n      'TypeScript'\n    ],\n    backend: [\n      'Node.js', 'Python',\n      'Django'\n    ]\n  };\n\n  const build = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .code()\n      .test()\n      .deploy();\n  };\n\n  return (\n    <Portfolio \n      passion="high"\n      quality="premium"\n    />\n  );\n};\n\nexport default Developer;`, 5000,
+                      `import { useState, useEffect } from 'react';\n\n`, 200,
+                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n`, 180,
+                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n`, 160,
+                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n    'React', 'Next.js',\n    'TypeScript',\n    'Node.js', 'Python'\n  ]);\n\n`, 150,
+                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n    'React', 'Next.js',\n    'TypeScript',\n    'Node.js', 'Python'\n  ]);\n\n  useEffect(() => {\n    console.log('Ready to build!');\n  }, []);\n\n`, 140,
+                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n    'React', 'Next.js',\n    'TypeScript',\n    'Node.js', 'Python'\n  ]);\n\n  useEffect(() => {\n    console.log('Ready to build!');\n  }, []);\n\n  const build = (idea) => {\n    return idea\n      .design()\n      .develop()\n      .test()\n      .deploy();\n  };\n\n`, 130,
+                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n    'React', 'Next.js',\n    'TypeScript',\n    'Node.js', 'Python'\n  ]);\n\n  useEffect(() => {\n    console.log('Ready to build!');\n  }, []);\n\n  const build = (idea) => {\n    return idea\n      .design()\n      .develop()\n      .test()\n      .deploy();\n  };\n\n  return (\n    <Portfolio\n      skills={skills}\n      passion="high"\n    />\n  );\n};\n\nexport default Developer;`, 4000,
                     ]}
                     wrapper="div"
                     cursor={true}
                     repeat={Infinity}
-                    className="text-primary/80 whitespace-pre"
+                    className="text-primary/80 whitespace-pre leading-relaxed"
                     style={{
                       display: 'block',
-                      minHeight: '250px',
-                      fontSize: '0.7rem',
+                      minHeight: '280px',
+                      fontSize: '0.65rem',
                       lineHeight: '1.5'
                     }}
                     preRenderFirstString={true}
