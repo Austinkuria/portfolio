@@ -8,18 +8,19 @@ import { useRef } from 'react';
 import { TypeAnimation } from 'react-type-animation';
 import { MotionDiv, MotionH1, MotionP } from '@/lib/motion';
 
-// Pre-generate random values outside of render
-const circles = Array.from({ length: 20 }, (_, i) => ({
-  id: i,
-  width: Math.random() * 300 + 50,
-  height: Math.random() * 300 + 50,
-  left: Math.random() * 100,
-  top: Math.random() * 100,
-  scale: Math.random() * 0.5 + 0.5,
-  x: Math.random() * 100 - 50,
-  y: Math.random() * 100 - 50,
-  duration: Math.random() * 10 + 10,
-}));
+// Static circles data to avoid hydration mismatch
+const circles = [
+  { id: 0, width: 180, height: 200, left: 15, top: 20, scale: 0.7, x: 30, y: -20, duration: 12 },
+  { id: 1, width: 250, height: 220, left: 65, top: 10, scale: 0.9, x: -40, y: 35, duration: 15 },
+  { id: 2, width: 150, height: 170, left: 85, top: 60, scale: 0.6, x: 25, y: -30, duration: 13 },
+  { id: 3, width: 200, height: 190, left: 25, top: 75, scale: 0.8, x: -35, y: 20, duration: 14 },
+  { id: 4, width: 170, height: 180, left: 50, top: 45, scale: 0.75, x: 40, y: -25, duration: 11 },
+  { id: 5, width: 220, height: 210, left: 10, top: 50, scale: 0.85, x: -30, y: 40, duration: 16 },
+  { id: 6, width: 190, height: 195, left: 75, top: 30, scale: 0.7, x: 35, y: -15, duration: 13 },
+  { id: 7, width: 160, height: 175, left: 40, top: 15, scale: 0.65, x: -25, y: 30, duration: 12 },
+  { id: 8, width: 240, height: 230, left: 60, top: 80, scale: 0.9, x: 45, y: -35, duration: 15 },
+  { id: 9, width: 210, height: 205, left: 20, top: 40, scale: 0.8, x: -40, y: 25, duration: 14 },
+];
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -74,7 +75,7 @@ export default function Hero() {
       
       <div className="container mx-auto max-w-6xl z-10">
         <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-start gap-16">
-          <div>
+          <div className="min-h-[510px] md:min-h-[460px] flex flex-col">
             <MotionDiv
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -84,8 +85,8 @@ export default function Hero() {
               <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">{personalInfo.name.full} - {personalInfo.title}</span>
             </MotionDiv>
             <MotionH1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-3 leading-tight"
-              style={{ minHeight: '180px' }}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+              style={{ minHeight: '220px' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -113,6 +114,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
+              style={{ marginTop: 'auto' }}
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <CustomLink 
@@ -163,24 +165,25 @@ export default function Hero() {
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl"></div>
               <div className="absolute inset-4 rounded-xl border border-primary/20 backdrop-blur-sm bg-background/50 overflow-y-auto overflow-x-hidden">                
                 <MotionDiv
-                  className="p-4 font-mono text-xs md:text-sm text-foreground/70 h-full"
+                  className="p-3 font-mono text-[0.7rem] md:text-xs text-foreground/70 h-full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                  <div className="flex items-center gap-2 mb-3 border-b border-border pb-2">
-                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                    <span className="ml-2 text-xs text-foreground/60">DevPortfolio.tsx</span>
+                  <div className="flex items-center gap-2 mb-2 border-b border-border pb-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-red-400"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-400"></div>
+                    <div className="w-2.5 h-2.5 rounded-full bg-green-400"></div>
+                    <span className="ml-2 text-[0.65rem] text-foreground/60">DevPortfolio.tsx</span>
                   </div>                  
                   <TypeAnimation
                     sequence={[
-                      `function Developer() {\n`, 150,
-                      `function Developer() {\n  const skills = [\n`, 120,
-                      `function Developer() {\n  const skills = [\n    'React', 'Next.js',\n`, 150,
-                      `function Developer() {\n  const skills = [\n    'React', 'Next.js',\n    'TypeScript', 'Node.js'\n  ];\n\n`, 100,
-                      `function Developer() {\n  const skills = [\n    'React', 'Next.js',\n    'TypeScript', 'Node.js'\n  ];\n\n  const createProject = (idea) => {\n    return idea.plan()\n      .design().develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n      {skills.map(s => <Tech name={s} />)}\n    </Portfolio>\n  );\n}`, 5000,
+                      `const Developer = () => {\n`, 150,
+                      `const Developer = () => {\n  const skills = {\n`, 130,
+                      `const Developer = () => {\n  const skills = {\n    frontend: [\n      'React', 'Next.js',\n      'TypeScript'\n    ],\n`, 120,
+                      `const Developer = () => {\n  const skills = {\n    frontend: [\n      'React', 'Next.js',\n      'TypeScript'\n    ],\n    backend: [\n      'Node.js', 'Python',\n      'Django'\n    ]\n  };\n\n`, 110,
+                      `const Developer = () => {\n  const skills = {\n    frontend: [\n      'React', 'Next.js',\n      'TypeScript'\n    ],\n    backend: [\n      'Node.js', 'Python',\n      'Django'\n    ]\n  };\n\n  const build = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .code()\n      .test()\n      .deploy();\n  };\n\n`, 110,
+                      `const Developer = () => {\n  const skills = {\n    frontend: [\n      'React', 'Next.js',\n      'TypeScript'\n    ],\n    backend: [\n      'Node.js', 'Python',\n      'Django'\n    ]\n  };\n\n  const build = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .code()\n      .test()\n      .deploy();\n  };\n\n  return (\n    <Portfolio \n      passion="high"\n      quality="premium"\n    />\n  );\n};\n\nexport default Developer;`, 5000,
                     ]}
                     wrapper="div"
                     cursor={true}
@@ -188,7 +191,9 @@ export default function Hero() {
                     className="text-primary/80 whitespace-pre"
                     style={{
                       display: 'block',
-                      minHeight: '280px'
+                      minHeight: '250px',
+                      fontSize: '0.7rem',
+                      lineHeight: '1.5'
                     }}
                     preRenderFirstString={true}
                   />
