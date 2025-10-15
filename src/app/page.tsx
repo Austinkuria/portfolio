@@ -7,6 +7,10 @@ export const metadata = {
   description: personalInfo.description,
 };
 
+// Enable static generation
+export const dynamic = 'force-static';
+export const revalidate = 3600; // Revalidate every hour
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center">

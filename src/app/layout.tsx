@@ -20,6 +20,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Preconnect to critical domains - early */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://vitals.vercel-insights.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+        
         {/* Google Tag Manager - moved to afterInteractive for better performance */}
         <Script id="gtm-script" strategy="afterInteractive">
           {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -28,15 +33,6 @@ export default function RootLayout({
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-P2G8NGPF');`}
         </Script>
-
-        {/* Preload important routes with higher priority */}
-        <link rel="preload" as="fetch" href="/about" crossOrigin="anonymous" />
-        <link rel="preload" as="fetch" href="/projects" crossOrigin="anonymous" />
-        <link rel="preload" as="fetch" href="/skills" crossOrigin="anonymous" />
-        
-        {/* Preconnect to critical domains */}
-        <link rel="preconnect" href="https://www.googletagmanager.com" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://vitals.vercel-insights.com" crossOrigin="anonymous" />
         
         {/* Humans.txt link */}
         <link rel="author" href="/humans.txt" />

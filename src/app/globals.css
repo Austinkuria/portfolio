@@ -66,11 +66,14 @@
 body {
   @apply bg-background text-foreground transition-colors duration-300;
   font-family: var(--font-sans, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  font-display: swap;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   line-height: 1.5;
   overflow-x: hidden;
+  overflow-y: scroll;
+  /* Prevent layout shift from scrollbar */
 }
 
 ::selection {

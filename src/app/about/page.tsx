@@ -36,6 +36,7 @@ export default function About() {
                 fill
                 className="object-contain object-center bg-muted"
                 sizes="(max-width: 768px) 100vw, 50vw"
+                priority
               />
             </div>
           </MotionDiv>

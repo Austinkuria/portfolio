@@ -43,9 +43,10 @@ export default function Hero() {
           className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5 }}
+          transition={{ duration: 0.8 }}
         />
-        {circles.map((circle) => (
+        {/* Reduce number of animated circles for better performance */}
+        {circles.slice(0, 10).map((circle) => (
           <MotionDiv
             key={circle.id}
             className="absolute rounded-full bg-primary/10 dark:bg-primary/5"
@@ -54,7 +55,7 @@ export default function Hero() {
               height: circle.height,
               left: `${circle.left}%`,
               top: `${circle.top}%`,
-              opacity: 1,
+              opacity: 0.8,
             }}
             initial={{ scale: 0, x: 0, y: 0 }}
             animate={{
@@ -83,15 +84,16 @@ export default function Hero() {
               <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">{personalInfo.name.full} - {personalInfo.title}</span>
             </MotionDiv>
             <MotionH1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-3 leading-tight min-h-[280px] md:min-h-[300px] lg:min-h-[320px]"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 md:mb-3 leading-tight"
+              style={{ minHeight: '180px' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.6 }}
             >
               Hi, I'm <span className="text-primary">{personalInfo.name.first}</span>
               <br />
               I transform ideas into{' '}
-              <span className="relative inline-block align-top" style={{ minWidth: '100%', maxWidth: '100%' }}>
+              <span className="relative inline-block align-top" style={{ minWidth: '280px', display: 'inline-block' }}>
                 <span className="text-primary relative z-10 inline-block">
                   <TypeAnimation
                     sequence={[...personalInfo.hero.typingAnimation]}
@@ -99,7 +101,8 @@ export default function Hero() {
                     speed={50}
                     repeat={Infinity}
                     cursor={true}
-                    style={{ display: 'inline-block' }}
+                    style={{ display: 'inline-block', minWidth: '280px' }}
+                    preRenderFirstString={true}
                   />
                 </span>
                 <span className="absolute bottom-0 left-0 w-full h-3 bg-primary/20 -z-0"></span>
@@ -109,7 +112,7 @@ export default function Hero() {
               className="flex flex-col sm:flex-row items-center gap-4 md:justify-start justify-center"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.15 }}
             >
               <div className="flex flex-col sm:flex-row gap-4">
                 <CustomLink 
@@ -154,16 +157,16 @@ export default function Hero() {
             className="order-1 md:order-2 flex justify-center"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             <div className="relative w-80 h-64 md:w-[400px] md:h-80 lg:w-[440px] lg:h-[360px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl animate-pulse-slow"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl"></div>
               <div className="absolute inset-4 rounded-xl border border-primary/20 backdrop-blur-sm bg-background/50 overflow-y-auto overflow-x-hidden">                
                 <MotionDiv
                   className="p-4 font-mono text-xs md:text-sm text-foreground/70 h-full"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 1, delay: 1 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
                 >
                   <div className="flex items-center gap-2 mb-3 border-b border-border pb-2">
                     <div className="w-3 h-3 rounded-full bg-red-400"></div>
@@ -173,25 +176,11 @@ export default function Hero() {
                   </div>                  
                   <TypeAnimation
                     sequence={[
-                      `function Developer() {\n`, 120, 200,
-                      `function Developer() {\n  // Skills I work with\n`, 110, 500,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n`, 100, 400,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n`, 120, 150,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n`, 110, 200,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n`, 115, 180,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n`, 120, 250,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n`, 110, 300,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n`, 90, 1200,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n`, 80, 1200,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n`, 70, 800,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n`, 38, 450,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n`, 38, 450,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n`, 38, 450,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n`, 40, 1800,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n`, 110, 700,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n`, 120, 550,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n      {skills.map(skill => <Technology name={skill} />)}\n`, 45, 600,
-                      `function Developer() {\n  // Skills I work with\n  const skills = [\n    'React',\n    'Next.js',\n    'TypeScript',\n    'TailwindCSS',\n    'Node.js',\n  ];\n\n  // Create amazing web projects\n  const createProject = (idea) => {\n    return idea\n      .plan()\n      .design()\n      .develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n      {skills.map(skill => <Technology name={skill} />)}\n      {createProject('Your Next Idea')}\n    </Portfolio>\n  );\n}`, 70, 6000,
+                      `function Developer() {\n`, 150,
+                      `function Developer() {\n  const skills = [\n`, 120,
+                      `function Developer() {\n  const skills = [\n    'React', 'Next.js',\n`, 150,
+                      `function Developer() {\n  const skills = [\n    'React', 'Next.js',\n    'TypeScript', 'Node.js'\n  ];\n\n`, 100,
+                      `function Developer() {\n  const skills = [\n    'React', 'Next.js',\n    'TypeScript', 'Node.js'\n  ];\n\n  const createProject = (idea) => {\n    return idea.plan()\n      .design().develop()\n      .deploy();\n  };\n\n  return (\n    <Portfolio>\n      {skills.map(s => <Tech name={s} />)}\n    </Portfolio>\n  );\n}`, 5000,
                     ]}
                     wrapper="div"
                     cursor={true}
@@ -199,14 +188,15 @@ export default function Hero() {
                     className="text-primary/80 whitespace-pre"
                     style={{
                       display: 'block',
-                      minHeight: '320px'
+                      minHeight: '280px'
                     }}
+                    preRenderFirstString={true}
                   />
                 </MotionDiv>
               </div>
               
-              <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-primary/10 animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-12 h-12 rounded-full bg-secondary/10 animate-pulse" style={{ animationDelay: '1s' }}></div>
+              <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-primary/10"></div>
+              <div className="absolute -bottom-4 -left-4 w-12 h-12 rounded-full bg-secondary/10"></div>
             </div>
           </MotionDiv>
         </div>
@@ -215,7 +205,7 @@ export default function Hero() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1.2 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
       >
         <button 
           onClick={scrollToNextSection}
@@ -225,7 +215,7 @@ export default function Hero() {
           <span className="text-sm mb-2">Scroll Down</span>
           <MotionDiv
             animate={{ y: [0, 5, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
+            transition={{ repeat: Infinity, duration: 1.2, ease: 'easeInOut' }}
           >
             <FaArrowDown className="h-4 w-4" />
           </MotionDiv>

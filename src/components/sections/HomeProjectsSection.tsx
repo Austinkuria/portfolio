@@ -62,6 +62,8 @@ export default function HomeProjectsSection() {
 									fill
 									className="object-contain transition-transform duration-500 hover:scale-105 rounded-lg"
 									sizes="(max-width: 768px) 100vw, 50vw"
+									loading={index === 0 ? 'eager' : 'lazy'}
+									priority={index === 0}
 								/>
 							</div>
 							<div className="px-5 pb-5 pt-0">

@@ -54,7 +54,8 @@ export default function Projects() {
                     fill
                     className="object-contain transition-transform duration-500 hover:scale-[1.02] rounded-xl"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    priority
+                    loading={project.id <= 3 ? 'eager' : 'lazy'}
+                    priority={project.id <= 2}
                   />
                 </div>
 
