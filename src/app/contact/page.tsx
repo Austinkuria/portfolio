@@ -4,12 +4,6 @@ import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { m } from 'framer-motion';
 import { 
   FaPaperPlane, 
-  FaWhatsapp, 
-  FaMapMarkerAlt, 
-  FaEnvelope, 
-  FaPhone, 
-  FaLinkedin, 
-  FaGithub, 
   FaExclamationTriangle, 
   FaCheck, 
   FaCode,
@@ -18,7 +12,7 @@ import {
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { MotionDiv } from '@/lib/motion';
 import RouteOptimizer from '@/components/RouteOptimizer';
-import { socialLinks, contactConfig, personalInfo } from '@/config';
+import { contactConfig, personalInfo } from '@/config';
 import { ContactForm, ContactInformation, FAQComponent } from '@/components/contact';
 
 export default function Contact() {
@@ -43,7 +37,6 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
   const [attachmentWarning, setAttachmentWarning] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
   // const [fileDragging, setFileDragging] = useState(false); // Commented out - file upload disabled
@@ -425,14 +418,8 @@ export default function Contact() {
         if (result.code === 'RATE_LIMIT_EXCEEDED') {
           throw new Error('Too many requests. Please wait 15 minutes before sending another message.');
         } else if (result.code === 'SPAM_DETECTED') {
-          // Handle spam detection with new reference ID system
+          // Handle spam detection
           const errorMsg = result.error || 'Your message was flagged by our security filters.';
-          
-          // Store WhatsApp URL if available
-          if (result.alternativeContact?.whatsappUrl) {
-            setWhatsappUrl(result.alternativeContact.whatsappUrl);
-          }
-          
           throw new Error(errorMsg);
         } else if (result.code === 'INVALID_EMAIL') {
           throw new Error('Please enter a valid email address.');
@@ -463,7 +450,6 @@ export default function Contact() {
       setTimeout(() => {
         setSubmitStatus('idle');
         setErrorMessage('');
-        setWhatsappUrl(null);
         setAttachmentWarning(null);
       }, 10000);
     } finally {
@@ -634,185 +620,17 @@ export default function Contact() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.5 }}
-                className="text-muted-foreground text-lg mb-8 max-w-2xl mx-auto"
+                className="text-muted-foreground text-lg max-w-2xl mx-auto"
               >
-                I'm currently available for freelance work and selective full-time positions. 
-                If you have a project that matches my skills, let's discuss how we can bring your vision to life!
+                Looking for a skilled developer to bring your ideas to life? I'm currently accepting new projects 
+                and would love to hear about your vision. Let's build something great together!
               </m.p>
-              
-              <m.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.6 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-              >
-                <m.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-3 bg-primary text-primary-foreground rounded-lg font-semibold inline-flex items-center shadow-lg hover:shadow-xl transition-all duration-300"
-                  onClick={() => document.getElementById('message')?.focus()}
-                >
-                  <FaPaperPlane className="mr-2" />
-                  Start a Conversation
-                </m.button>
-                
-                <a
-                  href={`https://wa.me/${personalInfo.whatsappNumber}?text=${encodeURIComponent(contactConfig.whatsappMessage)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold inline-flex items-center shadow-lg hover:shadow-xl transition-all duration-300"
-                >
-                  <FaWhatsapp className="mr-2" />
-                  Quick WhatsApp
-                </a>
-              </m.div>
             </div>
           </div>
         </MotionDiv>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <m.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="h-full flex flex-col bg-card/50 rounded-xl p-8 shadow-sm border border-border/40">
-              <h3 className="text-2xl font-bold mb-6 flex items-center">
-                <span className="inline-block w-8 h-1 bg-primary mr-3"></span>
-                Contact Information
-              </h3>
-              
-              <p className="text-muted-foreground mb-8">
-                Feel free to reach out through the contact form or via the contact details below. 
-                I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
-              </p>
-                {/* Availability Status */}
-              <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 mb-6">
-                <h4 className="font-semibold text-green-600 dark:text-green-400 mb-2 flex items-center">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse mr-2"></div>
-                  Current Availability
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  <strong>{contactConfig.availability.statusMessage}</strong> • {contactConfig.availability.currentWork}
-                </p>
-              </div>
-
-              {/* Response Time Information */}
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-8">
-                <h4 className="font-semibold text-blue-600 dark:text-blue-400 mb-2 flex items-center">
-                  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                  </svg>
-                  Response Time
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  I typically respond to messages within <strong>{contactConfig.responseTime}</strong>. 
-                  For urgent inquiries, WhatsApp is the fastest way to reach me.
-                </p>
-              </div>
-              
-                {/* Contact Information Grid */}
-              <div className="mb-8">
-                <h4 className="text-lg font-semibold mb-4 text-foreground">Get in Touch</h4>
-                <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:gap-4 auto-rows-fr w-full">
-                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
-                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
-                      <FaMapMarkerAlt className="text-base sm:text-lg" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-sm sm:text-base">Location</h5>
-                      <p className="text-xs sm:text-sm text-muted-foreground">{personalInfo.location}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
-                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
-                      <FaEnvelope className="text-base sm:text-lg" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-sm sm:text-base">Email</h5>
-                      <a 
-                        href={`mailto:${personalInfo.email}?subject=${encodeURIComponent(`Project Inquiry from ${personalInfo.name.full} Portfolio`)}&body=${encodeURIComponent(`Hi ${personalInfo.name.first},\n\nI found your portfolio and would like to discuss a project with you.\n\nBest regards,`)}`}
-                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
-                      >
-                        Send Email
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
-                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
-                      <FaWhatsapp className="text-base sm:text-lg" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-sm sm:text-base">WhatsApp</h5>
-                      <a 
-                        href={`https://wa.me/${personalInfo.whatsappNumber}?text=${encodeURIComponent(contactConfig.whatsappMessage)}`}
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
-                      >
-                        Message on WhatsApp
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
-                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
-                      <FaPhone className="text-base sm:text-lg scale-x-[-1]" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-sm sm:text-base">Phone</h5>
-                      <a 
-                        href={socialLinks.phone}
-                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
-                      >
-                        Call Now
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
-                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
-                      <FaLinkedin className="text-base sm:text-lg" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-sm sm:text-base">LinkedIn</h5>
-                      <a 
-                        href={socialLinks.linkedin}
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
-                      >
-                        Connect on LinkedIn
-                      </a>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-start group transition-all w-full p-1 sm:p-2 rounded-lg hover:bg-primary/5">
-                    <div className="bg-primary/10 p-2 sm:p-2.5 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-2 sm:mr-3 flex-shrink-0">
-                      <FaGithub className="text-base sm:text-lg" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h5 className="font-medium text-sm sm:text-base">GitHub</h5>
-                      <a 
-                        href={socialLinks.github}
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
-                      >
-                        View Projects & Code
-                      </a>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-              
-            </div>
-          </m.div>
+          <ContactInformation />
           
           <m.div
             initial={{ opacity: 0, x: 20 }}
@@ -1288,19 +1106,6 @@ export default function Contact() {
                           <div className="whitespace-pre-line">
                             {errorMessage}
                           </div>
-                          {whatsappUrl && (
-                            <div className="mt-3">
-                              <a
-                                href={whatsappUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors duration-200"
-                              >
-                                <FaWhatsapp className="mr-2" />
-                                Contact via WhatsApp
-                              </a>
-                            </div>
-                          )}
                         </div>
                       </>
                     )}

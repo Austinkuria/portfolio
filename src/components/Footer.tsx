@@ -57,7 +57,7 @@ export default function Footer() {
               <span className="w-6 h-0.5 bg-primary mr-2"></span>
               Quick Links
             </h4>
-            <ul className="grid grid-cols-2 gap-2">
+            <ul className="space-y-3">
               <li>
                 <Link href="/projects" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center group text-sm sm:text-base">
                   <span className="w-0 h-0.5 bg-primary mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300"></span>
@@ -91,25 +91,43 @@ export default function Footer() {
               <span className="w-6 h-0.5 bg-primary mr-2"></span>
               Connect
             </h4>
-            <div className="space-y-4">
+            <div className="space-y-3">
               {/* Email contact */}
-              <div className="flex items-center">
-                <div className="bg-primary/10 p-2 rounded-lg text-primary mr-3 flex-shrink-0">
+              <a 
+                href={socialLinks.email}
+                className="flex items-center text-muted-foreground hover:text-primary transition-colors group"
+              >
+                <div className="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
                   <FaEnvelope size={16} />
                 </div>
-                <a 
-                  href={socialLinks.email}
-                  className="text-muted-foreground hover:text-primary transition-colors text-sm truncate"
-                >
-                  {socialLinks.email.replace('mailto:', '')}
-                </a>
-              </div>
+                <span className="text-sm sm:text-base">Send me an email</span>
+              </a>
               
-              {/* Social icons */}
-              <div className="flex space-x-3 pt-2">
-                <SocialIcon platform="github" />
-                <SocialIcon platform="linkedin" />
-              </div>
+              {/* GitHub */}
+              <a 
+                href={socialLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-muted-foreground hover:text-primary transition-colors group"
+              >
+                <div className="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
+                  <FaGithub size={16} />
+                </div>
+                <span className="text-sm sm:text-base">View my GitHub</span>
+              </a>
+              
+              {/* LinkedIn */}
+              <a 
+                href={socialLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-muted-foreground hover:text-primary transition-colors group"
+              >
+                <div className="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
+                  <FaLinkedin size={16} />
+                </div>
+                <span className="text-sm sm:text-base">Connect on LinkedIn</span>
+              </a>
             </div>
           </div>
         </div>

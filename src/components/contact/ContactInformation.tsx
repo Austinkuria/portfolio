@@ -7,7 +7,7 @@ import {
   FaMapMarkerAlt, 
   FaLinkedin 
 } from 'react-icons/fa';
-import { personalInfo, socialLinks } from '@/config';
+import { personalInfo, socialLinks, contactConfig } from '@/config';
 
 export default function ContactInformation() {
   return (
@@ -24,8 +24,7 @@ export default function ContactInformation() {
         </h3>
         
         <p className="text-muted-foreground mb-8">
-          Feel free to reach out through the contact form or via the contact details below. 
-          I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+          Choose your preferred way to connect. I typically respond within 24-48 hours.
         </p>
         
         {/* Contact Information Grid */}
@@ -81,10 +80,10 @@ export default function ContactInformation() {
           <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-muted-foreground">
             <span className="flex items-center">
               <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-              Open to opportunities
+              {contactConfig.availability.statusMessage}
             </span>
             <span className="hidden sm:inline">•</span>
-            <span>Typically respond within 24hrs</span>
+            <span>Typically respond within {contactConfig.responseTime}</span>
           </div>
         </div>
       </div>
