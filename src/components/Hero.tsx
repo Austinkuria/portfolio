@@ -38,7 +38,7 @@ export default function Hero() {
   };
 
   return (
-    <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden px-4 pt-20 md:pt-24">
+    <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden px-2 sm:px-4 pt-8 md:pt-12 border-4 border-red-500">
       <div className="absolute inset-0 -z-10">
         <MotionDiv 
           className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20"
@@ -73,9 +73,9 @@ export default function Hero() {
         ))}
       </div>
       
-      <div className="container mx-auto max-w-6xl z-10">
-        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-start gap-16">
-          <div className="min-h-[540px] md:min-h-[460px] flex flex-col">
+      <div className="w-full max-w-6xl z-10 px-2 sm:px-4 border-4 border-blue-500">
+        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-start gap-16 border-4 border-purple-500">
+          <div className="min-h-[540px] md:min-h-[460px] flex flex-col border-4 border-green-500">
             <MotionDiv
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -110,49 +110,44 @@ export default function Hero() {
               </span>         
             </MotionH1>
             <MotionDiv 
-              className="flex flex-col sm:flex-row items-center gap-4 md:justify-start justify-center"
+              className="flex flex-row flex-wrap items-center gap-3 justify-start border-4 border-yellow-500 mt-2 md:mt-auto"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
-              style={{ marginTop: 'auto' }}
             >
-              <div className="flex flex-col sm:flex-row gap-4">
-                <CustomLink 
-                  href="/projects" 
-                  className="bg-primary text-primary-foreground hover:bg-primary/80 hover:text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 text-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1"
-                >
-                  View Projects
-                </CustomLink>
-                <CustomLink 
-                  href={socialLinks.resume} 
-                  target="_blank"
-                  className="bg-secondary/10 text-foreground hover:bg-secondary/30 border border-border px-6 py-3 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1"
-                >
-                  <HiDownload className="h-5 w-5" />
-                  Resume
-                </CustomLink>
-              </div>
-              <div className="hidden sm:block w-px h-10 bg-border"></div>
-              <div className="flex gap-3">
-                <a 
-                  href={socialLinks.github}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-foreground hover:text-white hover:bg-[#24292e] transition-all p-3 rounded-full border border-border hover:border-[#24292e]"
-                  aria-label="GitHub"
-                >
-                  <FaGithub className="h-5 w-5" />
-                </a>
-                <a 
-                  href={socialLinks.linkedin}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-foreground hover:text-white hover:bg-[#0a66c2] transition-all p-3 rounded-full border border-border hover:border-[#0a66c2]"
-                  aria-label="LinkedIn"
-                >
-                  <FaLinkedin className="h-5 w-5" />
-                </a>
-              </div>
+              <CustomLink 
+                href="/projects" 
+                className="bg-primary text-primary-foreground hover:bg-primary/80 hover:text-white px-5 py-2.5 rounded-xl font-medium transition-all duration-300 text-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 text-sm"
+              >
+                View Projects
+              </CustomLink>
+              <CustomLink 
+                href={socialLinks.resume} 
+                target="_blank"
+                className="bg-secondary/10 text-foreground hover:bg-secondary/30 border border-border px-5 py-2.5 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1 text-sm"
+              >
+                <HiDownload className="h-4 w-4" />
+                Resume
+              </CustomLink>
+              <div className="hidden sm:block w-px h-8 bg-border mx-1"></div>
+              <a 
+                href={socialLinks.github}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-foreground hover:text-white hover:bg-[#24292e] transition-all p-2.5 rounded-full border border-border hover:border-[#24292e]"
+                aria-label="GitHub"
+              >
+                <FaGithub className="h-4 w-4" />
+              </a>
+              <a 
+                href={socialLinks.linkedin}
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-foreground hover:text-white hover:bg-[#0a66c2] transition-all p-2.5 rounded-full border border-border hover:border-[#0a66c2]"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedin className="h-4 w-4" />
+              </a>
             </MotionDiv>
           </div>
           <MotionDiv 

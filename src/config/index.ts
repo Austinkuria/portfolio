@@ -60,8 +60,6 @@ export const socialLinks = {
 // GitHub Usernames (for different projects)
 export const githubUsernames = {
     main: 'Austinkuria',
-    // alt1: 'austin.125',
-    // alt2: 'Austinkuria',
 } as const;
 
 // Project URLs Configuration
