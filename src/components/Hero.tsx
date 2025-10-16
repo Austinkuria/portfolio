@@ -38,7 +38,7 @@ export default function Hero() {
   };
 
   return (
-    <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden px-2 sm:px-4 pt-8 md:pt-12 border-4 border-red-500">
+    <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden px-2 sm:px-4 pt-20 md:pt-24">
       <div className="absolute inset-0 -z-10">
         <MotionDiv 
           className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20"
@@ -73,9 +73,9 @@ export default function Hero() {
         ))}
       </div>
       
-      <div className="w-full max-w-6xl z-10 px-2 sm:px-4 border-4 border-blue-500">
-        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-start gap-16 border-4 border-purple-500">
-          <div className="min-h-[540px] md:min-h-[460px] flex flex-col border-4 border-green-500">
+      <div className="w-full max-w-6xl z-10 px-2 sm:px-4">
+        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-start gap-16">
+          <div className="min-h-[540px] md:min-h-[460px] flex flex-col">
             <MotionDiv
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -110,10 +110,11 @@ export default function Hero() {
               </span>         
             </MotionH1>
             <MotionDiv 
-              className="flex flex-row flex-wrap items-center gap-3 justify-start border-4 border-yellow-500 mt-2 md:mt-auto"
+              className="flex flex-row flex-wrap items-center gap-3 justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
+              style={{ marginTop: 'auto' }}
             >
               <CustomLink 
                 href="/projects" 
