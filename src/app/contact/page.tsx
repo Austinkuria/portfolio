@@ -582,53 +582,6 @@ export default function Contact() {
           </div>
         </MotionDiv>
 
-        {/* Call to Action Section */}
-        <MotionDiv
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-16"
-        >
-          <div className="rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-background p-4 md:p-6 border border-primary/20 shadow-lg relative overflow-hidden max-w-4xl mx-auto">
-            <div className="absolute top-0 right-0 w-32 h-32 -mr-16 -mt-16 bg-primary/10 rounded-full"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 -ml-12 -mb-12 bg-primary/5 rounded-full"></div>
-            
-            <div className="relative z-10 text-center">
-              <m.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.3 }}
-                className="inline-flex items-center justify-center w-16 h-16 bg-primary/20 rounded-full mb-0"
-              >
-                <FaPaperPlane className="text-primary text-2xl" />
-              </m.div>
-              
-              <m.h3
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="text-2xl md:text-3xl font-bold mb-4"
-              >
-                Ready to Work Together?
-              </m.h3>
-              
-              <m.p
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="text-muted-foreground text-lg max-w-2xl mx-auto"
-              >
-                Looking for a skilled developer to bring your ideas to life? I'm currently accepting new projects 
-                and would love to hear about your vision. Let's build something great together!
-              </m.p>
-            </div>
-          </div>
-        </MotionDiv>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <ContactInformation />
           

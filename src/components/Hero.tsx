@@ -130,6 +130,12 @@ export default function Hero() {
                 <HiDownload className="h-4 w-4" />
                 Resume
               </CustomLink>
+              <CustomLink 
+                href="/contact"
+                className="bg-secondary/10 text-foreground hover:bg-secondary/30 border border-border px-5 py-2.5 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1 text-sm"
+              >
+                Get in Touch
+              </CustomLink>
               <div className="hidden sm:block w-px h-8 bg-border mx-1"></div>
               <a 
                 href={socialLinks.github}

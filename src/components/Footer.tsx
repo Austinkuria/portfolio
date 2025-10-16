@@ -89,7 +89,7 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-lg mb-5 flex items-center">
               <span className="w-6 h-0.5 bg-primary mr-2"></span>
-              Connect
+              Let's Connect
             </h4>
             <div className="space-y-3">
               {/* Email contact */}

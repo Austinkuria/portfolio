@@ -59,12 +59,6 @@ export default function Header() {
 						))}
 					</ul>
 					<div className="h-6 w-px bg-border/50 mx-2"></div>
-					<CustomLink
-						href="/contact"
-						className="px-4 py-2 border border-primary/50 text-primary rounded-md hover:bg-primary hover:text-primary-foreground transition-all duration-300 text-sm font-medium"
-					>
-						Contact Me
-					</CustomLink>
 					<ThemeToggle />
 				</nav>
 
