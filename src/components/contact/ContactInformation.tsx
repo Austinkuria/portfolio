@@ -38,7 +38,7 @@ export default function ContactInformation() {
               <div className="min-w-0 flex-1">
                 <h5 className="font-semibold text-base mb-1">Email</h5>
                 <p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
-                  Send me a message
+                  Email me directly
                 </p>
               </div>
             </a>
