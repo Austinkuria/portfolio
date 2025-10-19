@@ -13,7 +13,7 @@ import { useReCaptcha } from 'next-recaptcha-v3';
 import { MotionDiv } from '@/lib/motion';
 import RouteOptimizer from '@/components/RouteOptimizer';
 import { contactConfig, personalInfo } from '@/config';
-import { ContactForm, ContactInformation, FAQComponent } from '@/components/contact';
+import ContactInformation from '@/components/contact/ContactInformation';
 
 export default function Contact() {
   const { executeRecaptcha } = useReCaptcha();

@@ -4,10 +4,9 @@ import React from 'react';
 import { m } from 'framer-motion';
 import { 
   FaEnvelope, 
-  FaMapMarkerAlt, 
   FaLinkedin 
 } from 'react-icons/fa';
-import { personalInfo, socialLinks, contactConfig } from '@/config';
+import { socialLinks } from '@/config';
 
 export default function ContactInformation() {
   return (
@@ -24,67 +23,42 @@ export default function ContactInformation() {
         </h3>
         
         <p className="text-muted-foreground mb-8">
-          Choose your preferred way to connect. I typically respond within 24-48 hours.
+          I'm available for new projects and collaborations. All inquiries are typically answered within 24-48 hours.
         </p>
         
-        {/* Contact Information Grid */}
-        <div className="mb-8">
-          <h4 className="text-lg font-semibold mb-4 text-foreground">Get in Touch</h4>
-          <div className="space-y-4">
-            <div className="flex items-start group transition-all w-full p-3 rounded-lg hover:bg-primary/5 border border-border/40">
+        {/* Contact Methods */}
+        <div className="space-y-4">
+            <a 
+              href="mailto:kuriaaustin02@gmail.com?subject=Project Inquiry from Portfolio&body=Hi Austin,%0D%0A%0D%0AI came across your portfolio and would like to discuss a project with you.%0D%0A%0D%0A"
+              className="flex items-start group transition-all w-full p-3 rounded-lg hover:bg-primary/5 border border-border/40"
+            >
               <div className="bg-primary/10 p-3 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-4 flex-shrink-0">
                 <FaEnvelope className="text-xl" />
               </div>
               <div className="min-w-0 flex-1">
                 <h5 className="font-semibold text-base mb-1">Email</h5>
-                <a 
-                  href={socialLinks.email}
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
-                >
-                  Send me an email
-                </a>
+                <p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
+                  Send me a message
+                </p>
               </div>
-            </div>
+            </a>
             
-            <div className="flex items-start group transition-all w-full p-3 rounded-lg hover:bg-primary/5 border border-border/40">
+            <a 
+              href={socialLinks.linkedin}
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="flex items-start group transition-all w-full p-3 rounded-lg hover:bg-primary/5 border border-border/40"
+            >
               <div className="bg-primary/10 p-3 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-4 flex-shrink-0">
                 <FaLinkedin className="text-xl" />
               </div>
               <div className="min-w-0 flex-1">
-                <h5 className="font-semibold text-base mb-1">Professional Profile</h5>
-                <a 
-                  href={socialLinks.linkedin}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors truncate block"
-                >
-                  Connect on LinkedIn
-                </a>
+                <h5 className="font-semibold text-base mb-1">LinkedIn</h5>
+                <p className="text-sm text-muted-foreground group-hover:text-primary transition-colors">
+                  View professional profile
+                </p>
               </div>
-            </div>
-            
-            <div className="flex items-start group transition-all w-full p-3 rounded-lg border border-border/40">
-              <div className="bg-primary/10 p-3 rounded-lg text-primary mr-4 flex-shrink-0">
-                <FaMapMarkerAlt className="text-xl" />
-              </div>
-              <div className="min-w-0 flex-1">
-                <h5 className="font-semibold text-base mb-1">Location</h5>
-                <p className="text-sm text-muted-foreground">{personalInfo.location}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Simplified Status Section */}
-        <div className="mt-6 pt-4 border-t border-border/40">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-sm text-muted-foreground">
-            <span className="flex items-center">
-              <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-              {contactConfig.availability.statusMessage}
-            </span>
-            <span className="hidden sm:inline">•</span>
-            <span>Typically respond within {contactConfig.responseTime}</span>
-          </div>
+            </a>
         </div>
       </div>
     </m.div>

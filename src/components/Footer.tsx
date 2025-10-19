@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FaGithub, FaLinkedin, FaEnvelope } from 'react-icons/fa6';
+import { FaGithub, FaLinkedin, FaEnvelope, FaPaperPlane } from 'react-icons/fa6';
 import BackToTopLink from './BackToTopLink';
 import { socialLinks, SocialPlatform } from '@/data/socialLinks';
 import { personalInfo } from '@/config';
@@ -92,6 +92,17 @@ export default function Footer() {
               Let's Connect
             </h4>
             <div className="space-y-3">
+              {/* Send Message */}
+              <Link 
+                href="/contact"
+                className="flex items-center text-muted-foreground hover:text-primary transition-colors group"
+              >
+                <div className="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
+                  <FaPaperPlane size={16} />
+                </div>
+                <span className="text-sm sm:text-base">Send me a message</span>
+              </Link>
+              
               {/* Email contact */}
               <a 
                 href={socialLinks.email}
