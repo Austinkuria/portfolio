@@ -4,7 +4,9 @@ import React from 'react';
 import { m } from 'framer-motion';
 import { 
   FaEnvelope, 
-  FaLinkedin 
+  FaLinkedin,
+  FaClock,
+  FaGlobeAmericas
 } from 'react-icons/fa';
 import { socialLinks } from '@/config';
 
@@ -22,9 +24,39 @@ export default function ContactInformation() {
           Contact Information
         </h3>
         
-        <p className="text-muted-foreground mb-8">
-          I'm available for new projects and collaborations. All inquiries are typically answered within 24-48 hours.
-        </p>
+        <div className="mb-8 space-y-3">
+          <p className="text-muted-foreground">
+            I'm available for new projects and collaborations.
+          </p>
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
+            <p className="text-sm text-foreground">
+              <span className="font-semibold">Typically respond within 24 hours</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Availability Info */}
+        <div className="mb-8 space-y-3">
+          <div className="flex items-start gap-3">
+            <FaClock className="text-primary mt-1 flex-shrink-0" size={16} />
+            <div className="min-w-0">
+              <h5 className="font-semibold text-sm text-foreground">Availability</h5>
+              <p className="text-xs text-muted-foreground">
+                Based in <span className="font-medium">Nairobi (EAT, UTC+3)</span>. Async-friendly, flexible scheduling.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <FaGlobeAmericas className="text-primary mt-1 flex-shrink-0" size={16} />
+            <div className="min-w-0">
+              <h5 className="font-semibold text-sm text-foreground">Best Method</h5>
+              <p className="text-xs text-muted-foreground">
+                Use the contact form below for project inquiries—it ensures I capture all context. 
+                Email or LinkedIn work for general questions.
+              </p>
+            </div>
+          </div>
+        </div>
         
         {/* Contact Methods */}
         <div className="space-y-4">

@@ -7,7 +7,10 @@ import {
   FaExclamationTriangle, 
   FaCheck, 
   FaCode,
-  FaChevronDown
+  FaChevronDown,
+  FaBriefcase,
+  FaHandshake,
+  FaQuestion
 } from 'react-icons/fa';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { MotionDiv } from '@/lib/motion';
@@ -599,7 +602,48 @@ export default function Contact() {
                 <span className="inline-block w-8 h-1 bg-primary mr-3"></span>
                 Send Me a Message
               </h3>
-                <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+              
+              {/* Quick Intent Buttons */}
+              <div className="mb-6 space-y-2 relative z-10">
+                <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">What brings you here?</p>
+                <div className="grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, category: 'web-development', subject: 'Project Inquiry' }));
+                      setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
+                    }}
+                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex items-center justify-center gap-1"
+                  >
+                    <FaBriefcase className="w-3 h-3" />
+                    Project
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, category: 'collaboration', subject: 'Collaboration Opportunity' }));
+                      setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
+                    }}
+                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex items-center justify-center gap-1"
+                  >
+                    <FaHandshake className="w-3 h-3" />
+                    Collaborate
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, category: 'other', subject: 'Other' }));
+                      setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
+                    }}
+                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex items-center justify-center gap-1"
+                  >
+                    <FaQuestion className="w-3 h-3" />
+                    Other
+                  </button>
+                </div>
+              </div>
+              
+              <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
                 <div className="group">                  <label htmlFor="name" className="block text-sm font-medium mb-2 group-focus-within:text-primary transition-colors">
                     Your Name
                     <span className="ml-1 text-muted-foreground cursor-pointer" title="Please enter your full name as you'd like to be addressed">
@@ -788,13 +832,8 @@ export default function Contact() {
                       }`}
                     >
                       <option value="">Select a category...</option>
-                      <option value="web-development">Website Development</option>
-                      <option value="ui-ux-design">Website Design</option>
-                      <option value="ecommerce">Online Store</option>
-                      <option value="backend-development">Custom Systems</option>
-                      <option value="api-development">System Integration</option>
-                      <option value="consultation">Project Consultation</option>
-                      <option value="maintenance">Website Maintenance</option>
+                      <option value="web-development">Web Development Project</option>
+                      <option value="collaboration">Collaboration & Consultation</option>
                       <option value="other">Other</option>
                     </select>
                     <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
@@ -841,14 +880,9 @@ export default function Contact() {
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {(() => {
                         const benefitsMap = {
-                          'web-development': ['Mobile-responsive design', 'Fast loading speed', 'Search engine optimized', 'Professional appearance', 'Easy to update', 'Secure & reliable'],
-                          'ui-ux-design': ['User-friendly interface', 'Professional branding', 'Easy navigation', 'Mobile-responsive', 'Modern design', 'Brand consistency'],
-                          'api-development': ['Automated processes', 'Real-time updates', 'Third-party integrations', 'Data synchronization', 'Secure connections', 'Payment processing'],
-                          'ecommerce': ['Secure online payments', 'Inventory management', 'Customer accounts', 'Mobile shopping', 'Order tracking', 'Sales reporting'],
-                          'backend-development': ['Custom functionality', 'Data management', 'User authentication', 'Automated workflows', 'Scalable solutions', 'Secure storage'],
-                          'consultation': ['Expert guidance', 'Cost-effective solutions', 'Risk assessment', 'Project planning', 'Best practices', 'Growth strategies'],
-                          'maintenance': ['Regular updates', 'Security monitoring', 'Performance optimization', 'Bug fixes', 'Backup services', 'Technical support'],
-                          'other': ['Custom solutions', 'Problem solving', 'Business automation', 'Growth-focused features']
+                          'web-development': ['Full-stack development', 'Mobile-responsive design', 'Fast performance', 'SEO optimized', 'Modern tech stack', 'Production-ready'],
+                          'collaboration': ['Code reviews', 'Technical consultation', 'Best practices guidance', 'Problem-solving', 'Team collaboration', 'Knowledge sharing'],
+                          'other': ['Custom solutions', 'Problem solving', 'Open to discussions', 'Flexible approach']
                         };
                         
                         const benefits = benefitsMap[formData.category as keyof typeof benefitsMap] || [];

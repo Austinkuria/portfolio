@@ -266,8 +266,12 @@ export const contactConfig = {
             answer: "I offer both fixed-price and hourly arrangements depending on project scope. For fixed-price projects, I provide detailed proposals after understanding your requirements. Hourly rates apply for ongoing maintenance and consultation work."
         },
         {
+            question: "What's the best way to contact you?",
+            answer: "For project inquiries, fill out the contact form on this page—it ensures I have all the details and context. For general questions or professional networking, email or LinkedIn work well too. I respond to all methods within 24 hours."
+        },
+        {
             question: "Do you work with international clients?",
-            answer: "Absolutely! I work with clients globally and am experienced in remote collaboration. I'm based in Nairobi (EAT timezone) but accommodate different time zones for meetings and communication."
+            answer: "Absolutely! I work with clients globally and am experienced in remote collaboration. I'm based in Nairobi (EAT, UTC+3) and maintain async-friendly workflows to accommodate different time zones. I typically respond within 24 hours and am flexible with scheduling for meetings."
         }
     ]
 } as const;
