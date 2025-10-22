@@ -51,7 +51,7 @@ export default function ContactInformation() {
             <div className="min-w-0">
               <h5 className="font-semibold text-sm text-foreground">Best Method</h5>
               <p className="text-xs text-muted-foreground">
-                Use the contact form below for project inquiries—it ensures I capture all context. 
+                Use the contact form below for project inquiries as it ensures I capture all context. 
                 Email or LinkedIn work for general questions.
               </p>
             </div>

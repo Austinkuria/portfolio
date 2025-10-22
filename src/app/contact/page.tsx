@@ -537,10 +537,6 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 relative"
         >
-          <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none">
-            <div className="text-9xl font-bold text-primary">Contact</div>
-          </div>
-          
           <div className="inline-block mb-2">
             <m.div
               initial={{ width: 0 }}
