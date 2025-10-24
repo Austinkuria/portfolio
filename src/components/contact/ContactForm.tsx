@@ -15,6 +15,7 @@ import { FormData, ValidationErrors, FieldTouched, SubmitStatus } from './types'
 import { 
   validateName, 
   validateEmail, 
+  validateEmailFull,
   validateSubject, 
   validateCategory, 
   validateMessage, 
@@ -78,7 +79,13 @@ export default function ContactForm({ className }: ContactFormProps) {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Perform real-time validation
+    // Perform real-time validation only for the field being changed
+    // Skip expensive validations on message field to improve performance
+    if (name === 'message' && value.length < 100) {
+      // Only validate message when it gets longer (less frequent)
+      return;
+    }
+
     let error = '';
     switch (name) {
       case 'name':
@@ -101,7 +108,6 @@ export default function ContactForm({ className }: ContactFormProps) {
         break;
       case 'preferredContactMethod':
         error = validatePreferredContactMethod(value);
-        setValidationErrors(prev => ({ ...prev, phone: validatePhone(formData.phone) }));
         break;
       case 'budgetRange':
         error = validateBudgetRange(value);
@@ -109,11 +115,17 @@ export default function ContactForm({ className }: ContactFormProps) {
     }
 
     setValidationErrors(prev => ({ ...prev, [name]: error }));
-  }, [formData.phone]);
+  }, []);
 
   const handleBlur = useCallback((e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name } = e.target;
+    const { name, value } = e.target;
     setFieldTouched(prev => ({ ...prev, [name]: true }));
+    
+    // Perform full validation on blur for email (expensive checks)
+    if (name === 'email') {
+      const error = validateEmailFull(value);
+      setValidationErrors(prev => ({ ...prev, email: error }));
+    }
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -134,7 +146,7 @@ export default function ContactForm({ className }: ContactFormProps) {
     
     // Validate essential fields only
     const nameError = validateName(formData.name);
-    const emailError = validateEmail(formData.email);
+    const emailError = validateEmailFull(formData.email);
     const subjectError = validateSubject(formData.subject);
     const categoryError = validateCategory(formData.category);
     const messageError = validateMessage(formData.message);

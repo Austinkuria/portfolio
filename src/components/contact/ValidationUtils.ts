@@ -48,6 +48,16 @@ export const validateEmail = (email: string): string => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) return 'Please enter a valid email address';
 
+    // Fast pattern check only - full validation happens on blur/submit
+    return '';
+};
+
+// Full validation with all checks - only called on blur or submit
+export const validateEmailFull = (email: string): string => {
+    if (!email.trim()) return 'Email is required';
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return 'Please enter a valid email address';
+
     // Check for suspicious domains using configuration
     const emailDomain = email.split('@')[1]?.toLowerCase();
     if (
