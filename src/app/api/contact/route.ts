@@ -724,16 +724,22 @@ You can also click the WhatsApp button below to send me a quick message with you
           </div>
         </div>
       `,
-    };        // Send both emails with improved error handling
-    try {
-      console.log('Attempting to send emails...');
-      console.log('Notification email to:', emailConfig.to.default, 'from:', emailConfig.from.notification);
-      console.log('Auto-reply email to:', email, 'from:', emailConfig.gmail.user, '(via Gmail SMTP)');
+    };        // Send emails asynchronously (fire and forget) to speed up response time
+    // Send response immediately without waiting for email delivery
+    const response = NextResponse.json({
+      success: true,
+      message: 'Your message has been received! I\'ll get back to you soon.',
+      data: {
+        timestamp: new Date().toISOString(),
+      }
+    });
 
-      const [notificationResult, autoReplyResult] = await Promise.allSettled([
-        resend.emails.send(notificationEmail),
-        gmailTransporter.sendMail(autoReplyEmailGmail),
-      ]);      // Check if notification email failed
+    // Send emails in background without blocking response
+    Promise.allSettled([
+      resend.emails.send(notificationEmail),
+      gmailTransporter.sendMail(autoReplyEmailGmail),
+    ]).then(([notificationResult, autoReplyResult]) => {
+      // Log results for monitoring
       if (notificationResult.status === 'rejected') {
         console.error('Notification email failed:', notificationResult.reason);
 
@@ -753,89 +759,25 @@ You can also click the WhatsApp button below to send me a quick message with you
             attachments: [],
           };
 
-          try {
-            const retryResult = await resend.emails.send(notificationWithoutAttachment);
-            if (retryResult.data?.id) {
-              return NextResponse.json({
-                success: true,
-                message: 'Message sent successfully, but we could not include your attachment due to technical issues.',
-                data: {
-                  notificationId: retryResult.data.id,
-                  timestamp: new Date().toISOString(),
-                  attachmentIssue: true
-                }
-              });
-            }
-          } catch (retryError) {
-            console.error('Retry without attachment also failed:', retryError);
-          }
+          resend.emails.send(notificationWithoutAttachment).catch(err => {
+            console.error('Retry without attachment also failed:', err);
+          });
         }
-
-        return NextResponse.json(
-          {
-            error: 'Failed to send notification email. Please try again.',
-            code: 'NOTIFICATION_FAILED'
-          },
-          { status: 500 }
-        );
-      }
-
-      // Check if auto-reply failed (less critical)
-      if (autoReplyResult.status === 'rejected') {
-        console.error('Auto-reply email (Gmail) failed:', autoReplyResult.reason);
-        console.error('Auto-reply details:', {
-          to: email,
-          from: emailConfig.gmail.user,
-          subject: autoReplyEmailGmail.subject,
-          timestamp: new Date().toISOString()
-        });
-        // Still return success since notification was sent
       } else {
-        console.log('Auto-reply email sent successfully via Gmail:', autoReplyResult.value.messageId);
+        console.log('Notification email sent successfully');
       }
 
-      // Build response data
-      const responseData: {
-        success: boolean;
-        message: string;
-        data: {
-          notificationId: string | null;
-          autoReplyId: string | null;
-          timestamp: string;
-          fileAttached?: boolean;
-          attachmentIssue?: boolean;
-        }
-      } = {
-        success: true,
-        message: 'Message sent successfully! You should receive a confirmation email shortly.',
-        data: {
-          notificationId: notificationResult.status === 'fulfilled' ? (notificationResult.value.data?.id || null) : null,
-          autoReplyId: autoReplyResult.status === 'fulfilled' ? (autoReplyResult.value.messageId || null) : null,
-          timestamp: new Date().toISOString(),
-        }
-      };
-
-      // Add attachment status if there was an attachment
-      if (body.fileData && body.fileName) {
-        responseData.data.fileAttached = true;
-
-        // If there was any issue with attachment processing, note it
-        if (notificationResult.status === 'fulfilled' && !notificationResult.value.data?.id) {
-          responseData.data.attachmentIssue = true;
-        }
+      // Log auto-reply result
+      if (autoReplyResult.status === 'rejected') {
+        console.error('Auto-reply email failed:', autoReplyResult.reason);
+      } else {
+        console.log('Auto-reply email sent successfully');
       }
+    }).catch(err => {
+      console.error('Email sending error:', err);
+    });
 
-      return NextResponse.json(responseData);
-    } catch (emailError) {
-      console.error('Email sending error:', emailError);
-      return NextResponse.json(
-        {
-          error: 'Failed to send emails. Please try again or contact me directly.',
-          code: 'EMAIL_SERVICE_ERROR'
-        },
-        { status: 500 }
-      );
-    }
+    return response;
   } catch (error) {
     console.error('Contact form error:', error);
 
