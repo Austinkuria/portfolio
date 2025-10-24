@@ -87,7 +87,8 @@ export const validateSubject = (subject: string): string => {
 
 export const validateCategory = (category: string): string => {
     const validCategories = ['Web Development', 'E-commerce', 'Consultation', 'Other'];
-    if (!category) return 'Please select a project category';
+    // Category is optional - only validate if a value is provided
+    if (!category) return '';
     if (!validCategories.includes(category)) return 'Please select a valid category';
     return '';
 };

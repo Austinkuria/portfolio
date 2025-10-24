@@ -136,7 +136,7 @@ export default function ContactForm({ className }: ContactFormProps) {
       name: true, 
       email: true, 
       subject: true, 
-      category: true, 
+      category: false,
       message: true, 
       phone: false,
       preferredContactMethod: false, 
