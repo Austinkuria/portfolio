@@ -7,7 +7,12 @@ import {
   FaExclamationTriangle, 
   FaPaperPlane, 
   FaWhatsapp, 
-  FaCode 
+  FaGlobe,
+  FaPalette,
+  FaShoppingCart,
+  FaWrench,
+  FaLightbulb,
+  FaFolderOpen
 } from 'react-icons/fa';
 import { MotionDiv } from '@/lib/motion';
 import { personalInfo, contactConfig, errorMessages } from '@/config';
@@ -480,14 +485,11 @@ export default function ContactForm({ className }: ContactFormProps) {
                 }`}
               >
                 <option value="">Select a category...</option>
-                <option value="web-development">Website Development</option>
-                <option value="ui-ux-design">Website Design</option>
-                <option value="ecommerce">Online Store</option>
-                <option value="backend-development">Custom Systems</option>
-                <option value="api-development">System Integration</option>
-                <option value="consultation">Project Consultation</option>
-                <option value="maintenance">Website Maintenance</option>
-                <option value="other">Other</option>
+                <option value="build-website">Build a Website</option>
+                <option value="design-redesign">Website Design & Redesign</option>
+                <option value="ecommerce">Online Store / E-commerce</option>
+                <option value="maintenance-support">Website Maintenance & Support</option>
+                <option value="other">Other / Let me Explain</option>
               </select>
               <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
                 validationErrors.category && fieldTouched.category
@@ -496,7 +498,7 @@ export default function ContactForm({ className }: ContactFormProps) {
                   ? 'text-green-500'
                   : 'text-muted-foreground'
               }`}>
-                <FaCode className="w-5 h-5" />
+                <FaFolderOpen className="w-5 h-5" />
               </span>
               <span className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                 <svg className="w-4 h-4 text-muted-foreground" fill="none" stroke="currentColor" viewBox="0 0 24 24">

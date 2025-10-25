@@ -86,14 +86,18 @@ export const validateSubject = (subject: string): string => {
 };
 
 export const validateCategory = (category: string): string => {
-    const validCategories = ['Web Development', 'E-commerce', 'Consultation', 'Other'];
+    const validCategories = [
+        'build-website',
+        'design-redesign',
+        'ecommerce',
+        'maintenance-support',
+        'other'
+    ];
     // Category is optional - only validate if a value is provided
     if (!category) return '';
     if (!validCategories.includes(category)) return 'Please select a valid category';
     return '';
-};
-
-export const validateMessage = (message: string): string => {
+}; export const validateMessage = (message: string): string => {
     if (!message.trim()) return 'Message is required';
     if (message.length < 10) return 'Message must be at least 10 characters';
     if (message.length > 1000) return 'Message must be less than 1000 characters';

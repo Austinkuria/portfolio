@@ -94,47 +94,47 @@ function detectSpam(name: string, email: string, subject: string, message: strin
 // Get personalized project information based on category
 function getPersonalizedProjectInfo(category?: string): string {
   const categoryInfo: { [key: string]: { timeline: string; features: string[]; samples: string[] } } = {
-    'web-development': {
+    'build-website': {
       timeline: '3-6 weeks for full websites',
       features: ['Mobile-responsive design', 'Fast loading speeds', 'Search engine optimized', 'User-friendly interface'],
       samples: ['Portfolio websites', 'Business websites', 'Landing pages']
+    },
+    'design-redesign': {
+      timeline: '2-4 weeks for design work',
+      features: ['Modern, clean design', 'Improved user experience', 'Professional appearance', 'Brand consistency'],
+      samples: ['Website redesigns', 'UI/UX improvements', 'Design systems']
     },
     'ecommerce': {
       timeline: '4-8 weeks for e-commerce platforms',
       features: ['Secure payment processing', 'Inventory management', 'Mobile shopping experience', 'Customer accounts'],
       samples: ['Online stores', 'Product catalogs', 'Booking systems']
     },
-    'backend-development': {
-      timeline: '2-5 weeks for backend systems',
-      features: ['Secure data storage', 'Fast performance', 'Reliable uptime', 'Scalable architecture'],
-      samples: ['Database systems', 'User authentication', 'Data processing']
+    'maintenance-support': {
+      timeline: 'Ongoing support as needed',
+      features: ['Bug fixes & updates', 'Performance optimization', 'Security patches', 'Technical support'],
+      samples: ['Website updates', 'Issue fixes', 'Ongoing optimization']
     },
-    'ui-ux-design': {
-      timeline: '2-4 weeks for design work',
-      features: ['User-centered design', 'Professional appearance', 'Easy navigation', 'Brand consistency'],
-      samples: ['Website designs', 'App interfaces', 'Brand guidelines']
-    },
-    'api-development': {
-      timeline: '1-4 weeks for system integration',
-      features: ['Secure data exchange', 'Automated processes', 'Third-party integrations', 'Real-time updates'],
-      samples: ['Payment systems', 'Social media integration', 'Email automation']
+    'other': {
+      timeline: 'Varies by project scope',
+      features: ['Custom solution', 'Tailored approach', 'Flexible timeline', 'Collaborative planning'],
+      samples: ['Custom projects', 'Unique requirements', 'Special requests']
     }
   };
 
-  const info = categoryInfo[category || 'web-development'];
+  const info = categoryInfo[category || 'build-website'];
 
   return `
     <div style="margin-bottom: 15px;">
-      <strong style="color: #1e293b;">⏱️ Estimated Timeline:</strong>
+      <strong style="color: #1e293b;">Estimated Timeline:</strong>
       <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${info?.timeline || 'Varies by project scope'}</p>
     </div>
     <div style="margin-bottom: 0;">
-      <strong style="color: #1e293b;">✨ What You'll Get:</strong>
+      <strong style="color: #1e293b;">What You'll Get:</strong>
       <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${info?.features.join(', ') || 'Custom features based on your needs'}</p>
     </div>
     ${info?.samples ? `
     <div style="margin-top: 15px;">
-      <strong style="color: #1e293b;">📋 Similar Projects:</strong>
+      <strong style="color: #1e293b;">Similar Projects:</strong>
       <p style="margin: 5px 0 0 0; color: #374151; font-size: 14px;">${info.samples.join(', ')}</p>
     </div>
     ` : ''}
@@ -322,8 +322,8 @@ export async function POST(request: NextRequest) {
 
 If you believe this is an error, please contact me directly:
 
-📧 Email: ${personalInfo.email}
-💼 LinkedIn: <a href='${linkedinUrl}' target='_blank' rel='noopener noreferrer'>Click here to send me a message on LinkedIn</a>
+Email: ${personalInfo.email}
+LinkedIn: <a href='${linkedinUrl}' target='_blank' rel='noopener noreferrer'>Click here to send me a message on LinkedIn</a>
 
 Reference ID: ${referenceId}
 
@@ -358,9 +358,6 @@ You can also click the WhatsApp button below to send me a quick message with you
     // Message analytics
     const messageWordCount = message.trim().split(/\s+/).length;
     const urgencyScore = message.toLowerCase().includes('urgent') || message.toLowerCase().includes('asap') || message.toLowerCase().includes('immediate') ? 'HIGH' : 'NORMAL';
-
-    // Get additional request info  
-    const referer = request.headers.get('referer') || 'Direct visit';
 
     // Email to you (notification) - Enhanced
     // Prepare email with attachments if file is provided
@@ -406,33 +403,33 @@ You can also click the WhatsApp button below to send me a quick message with you
     const notificationEmail = {
       from: emailConfig.from.notification, // Use onboarding@resend.dev for notifications
       to: emailConfig.to.default,
-      subject: `${urgencyScore === 'HIGH' ? '🚨 URGENT' : '🚀'} New Portfolio Contact: ${name} - ${subject}`,
+      subject: `${urgencyScore === 'HIGH' ? '[URGENT]' : '[NEW]'} Portfolio Contact: ${name} - ${subject}`,
       attachments: attachments,
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; padding: 0; background: #f8fafc;">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center; position: relative;">
             ${urgencyScore === 'HIGH' ? '<div style="position: absolute; top: 10px; right: 10px; background: #ef4444; color: white; padding: 5px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">URGENT</div>' : ''}
-            <h1 style="margin: 0; font-size: 28px; color: white; font-weight: 700;">💼 New Business Inquiry</h1>
-            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9); font-size: 16px;">Someone is interested in your services!</p>
+            <h1 style="margin: 0; font-size: 28px; color: white; font-weight: 700;">New Business Inquiry</h1>
+            <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.9); font-size: 16px;">Someone is interested in your services</p>
           </div>
           
           <div style="padding: 30px 20px; background: white;">
             <!-- Quick Actions Bar -->
             <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;">
-              <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">⚡ Quick Actions</h3>
+              <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px;">Quick Actions</h3>
               <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
                 <a href="mailto:${email}?subject=Re:%20Your%20Portfolio%20Inquiry&body=Hi%20${name},%0D%0A%0D%0AThank%20you%20for%20reaching%20out!" 
-                   style="background: #667eea; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">📧 Reply</a>
+                   style="background: #667eea; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">Reply</a>
                 <a href="${socialLinks.calendly}" target="_blank"
-                   style="background: #22c55e; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">📅 Schedule Call</a>
+                   style="background: #22c55e; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">Schedule Call</a>
                 <a href="${socialLinks.linkedin}" target="_blank"
-                   style="background: #0077b5; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">💼 LinkedIn</a>              </div>
+                   style="background: #0077b5; color: white; padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 14px; font-weight: 500;">LinkedIn</a>              </div>
             </div>
             
             <!-- Message Analytics -->
             <div style="background: #f0f9ff; padding: 20px; border-radius: 12px; border-left: 5px solid #0ea5e9; margin-bottom: 25px;">
               <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; display: flex; align-items: center;">
-                <span style="background: #0ea5e9; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">📊</span>
+                <span style="background: #0ea5e9; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">�</span>
                 Message Analytics
               </h3>
               <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px;">
@@ -448,68 +445,42 @@ You can also click the WhatsApp button below to send me a quick message with you
                   <div style="font-size: 20px; font-weight: bold; color: #8b5cf6;">${message.length}</div>
                   <div style="font-size: 12px; color: #64748b;">Characters</div>
                 </div>
-              </div>            </div>
+              </div>
               
               <div style="background: #f1f5f9; padding: 25px; border-radius: 12px; border-left: 5px solid #667eea; margin-bottom: 25px;">
-              <h2 style="color: #1e293b; margin: 0 0 20px 0; font-size: 20px; display: flex; align-items: center;">
-                <span style="background: #667eea; color: white; width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 15px; line-height: 1; text-align: center; vertical-align: middle;">👤</span>
-                Contact Information              </h2>
-                <div style="display: grid; gap: 15px;">
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Full Name</strong>
-                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 18px; font-weight: 600;">${name}</p>
-                </div>
-                
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Email Address</strong>
-                  <p style="margin: 5px 0 0 0;">
-                    <a href="mailto:${email}" style="color: #667eea; text-decoration: none; font-size: 16px; font-weight: 500;">${email}</a>
-                  </p>
-                </div>
-                  
-                ${phone ? `
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Phone Number</strong>
-                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${phone}</p>
-                </div>
-                ` : ''}
-                  
-                ${preferredContactMethod ? `
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Preferred Contact Method</strong>
-                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${preferredContactMethod.charAt(0).toUpperCase() + preferredContactMethod.slice(1)}</p>
-                </div>
-                ` : ''}
-
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Subject</strong>
-                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${subject}</p>
-                </div>
-
-                ${category ? `
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Project Category</strong>
-                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</p>
-                </div>
-                ` : ''}
-                  
-                ${budgetRange ? `
-                <div style="background: white; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                  <strong style="color: #475569; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px;">Budget Range</strong>
-                  <p style="margin: 5px 0 0 0; color: #1e293b; font-size: 16px; font-weight: 500;">
-                    ${(() => {
-            switch (budgetRange) {
-              case 'under-500': return 'Under Ksh 15,000';
-              case '500-1000': return 'Ksh 15,000 - Ksh 30,000';
-              case '1000-2500': return 'Ksh 30,000 - Ksh 60,000';
-              case '2500-5000': return 'Ksh 60,000 - Ksh 100,000';
-              case 'over-5000': return 'Over Ksh 100,000';
-              default: return 'Not specified';
-            }
-          })()}
-                  </p>
-                </div>
-                ` : ''}
+              <h2 style="color: #1e293b; margin: 0 0 20px 0; font-size: 20px;">Inquiry Details</h2>
+                <table style="width: 100%; border-collapse: collapse;">
+                  <tr style="border-bottom: 1px solid #e2e8f0;">
+                    <td style="padding: 12px 0; color: #475569; font-weight: 500; width: 25%;">From:</td>
+                    <td style="padding: 12px 0; color: #1e293b; font-weight: 600;">${name}</td>
+                  </tr>
+                  <tr style="border-bottom: 1px solid #e2e8f0;">
+                    <td style="padding: 12px 0; color: #475569; font-weight: 500;">Email:</td>
+                    <td style="padding: 12px 0;"><a href="mailto:${email}" style="color: #667eea; text-decoration: none; font-weight: 500;">${email}</a></td>
+                  </tr>
+                  ${phone ? `
+                  <tr style="border-bottom: 1px solid #e2e8f0;">
+                    <td style="padding: 12px 0; color: #475569; font-weight: 500;">Phone:</td>
+                    <td style="padding: 12px 0; color: #1e293b;">${phone}</td>
+                  </tr>
+                  ` : ''}
+                  <tr style="border-bottom: 1px solid #e2e8f0;">
+                    <td style="padding: 12px 0; color: #475569; font-weight: 500;">Subject:</td>
+                    <td style="padding: 12px 0; color: #1e293b; font-weight: 500;">${subject}</td>
+                  </tr>
+                  ${category ? `
+                  <tr style="border-bottom: 1px solid #e2e8f0;">
+                    <td style="padding: 12px 0; color: #475569; font-weight: 500;">Project:</td>
+                    <td style="padding: 12px 0; color: #1e293b;">${category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}</td>
+                  </tr>
+                  ` : ''}
+                  ${budgetRange ? `
+                  <tr>
+                    <td style="padding: 12px 0; color: #475569; font-weight: 500;">Budget:</td>
+                    <td style="padding: 12px 0; color: #1e293b;">${(() => { switch (budgetRange) { case 'under-500': return 'Under Ksh 15,000'; case '500-1000': return 'Ksh 15,000 - Ksh 30,000'; case '1000-2500': return 'Ksh 30,000 - Ksh 60,000'; case '2500-5000': return 'Ksh 60,000 - Ksh 100,000'; case 'over-5000': return 'Over Ksh 100,000'; default: return 'Not specified'; } })()}</td>
+                  </tr>
+                  ` : ''}
+                </table>
                   
                   ${body.fileData ? `
                 <div style="background: #eef2ff; padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #6366f1;">
@@ -533,7 +504,7 @@ You can also click the WhatsApp button below to send me a quick message with you
             
             <div style="background: #fefce8; padding: 20px; border-radius: 12px; border-left: 5px solid #eab308; margin-bottom: 25px;">
               <h3 style="color: #1e293b; margin: 0 0 15px 0; font-size: 18px; display: flex; align-items: center;">
-                <span style="background: #eab308; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 13px; line-height: 1; text-align: center; vertical-align: middle;">💬</span>
+                <span style="background: #eab308; color: white; width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 14px; line-height: 1; text-align: center; vertical-align: middle;">✎</span>
                 Message
               </h3>
               <div style="background: white; padding: 20px; border-radius: 8px; line-height: 1.6; color: #374151; font-size: 15px; border: 1px solid #e5e7eb;">
@@ -544,35 +515,13 @@ You can also click the WhatsApp button below to send me a quick message with you
             <div style="text-align: center; margin: 30px 0;">
               <a href="mailto:${email}?subject=Re:%20Your%20Portfolio%20Inquiry&body=Hi%20${name},%0D%0A%0D%0AThank%20you%20for%20reaching%20out!%20I%20received%20your%20message%20and%20I'm%20excited%20to%20discuss%20your%20project.%0D%0A%0D%0ALet's%20schedule%20a%20call%20to%20discuss%20your%20requirements%20in%20detail.%0D%0A%0D%0ABest%20regards,%0D%0A${personalInfo.name.full}" 
                  style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s ease;">
-                📧 Reply to ${name}
+                Reply to ${name}
               </a>
             </div>
           </div>
           
-          <div style="background: #f1f5f9; padding: 20px; text-align: center; border-top: 1px solid #e2e8f0;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
-              <div>
-                <strong style="color: #475569;">📅 Received:</strong><br>
-                <span style="color: #64748b; font-size: 14px;">${timestamp}</span>
-              </div>
-              <div>
-                <strong style="color: #475569;">🌐 Source:</strong><br>
-                <span style="color: #64748b; font-size: 14px;">{siteConfig.siteName}</span>
-              </div>
-              <div>
-                <strong style="color: #475569;">🔒 Client IP:</strong><br>
-                <span style="color: #64748b; font-size: 14px;">${ip}</span>
-              </div>
-              <div>
-                <strong style="color: #475569;">📱 Referrer:</strong><br>
-                <span style="color: #64748b; font-size: 14px;">${referer.includes(siteConfig.domain) ? 'Portfolio Website' : 'External'}</span>
-              </div>
-            </div>
-            <div style="border-top: 1px solid #e2e8f0; padding-top: 15px;">
-              <p style="margin: 0; color: #64748b; font-size: 12px;">
-                💡 <strong>Tip:</strong> ${urgencyScore === 'HIGH' ? 'This message was marked as urgent - consider responding quickly!' : 'Take your time to craft a thoughtful response.'}
-              </p>
-            </div>
+          <div style="background: #f1f5f9; padding: 20px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b; text-align: center;">
+            <p style="margin: 0;">Received ${timestamp} | Priority: ${urgencyScore === 'HIGH' ? 'URGENT' : 'Normal'} | From: ${siteConfig.siteName}</p>
           </div>
         </div>
       `,
@@ -580,14 +529,14 @@ You can also click the WhatsApp button below to send me a quick message with you
     const autoReplyEmailGmail = {
       from: `${personalInfo.name.full} <${emailConfig.gmail.user}>`, // Your Gmail address
       to: email,
-      subject: `✨ Thanks for reaching out, ${name}! - ${personalInfo.name.full}`,
+      subject: `Thanks for reaching out, ${name}! - ${personalInfo.name.full}`,
       html: `
         <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: 0 auto; background: #ffffff;">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center; position: relative; overflow: hidden;">
             <div style="position: absolute; top: -30px; right: -30px; width: 60px; height: 60px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
             <div style="position: absolute; bottom: -20px; left: -20px; width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 50%;"></div>
             <div style="background: rgba(255,255,255,0.15); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 20px auto; display: flex; align-items: center; justify-content: center;">
-              <span style="font-size: 36px;">👋</span>
+              <span style="font-size: 32px;">✓</span>
             </div>
             <h1 style="margin: 0; font-size: 28px; color: white; font-weight: 600; position: relative; z-index: 1;">Hello ${name}!</h1>
             <p style="margin: 10px 0 0 0; font-size: 16px; color: rgba(255,255,255,0.9); position: relative; z-index: 1;">Your message has been received successfully</p>
@@ -609,7 +558,7 @@ You can also click the WhatsApp button below to send me a quick message with you
               
               <!-- Your Message Summary -->
               <div style="background: #f8fafc; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #3b82f6;">
-                <h3 style="margin: 0 0 12px 0; color: #1e293b; font-size: 16px; font-weight: 600;">📋 Your Message Summary</h3>
+                <h3 style="margin: 0 0 12px 0; color: #1e293b; font-size: 16px; font-weight: 600;">Your Message Summary</h3>
                 <div style="background: white; padding: 15px; border-radius: 8px;">
                   <div style="display: grid; gap: 8px; margin-bottom: 12px;">
                     <div style="display: grid; grid-template-columns: 80px 1fr; gap: 10px; font-size: 14px;">
@@ -635,7 +584,7 @@ You can also click the WhatsApp button below to send me a quick message with you
                 
               <!-- What Happens Next -->
               <div style="background: #f0fdf4; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #22c55e;">
-                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">⚡ What Happens Next</h3>
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">Next Steps</h3>
                 <div style="display: grid; gap: 10px;">
                   <div style="display: flex; align-items: start; padding: 8px 0;">
                     <span style="background: #22c55e; color: white; min-width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 12px; font-size: 12px; font-weight: bold;">1</span>
@@ -670,18 +619,18 @@ You can also click the WhatsApp button below to send me a quick message with you
               
               <!-- Top 3 FAQ -->
               <div style="background: #fef7f0; padding: 20px; border-radius: 10px; margin: 20px 0; border-left: 4px solid #f97316;">
-                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">❓ Quick Answers</h3>
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">Frequently Asked Questions</h3>
                 <div style="display: grid; gap: 12px;">
                   <div style="background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #f97316;">
-                    <strong style="color: #1e293b; font-size: 14px;">🤝 How do you work with clients?</strong>
+                    <strong style="color: #1e293b; font-size: 14px;">How do you work with clients?</strong>
                     <p style="margin: 4px 0 0 0; color: #374151; font-size: 13px; line-height: 1.4;">Transparent collaboration with regular updates. You're always in the loop via email, WhatsApp, or calls.</p>
                   </div>
                   <div style="background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #f97316;">
-                    <strong style="color: #1e293b; font-size: 14px;">📱 Mobile-responsive included?</strong>
+                    <strong style="color: #1e293b; font-size: 14px;">Mobile-responsive included?</strong>
                     <p style="margin: 4px 0 0 0; color: #374151; font-size: 13px; line-height: 1.4;">Absolutely! All projects work perfectly on desktop, tablet, and mobile devices.</p>
                   </div>
                   <div style="background: white; padding: 12px; border-radius: 8px; border-left: 3px solid #f97316;">
-                    <strong style="color: #1e293b; font-size: 14px;">� What about revisions?</strong>
+                    <strong style="color: #1e293b; font-size: 14px;">What about revisions?</strong>
                     <p style="margin: 4px 0 0 0; color: #374151; font-size: 13px; line-height: 1.4;">Reasonable revisions included. We'll discuss specifics during our initial call.</p>
                   </div>
                 </div>
@@ -689,20 +638,20 @@ You can also click the WhatsApp button below to send me a quick message with you
               
               <!-- Action Center -->
               <div style="text-align: center; margin: 25px 0 20px 0;">
-                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">🚀 While You Wait</h3>
+                <h3 style="margin: 0 0 15px 0; color: #1e293b; font-size: 16px; font-weight: 600;">While You Wait</h3>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px;">
-                  <a href="${siteConfig.url}/projects" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px; margin: 10px 10px;">🚀 View Projects</a>
-                  <a href="${siteConfig.url}/skills" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px; margin: 10px 10px;">💻 My Skills</a>
-                  <a href="${siteConfig.url}/about" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px; margin: 10px 10px;">👨‍💻 About Me</a>
+                  <a href="${siteConfig.url}/projects" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px; margin: 10px 10px;">View Projects</a>
+                  <a href="${siteConfig.url}/skills" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px; margin: 10px 10px;">My Skills</a>
+                  <a href="${siteConfig.url}/about" style="display: block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 15px; border-radius: 8px; text-decoration: none; font-weight: 500; font-size: 13px; margin: 10px 10px;">About Me</a>
                 </div>
                 
                 <!-- Quick Contact -->
                 <div style="background: #f8fafc; padding: 15px; border-radius: 8px;">
-                  <p style="margin: 0 0 10px 0; color: #1e293b; font-size: 14px; font-weight: 600;">📞 Need Urgent Help?</p>
+                  <p style="margin: 0 0 10px 0; color: #1e293b; font-size: 14px; font-weight: 600;">Need Urgent Help?</p>
                   <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                    <a href="${socialLinks.whatsapp}" target="_blank" style="color: #25d366; text-decoration: none; font-weight: 500; font-size: 13px;">� WhatsApp</a>
-                    <a href="${socialLinks.linkedin}" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: 500; font-size: 13px;">💼 LinkedIn</a>
-                    <a href="${socialLinks.calendly}" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500; font-size: 13px;">� Schedule Call</a>
+                    <a href="${socialLinks.whatsapp}" target="_blank" style="color: #25d366; text-decoration: none; font-weight: 500; font-size: 13px;">WhatsApp</a>
+                    <a href="${socialLinks.linkedin}" target="_blank" style="color: #0077b5; text-decoration: none; font-weight: 500; font-size: 13px;">LinkedIn</a>
+                    <a href="${socialLinks.calendly}" target="_blank" style="color: #22c55e; text-decoration: none; font-weight: 500; font-size: 13px;">Schedule Call</a>
                   </div>
                 </div>
               </div>
@@ -715,7 +664,7 @@ You can also click the WhatsApp button below to send me a quick message with you
             <p style="margin: 0 0 15px 0; color: #94a3b8; font-size: 13px;">Full-Stack Developer & Digital Solutions Expert</p>
             <div style="border-top: 1px solid #374151; padding-top: 15px;">
               <p style="margin: 0; color: #94a3b8; font-size: 12px;">
-                📧 ${personalInfo.email} | 🌐 <a href="${siteConfig.url}" style="color: #667eea; text-decoration: none;">Portfolio</a>
+                ${personalInfo.email} | <a href="${siteConfig.url}" style="color: #667eea; text-decoration: none;">Portfolio</a>
               </p>
               <p style="margin: 8px 0 0 0; color: #64748b; font-size: 11px;">
                 This is an automated confirmation. I'll respond personally soon!
