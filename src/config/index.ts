@@ -178,7 +178,7 @@ export const emailConfig = {
         notification: 'onboarding@resend.dev', // For client messages to you
         autoReply: process.env.FROM_EMAIL || 'onboarding@resend.dev', // Will be overridden by Gmail
         name: personalInfo.name.full,
-        noreply: process.env.FROM_EMAIL || 'kuriaaustin125@gmail.com',
+        noreply: process.env.FROM_EMAIL || 'devhubmailer@gmail.com',
     },
     to: {
         default: process.env.TO_EMAIL || personalInfo.email,
