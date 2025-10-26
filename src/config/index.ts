@@ -211,6 +211,8 @@ export const contactConfig = {
     whatsappMessage: `Hi ${personalInfo.name.first}! I found your portfolio and would like to discuss a project with you.`,
     phoneFormatExample: '+254712345678',
     emailPlaceholder: 'austinexample@gmail.com',
+    subjectPlaceholder: 'Project Inquiry',
+    messagePlaceholder: 'Hello! I\'d like to talk about...',
     supportEmail: personalInfo.email,
     maxFileSize: 5 * 1024 * 1024, // 5MB in bytes
     allowedFileTypes: ['pdf', 'doc', 'docx', 'txt', 'jpg', 'jpeg', 'png'],
@@ -220,9 +222,16 @@ export const contactConfig = {
         statusMessage: 'Available for new projects',
         currentWork: 'Currently accepting web development and consultation work'
     },
+    categoryOptions: [
+        { value: '', label: 'Select a category...' },
+        { value: 'build-website', label: 'Build a Website' },
+        { value: 'design-redesign', label: 'Website Design & Redesign' },
+        { value: 'ecommerce', label: 'Online Store / E-commerce' },
+        { value: 'maintenance-support', label: 'Website Maintenance & Support' },
+        { value: 'other', label: 'Other / Let me Explain' }
+    ],
     validCategories: [
-        'web-development', 'ui-ux-design', 'ecommerce', 'backend-development',
-        'api-development', 'consultation', 'maintenance', 'other'
+        'build-website', 'design-redesign', 'ecommerce', 'maintenance-support', 'other'
     ],
     validContactMethods: ['email', 'phone', 'whatsapp'],
     validBudgetRanges: [
@@ -273,6 +282,50 @@ export const contactConfig = {
             question: "Do you work with international clients?",
             answer: "Absolutely! I work with clients globally and am experienced in remote collaboration. I'm based in Nairobi (EAT, UTC+3) and maintain async-friendly workflows to accommodate different time zones. I typically respond within 24 hours and am flexible with scheduling for meetings."
         }
+    ]
+} as const;
+
+// Contact Benefits Configuration
+export const contactBenefits = {
+    'build-website': [
+        'Mobile responsive design',
+        'Fast loading times',
+        'SEO optimized',
+        'User-friendly interface',
+        'Modern tech stack',
+        'Custom features as needed'
+    ],
+    'design-redesign': [
+        'Complete visual redesign',
+        'Improved user experience',
+        'Professional branding',
+        'Consistent across devices',
+        'Accessibility compliant',
+        'Additional design elements'
+    ],
+    'ecommerce': [
+        'Seller Dashboard - Manage products, pricing, inventory',
+        'Admin Dashboard - Order processing, customer management, analytics',
+        'Customer Dashboard - Order history, account management, preferences',
+        'Secure payment gateways',
+        'Inventory tracking system',
+        'Custom integrations & features'
+    ],
+    'maintenance-support': [
+        'Proactive bug fixes',
+        'Performance optimization',
+        'Security updates',
+        'Feature enhancements',
+        'Technical support',
+        'Additional services available'
+    ],
+    'other': [
+        'Custom solution design',
+        'Collaborative planning',
+        'Flexible development',
+        'Transparent communication',
+        'Quality assurance',
+        'Open to your specific requirements'
     ]
 } as const;
 

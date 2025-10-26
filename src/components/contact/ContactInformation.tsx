@@ -8,7 +8,7 @@ import {
   FaClock,
   FaGlobeAmericas
 } from 'react-icons/fa';
-import { socialLinks } from '@/config';
+import { socialLinks, personalInfo, contactConfig } from '@/config';
 
 export default function ContactInformation() {
   return (
@@ -30,7 +30,7 @@ export default function ContactInformation() {
           </p>
           <div className="bg-primary/5 border border-primary/20 rounded-lg p-3">
             <p className="text-sm text-foreground">
-              <span className="font-semibold">Typically respond within 24 hours</span>
+              <span className="font-semibold">Typically respond within {contactConfig.responseTime}</span>
             </p>
           </div>
         </div>
@@ -42,17 +42,16 @@ export default function ContactInformation() {
             <div className="min-w-0">
               <h5 className="font-semibold text-sm text-foreground">Availability</h5>
               <p className="text-xs text-muted-foreground">
-                Based in <span className="font-medium">Nairobi (EAT, UTC+3)</span>. Async-friendly, flexible scheduling.
+                <span className="font-medium">{contactConfig.availability.statusMessage}</span> - {contactConfig.availability.currentWork}
               </p>
             </div>
           </div>
           <div className="flex items-start gap-3">
             <FaGlobeAmericas className="text-primary mt-1 flex-shrink-0" size={16} />
             <div className="min-w-0">
-              <h5 className="font-semibold text-sm text-foreground">Best Method</h5>
+              <h5 className="font-semibold text-sm text-foreground">Location</h5>
               <p className="text-xs text-muted-foreground">
-                Use the contact form below for project inquiries as it ensures I capture all context. 
-                Email or LinkedIn work for general questions.
+                Based in <span className="font-medium">{personalInfo.location}</span>
               </p>
             </div>
           </div>
@@ -61,7 +60,7 @@ export default function ContactInformation() {
         {/* Contact Methods */}
         <div className="space-y-4">
             <a 
-              href="mailto:kuriaaustin02@gmail.com?subject=Project Inquiry from Portfolio&body=Hi Austin,%0D%0A%0D%0AI came across your portfolio and would like to discuss a project with you.%0D%0A%0D%0A"
+              href={`mailto:${personalInfo.email}?subject=Project Inquiry from Portfolio&body=Hi ${personalInfo.name.first},%0D%0A%0D%0AI came across your portfolio and would like to discuss a project with you.%0D%0A%0D%0A`}
               className="flex items-start group transition-all w-full p-3 rounded-lg hover:bg-primary/5 border border-border/40"
             >
               <div className="bg-primary/10 p-3 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-4 flex-shrink-0">

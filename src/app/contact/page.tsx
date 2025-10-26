@@ -9,13 +9,14 @@ import {
   FaCode,
   FaChevronDown,
   FaBriefcase,
-  FaHandshake,
+  FaPalette,
   FaQuestion
 } from 'react-icons/fa';
 import { useReCaptcha } from 'next-recaptcha-v3';
 import { MotionDiv } from '@/lib/motion';
 import RouteOptimizer from '@/components/RouteOptimizer';
-import { contactConfig, personalInfo } from '@/config';
+import { contactConfig, personalInfo, contactBenefits } from '@/config';
+import { categoryDisplayNames } from '@/components/contact/ValidationUtils';
 import ContactInformation from '@/components/contact/ContactInformation';
 
 export default function Contact() {
@@ -293,7 +294,6 @@ export default function Contact() {
   const validateName = (name: string): string => validateField('name', name);
   const validateEmail = (email: string): string => validateField('email', email);
   const validateSubject = (subject: string): string => validateField('subject', subject);
-  const validateCategory = (category: string): string => validateField('category', category);
   const validateMessage = (message: string): string => validateField('message', message);
   const _validatePhone = (phone: string): string => validateField('phone', phone); // Kept for future use
   const _validatePreferredContactMethod = (method: string): string => validateField('preferredContactMethod', method); // Kept for future use
@@ -341,6 +341,12 @@ export default function Contact() {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
 
+    // Category is optional - never validate it
+    if (name === 'category') {
+      setValidationErrors(prev => ({ ...prev, category: '' }));
+      return;
+    }
+
     // Use different debounce delays based on field complexity
     // Message field has complex validation (spam, URLs, caps) - longer delay
     // Other fields have simpler validation - shorter delay
@@ -352,7 +358,9 @@ export default function Contact() {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name } = e.target;
     setFieldTouched(prev => ({ ...prev, [name]: true }));
-  };const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {    
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {    
     e.preventDefault();
     
     // Mark essential fields as touched to show validation errors
@@ -360,7 +368,7 @@ export default function Contact() {
       name: true, 
       email: true, 
       subject: true, 
-      category: true, 
+      category: false, // Category is optional - never touched
       message: true, 
       phone: false, // These fields are commented out
       preferredContactMethod: false, 
@@ -368,18 +376,17 @@ export default function Contact() {
       file: false 
     });
     
-    // Validate essential fields only
+    // Validate essential fields only (category is optional - never validated)
     const nameError = validateName(formData.name);
     const emailError = validateEmail(formData.email);
     const subjectError = validateSubject(formData.subject);
-    const categoryError = validateCategory(formData.category);
     const messageError = validateMessage(formData.message);
     
     setValidationErrors({
       name: nameError,
       email: emailError,
       subject: subjectError,
-      category: categoryError,
+      category: '', // Category is optional - never validated
       message: messageError,
       phone: '', // Not validating since commented out
       preferredContactMethod: '', // Not validating since commented out
@@ -606,35 +613,38 @@ export default function Contact() {
                   <button
                     type="button"
                     onClick={() => {
-                      setFormData(prev => ({ ...prev, category: 'web-development', subject: 'Project Inquiry' }));
+                      setFormData(prev => ({ ...prev, category: 'build-website', subject: 'New Website Project' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
                     }}
-                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex items-center justify-center gap-1"
+                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-1"
+                    title="Need a new website or complete redesign"
                   >
                     <FaBriefcase className="w-3 h-3" />
-                    Project
+                    <span>New Site</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => {
-                      setFormData(prev => ({ ...prev, category: 'collaboration', subject: 'Collaboration Opportunity' }));
+                      setFormData(prev => ({ ...prev, category: 'design-redesign', subject: 'Design & UX Improvement' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
                     }}
-                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex items-center justify-center gap-1"
+                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-1"
+                    title="Improve design, UX, or user experience"
                   >
-                    <FaHandshake className="w-3 h-3" />
-                    Collaborate
+                    <FaPalette className="w-3 h-3" />
+                    <span>Improve</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => {
-                      setFormData(prev => ({ ...prev, category: 'other', subject: 'Other' }));
+                      setFormData(prev => ({ ...prev, category: 'other', subject: 'Project Inquiry' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
                     }}
-                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex items-center justify-center gap-1"
+                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-1"
+                    title="Something different - tell me about it"
                   >
                     <FaQuestion className="w-3 h-3" />
-                    Other
+                    <span>Other</span>
                   </button>
                 </div>
               </div>
@@ -828,9 +838,11 @@ export default function Contact() {
                       }`}
                     >
                       <option value="">Select a category...</option>
-                      <option value="web-development">Web Development Project</option>
-                      <option value="collaboration">Collaboration & Consultation</option>
-                      <option value="other">Other</option>
+                      <option value="build-website">Build New Website (Startup or Redesign)</option>
+                      <option value="design-redesign">Design & UX Improvement</option>
+                      <option value="ecommerce">E-commerce / Online Store</option>
+                      <option value="maintenance-support">Maintenance & Support</option>
+                      <option value="other">Something Else (Tell me more)</option>
                     </select>
                     <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
                       validationErrors.category && fieldTouched.category
@@ -871,17 +883,11 @@ export default function Contact() {
                   <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
                     <h4 className="font-medium text-primary mb-3 flex items-center">
                       <FaCheck className="w-4 h-4 mr-2" />
-                      What You'll Get with {formData.category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+                      What You'll Get with {categoryDisplayNames[formData.category as keyof typeof categoryDisplayNames]}
                     </h4>
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                       {(() => {
-                        const benefitsMap = {
-                          'web-development': ['Full-stack development', 'Mobile-responsive design', 'Fast performance', 'SEO optimized', 'Modern tech stack', 'Production-ready'],
-                          'collaboration': ['Code reviews', 'Technical consultation', 'Best practices guidance', 'Problem-solving', 'Team collaboration', 'Knowledge sharing'],
-                          'other': ['Custom solutions', 'Problem solving', 'Open to discussions', 'Flexible approach']
-                        };
-                        
-                        const benefits = benefitsMap[formData.category as keyof typeof benefitsMap] || [];
+                        const benefits = contactBenefits[formData.category as keyof typeof contactBenefits] || [];
                         return benefits.map((benefit, index) => (
                           <div key={index} className="flex items-center text-sm bg-primary/10 px-2 py-1 rounded">
                             <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>

@@ -85,6 +85,15 @@ export const validateSubject = (subject: string): string => {
     return '';
 };
 
+// Category display names for validation and UI
+export const categoryDisplayNames = {
+    'build-website': 'Build New Website (Startup or Redesign)',
+    'design-redesign': 'Design & UX Improvement',
+    'ecommerce': 'E-commerce / Online Store',
+    'maintenance-support': 'Maintenance & Support',
+    'other': 'Something Else (Tell me more)'
+} as const;
+
 export const validateCategory = (category: string): string => {
     const validCategories = [
         'build-website',
@@ -160,6 +169,6 @@ export const performFullValidation = (formData: FormData): ValidationErrors => {
         phone: validatePhone(formData.phone),
         preferredContactMethod: validatePreferredContactMethod(formData.preferredContactMethod),
         budgetRange: validateBudgetRange(formData.budgetRange),
-        file: '', // File validation would go here if needed
+        file: '', // File validation would go here if needed\
     };
 };

@@ -22,7 +22,6 @@ import {
   validateEmail, 
   validateEmailFull,
   validateSubject, 
-  validateCategory, 
   validateMessage, 
   validatePhone, 
   validatePreferredContactMethod, 
@@ -103,7 +102,8 @@ export default function ContactForm({ className }: ContactFormProps) {
         error = validateSubject(value);
         break;
       case 'category':
-        error = validateCategory(value);
+        // Category is optional - never validate
+        error = '';
         break;
       case 'message':
         error = validateMessage(value);
@@ -153,14 +153,13 @@ export default function ContactForm({ className }: ContactFormProps) {
     const nameError = validateName(formData.name);
     const emailError = validateEmailFull(formData.email);
     const subjectError = validateSubject(formData.subject);
-    const categoryError = validateCategory(formData.category);
     const messageError = validateMessage(formData.message);
     
     setValidationErrors({
       name: nameError,
       email: emailError,
       subject: subjectError,
-      category: categoryError,
+      category: '', // Category is optional - never validates
       message: messageError,
       phone: '',
       preferredContactMethod: '',
@@ -168,7 +167,7 @@ export default function ContactForm({ className }: ContactFormProps) {
       file: '',
     });
     
-    // If there are validation errors, don't submit
+    // If there are validation errors, don't submit (category is optional, not checked)
     if (nameError || emailError || subjectError || messageError) {
       const firstErrorField = 
         nameError ? 'name' : 
@@ -433,7 +432,7 @@ export default function ContactForm({ className }: ContactFormProps) {
                     ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
                     : 'border-border focus:ring-primary/30 focus:border-primary'
                 }`}
-                placeholder="Project Inquiry"
+                placeholder={contactConfig.subjectPlaceholder}
               />
               <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors ${
                 validationErrors.subject && fieldTouched.subject
@@ -484,12 +483,11 @@ export default function ContactForm({ className }: ContactFormProps) {
                     : 'border-border focus:ring-primary/30 focus:border-primary'
                 }`}
               >
-                <option value="">Select a category...</option>
-                <option value="build-website">Build a Website</option>
-                <option value="design-redesign">Website Design & Redesign</option>
-                <option value="ecommerce">Online Store / E-commerce</option>
-                <option value="maintenance-support">Website Maintenance & Support</option>
-                <option value="other">Other / Let me Explain</option>
+                {contactConfig.categoryOptions.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
               </select>
               <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${
                 validationErrors.category && fieldTouched.category
@@ -589,7 +587,7 @@ export default function ContactForm({ className }: ContactFormProps) {
                     ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
                     : 'border-border focus:ring-primary/30 focus:border-primary'
                 }`}
-                placeholder="Hello! I'd like to talk about..."
+                placeholder={contactConfig.messagePlaceholder}
               ></textarea>
               <div className="absolute bottom-2 right-3 text-sm">
                 <span className={`${
