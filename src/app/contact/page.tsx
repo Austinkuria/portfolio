@@ -10,6 +10,7 @@ import {
   FaChevronDown,
   FaBriefcase,
   FaPalette,
+  FaLightbulb,
   FaQuestion
 } from 'react-icons/fa';
 import { useReCaptcha } from 'next-recaptcha-v3';
@@ -609,14 +610,14 @@ export default function Contact() {
               {/* Quick Intent Buttons */}
               <div className="mb-6 space-y-2 relative z-10">
                 <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">What brings you here?</p>
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-4 gap-2">
                   <button
                     type="button"
                     onClick={() => {
                       setFormData(prev => ({ ...prev, category: 'build-website', subject: 'New Website Project' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
                     }}
-                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-1"
+                    className="text-xs px-2 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5"
                     title="Need a new website or complete redesign"
                   >
                     <FaBriefcase className="w-3 h-3" />
@@ -628,7 +629,7 @@ export default function Contact() {
                       setFormData(prev => ({ ...prev, category: 'design-redesign', subject: 'Design & UX Improvement' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
                     }}
-                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-1"
+                    className="text-xs px-2 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5"
                     title="Improve design, UX, or user experience"
                   >
                     <FaPalette className="w-3 h-3" />
@@ -637,10 +638,22 @@ export default function Contact() {
                   <button
                     type="button"
                     onClick={() => {
+                      setFormData(prev => ({ ...prev, category: 'developer-collaboration', subject: 'Developer Collaboration' }));
+                      setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
+                    }}
+                    className="text-xs px-2 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5"
+                    title="Developer partnerships, open-source, or joint projects"
+                  >
+                    <FaLightbulb className="w-3 h-3" />
+                    <span>Collaborate</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
                       setFormData(prev => ({ ...prev, category: 'other', subject: 'Project Inquiry' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
                     }}
-                    className="text-xs px-3 py-2 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-1"
+                    className="text-xs px-2 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5"
                     title="Something different - tell me about it"
                   >
                     <FaQuestion className="w-3 h-3" />
@@ -842,6 +855,7 @@ export default function Contact() {
                       <option value="design-redesign">Design & UX Improvement</option>
                       <option value="ecommerce">E-commerce / Online Store</option>
                       <option value="maintenance-support">Maintenance & Support</option>
+                      <option value="developer-collaboration">Developer Collaboration</option>
                       <option value="other">Something Else (Tell me more)</option>
                     </select>
                     <span className={`absolute left-3 top-1/2 -translate-y-1/2 transition-colors pointer-events-none ${

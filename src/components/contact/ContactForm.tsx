@@ -15,7 +15,7 @@ import {
   FaFolderOpen
 } from 'react-icons/fa';
 import { MotionDiv } from '@/lib/motion';
-import { personalInfo, contactConfig, errorMessages } from '@/config';
+import { personalInfo, contactConfig, contactBenefits, errorMessages } from '@/config';
 import { FormData, ValidationErrors, FieldTouched, SubmitStatus } from './types';
 import { 
   validateName, 
@@ -530,18 +530,7 @@ export default function ContactForm({ className }: ContactFormProps) {
               </h4>
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                 {(() => {
-                  const benefitsMap = {
-                    'web-development': ['Mobile-responsive design', 'Fast loading speed', 'Search engine optimized', 'Professional appearance', 'Easy to update', 'Secure & reliable'],
-                    'ui-ux-design': ['User-friendly interface', 'Professional branding', 'Easy navigation', 'Mobile-responsive', 'Modern design', 'Brand consistency'],
-                    'api-development': ['Automated processes', 'Real-time updates', 'Third-party integrations', 'Data synchronization', 'Secure connections', 'Payment processing'],
-                    'ecommerce': ['Secure online payments', 'Inventory management', 'Customer accounts', 'Mobile shopping', 'Order tracking', 'Sales reporting'],
-                    'backend-development': ['Custom functionality', 'Data management', 'User authentication', 'Automated workflows', 'Scalable solutions', 'Secure storage'],
-                    'consultation': ['Expert guidance', 'Cost-effective solutions', 'Risk assessment', 'Project planning', 'Best practices', 'Growth strategies'],
-                    'maintenance': ['Regular updates', 'Security monitoring', 'Performance optimization', 'Bug fixes', 'Backup services', 'Technical support'],
-                    'other': ['Custom solutions', 'Problem solving', 'Business automation', 'Growth-focused features']
-                  };
-                  
-                  const benefits = benefitsMap[formData.category as keyof typeof benefitsMap] || [];
+                  const benefits = contactBenefits[formData.category as keyof typeof contactBenefits] || [];
                   return benefits.map((benefit, index) => (
                     <div key={index} className="flex items-center text-sm bg-primary/10 px-2 py-1 rounded">
                       <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>

@@ -228,10 +228,11 @@ export const contactConfig = {
         { value: 'design-redesign', label: 'Website Design & Redesign' },
         { value: 'ecommerce', label: 'Online Store / E-commerce' },
         { value: 'maintenance-support', label: 'Website Maintenance & Support' },
+        { value: 'developer-collaboration', label: 'Developer Collaboration' },
         { value: 'other', label: 'Other / Let me Explain' }
     ],
     validCategories: [
-        'build-website', 'design-redesign', 'ecommerce', 'maintenance-support', 'other'
+        'build-website', 'design-redesign', 'ecommerce', 'maintenance-support', 'developer-collaboration', 'other'
     ],
     validContactMethods: ['email', 'phone', 'whatsapp'],
     validBudgetRanges: [
@@ -318,6 +319,14 @@ export const contactBenefits = {
         'Feature enhancements',
         'Technical support',
         'Additional services available'
+    ],
+    'developer-collaboration': [
+        'Code review & architecture discussions',
+        'Open-source contributions',
+        'Joint project development',
+        'Technology stack alignment',
+        'Git workflow & best practices',
+        'Custom integrations available'
     ],
     'other': [
         'Custom solution design',
