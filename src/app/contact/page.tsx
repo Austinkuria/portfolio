@@ -32,19 +32,10 @@ export default function Contact() {
     subject: '',
     category: '',
     message: '',
-    file: null as File | null, // File object for UI display
-    fileData: null as string | null, // Base64 encoded file data
-    fileName: null as string | null, // Original filename
-    fileType: null as string | null, // File MIME type
-    phone: '', // Added phone property
-    preferredContactMethod: '', // Added preferred contact method property
-    budgetRange: '', // New field
   });
   const [isSubmitting, setIsSubmitting] = useState(false);  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const [attachmentWarning, setAttachmentWarning] = useState<string | null>(null);
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
-  // const [fileDragging, setFileDragging] = useState(false); // Commented out - file upload disabled
 
   // Cleanup debounce timers on unmount
   useEffect(() => {
@@ -61,10 +52,6 @@ export default function Contact() {
     subject: '',
     category: '',
     message: '',
-    phone: '', // Added phone validation error
-    preferredContactMethod: '', // Added preferredContactMethod validation error
-    budgetRange: '', // New field
-    file: '', // Added file validation error
   });
   const [fieldTouched, setFieldTouched] = useState({
     name: false,
@@ -72,10 +59,6 @@ export default function Contact() {
     subject: false,
     category: false,
     message: false,
-    phone: false, // Added phone touched state
-    file: false, // Added file touched state
-    preferredContactMethod: false, // Added preferredContactMethod touched state
-    budgetRange: false, // New field
   });
 
   // Real-time validation functions
@@ -211,43 +194,6 @@ export default function Contact() {
         minLength: 'Message must be at least 10 characters',
         maxLength: 'Message must be less than 2000 characters'
       }
-    },
-    phone: {
-      required: false,
-      pattern: /^\+?[1-9]\d{1,14}$/,
-      custom: (value: string) => {
-        if (formData.preferredContactMethod === 'phone' || formData.preferredContactMethod === 'whatsapp') {
-          if (!value.trim()) return 'Phone number is required for the selected contact method';
-        }
-        return '';
-      },
-      messages: {
-        pattern: 'Please enter a valid international phone number (e.g. +254712345678)'
-      }
-    },
-    preferredContactMethod: {
-      required: false,
-      custom: (value: string) => {
-        if (value.trim() && !Array.prototype.includes.call(contactConfig.validContactMethods, value)) {
-          return 'Please select a valid contact method';
-        }
-        return '';
-      },
-      messages: {
-        required: 'Preferred contact method is required'
-      }
-    },
-    budgetRange: {
-      required: false,
-      custom: (value: string) => {
-        if (value.trim() && !Array.prototype.includes.call(contactConfig.validBudgetRanges, value)) {
-          return 'Please select a valid budget range';
-        }
-        return '';
-      },
-      messages: {
-        required: 'Please select a budget range'
-      }
     }
   };
 
@@ -289,16 +235,13 @@ export default function Contact() {
 
     return '';
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.preferredContactMethod]); // validationRules is stable (defined above), formData.preferredContactMethod needed for phone validation
+  }, []); // validationRules is stable (defined above)
 
   // Individual validation functions (now using unified validator)
   const validateName = (name: string): string => validateField('name', name);
   const validateEmail = (email: string): string => validateField('email', email);
   const validateSubject = (subject: string): string => validateField('subject', subject);
   const validateMessage = (message: string): string => validateField('message', message);
-  const _validatePhone = (phone: string): string => validateField('phone', phone); // Kept for future use
-  const _validatePreferredContactMethod = (method: string): string => validateField('preferredContactMethod', method); // Kept for future use
-  const _validateBudgetRange = (budget: string): string => validateField('budgetRange', budget); // Kept for future use
 
   // Check if form is valid for submission (simplified - only essential fields, category is optional)
   const isFormValid = () => {
@@ -324,19 +267,9 @@ export default function Contact() {
     debounceTimers.current[fieldName] = setTimeout(() => {
       // Directly use validateField instead of wrapper functions
       const error = validateField(fieldName, value);
-
-      // Special case: re-validate phone when preferredContactMethod changes
-      if (fieldName === 'preferredContactMethod') {
-        setValidationErrors(prev => ({ 
-          ...prev, 
-          [fieldName]: error,
-          phone: validateField('phone', formData.phone)
-        }));
-      } else {
-        setValidationErrors(prev => ({ ...prev, [fieldName]: error }));
-      }
+      setValidationErrors(prev => ({ ...prev, [fieldName]: error }));
     }, delay);
-  }, [formData.phone, validateField]);
+  }, [validateField]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -370,11 +303,7 @@ export default function Contact() {
       email: true, 
       subject: true, 
       category: false, // Category is optional - never touched
-      message: true, 
-      phone: false, // These fields are commented out
-      preferredContactMethod: false, 
-      budgetRange: false, 
-      file: false 
+      message: true,
     });
     
     // Validate essential fields only (category is optional - never validated)
@@ -389,10 +318,6 @@ export default function Contact() {
       subject: subjectError,
       category: '', // Category is optional - never validated
       message: messageError,
-      phone: '', // Not validating since commented out
-      preferredContactMethod: '', // Not validating since commented out
-      budgetRange: '', // Not validating since commented out
-      file: '', // Not validating since commented out
     });
     
     // If there are validation errors, don't submit (category is optional)
@@ -439,18 +364,14 @@ export default function Contact() {
         }
       }
       
-      // Check for attachment issues
-      if (result.success && result.data?.attachmentIssue && formData.file) {
-        setAttachmentWarning("Your message was sent successfully, but we couldn't process your file attachment. Please consider sending your file through an alternative method.");
-      }      // Reset form on success
-      setFormData({ name: '', email: '', subject: '', category: '', message: '', file: null, fileData: null, fileName: null, fileType: null, phone: '', preferredContactMethod: '', budgetRange: '' });
-      setFieldTouched({ name: false, email: false, subject: false, category: false, message: false, phone: false, preferredContactMethod: false, budgetRange: false, file: false });
-      setValidationErrors({ name: '', email: '', subject: '', category: '', message: '', phone: '', preferredContactMethod: '', budgetRange: '', file: '' });
+      // Reset form on success
+      setFormData({ name: '', email: '', subject: '', category: '', message: '' });
+      setFieldTouched({ name: false, email: false, subject: false, category: false, message: false });
+      setValidationErrors({ name: '', email: '', subject: '', category: '', message: '' });
       setSubmitStatus('success');
         // Reset status after 10 seconds
       setTimeout(() => {
         setSubmitStatus('idle');
-        setAttachmentWarning(null);
       }, 10000);
     } catch (error) {
       // console.error('Error sending message:', error);
@@ -461,7 +382,6 @@ export default function Contact() {
       setTimeout(() => {
         setSubmitStatus('idle');
         setErrorMessage('');
-        setAttachmentWarning(null);
       }, 10000);
     } finally {
       setIsSubmitting(false);
@@ -1090,16 +1010,6 @@ export default function Contact() {
                           <p className="text-sm text-muted-foreground mt-4 animate-[fadeSlideUp_0.5s_0.9s_both]">
                             A confirmation email has been sent to your inbox.
                           </p>
-                          {attachmentWarning && (
-                            <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg animate-[fadeSlideUp_0.5s_1.1s_both]">
-                              <div className="flex items-start">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                                </svg>
-                                <p className="text-sm text-left">{attachmentWarning}</p>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
                     ) : (

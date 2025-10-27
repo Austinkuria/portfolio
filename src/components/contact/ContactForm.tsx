@@ -6,7 +6,6 @@ import {
   FaCheck, 
   FaExclamationTriangle, 
   FaPaperPlane, 
-  FaWhatsapp, 
   FaGlobe,
   FaPalette,
   FaShoppingCart,
@@ -22,10 +21,7 @@ import {
   validateEmail, 
   validateEmailFull,
   validateSubject, 
-  validateMessage, 
-  validatePhone, 
-  validatePreferredContactMethod, 
-  validateBudgetRange,
+  validateMessage,
   isFormValid 
 } from './ValidationUtils';
 
@@ -40,20 +36,11 @@ export default function ContactForm({ className }: ContactFormProps) {
     subject: '',
     category: '',
     message: '',
-    file: null,
-    fileData: null,
-    fileName: null,
-    fileType: null,
-    phone: '',
-    preferredContactMethod: '',
-    budgetRange: '',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
-  const [whatsappUrl, setWhatsappUrl] = useState<string | null>(null);
-  const [attachmentWarning, setAttachmentWarning] = useState<string | null>(null);
 
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({
     name: '',
@@ -61,10 +48,6 @@ export default function ContactForm({ className }: ContactFormProps) {
     subject: '',
     category: '',
     message: '',
-    phone: '',
-    preferredContactMethod: '',
-    budgetRange: '',
-    file: '',
   });
 
   const [fieldTouched, setFieldTouched] = useState<FieldTouched>({
@@ -73,10 +56,6 @@ export default function ContactForm({ className }: ContactFormProps) {
     subject: false,
     category: false,
     message: false,
-    phone: false,
-    file: false,
-    preferredContactMethod: false,
-    budgetRange: false,
   });
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -108,15 +87,6 @@ export default function ContactForm({ className }: ContactFormProps) {
       case 'message':
         error = validateMessage(value);
         break;
-      case 'phone':
-        error = validatePhone(value);
-        break;
-      case 'preferredContactMethod':
-        error = validatePreferredContactMethod(value);
-        break;
-      case 'budgetRange':
-        error = validateBudgetRange(value);
-        break;
     }
 
     setValidationErrors(prev => ({ ...prev, [name]: error }));
@@ -142,11 +112,7 @@ export default function ContactForm({ className }: ContactFormProps) {
       email: true, 
       subject: true, 
       category: false,
-      message: true, 
-      phone: false,
-      preferredContactMethod: false, 
-      budgetRange: false, 
-      file: false 
+      message: true,
     });
     
     // Validate essential fields only
@@ -161,10 +127,6 @@ export default function ContactForm({ className }: ContactFormProps) {
       subject: subjectError,
       category: '', // Category is optional - never validates
       message: messageError,
-      phone: '',
-      preferredContactMethod: '',
-      budgetRange: '',
-      file: '',
     });
     
     // If there are validation errors, don't submit (category is optional, not checked)
@@ -197,10 +159,6 @@ export default function ContactForm({ className }: ContactFormProps) {
         } else if (result.code === 'SPAM_DETECTED') {
           const errorMsg = result.error || 'Your message was flagged by our security filters.';
           
-          if (result.alternativeContact?.whatsappUrl) {
-            setWhatsappUrl(result.alternativeContact.whatsappUrl);
-          }
-          
           throw new Error(errorMsg);
         } else if (result.code === 'INVALID_EMAIL') {
           throw new Error('Please enter a valid email address.');
@@ -209,10 +167,6 @@ export default function ContactForm({ className }: ContactFormProps) {
         }
       }
       
-      if (result.success && result.data?.attachmentIssue && formData.file) {
-        setAttachmentWarning("Your message was sent successfully, but we couldn't process your file attachment. Please consider sending your file through an alternative method.");
-      }
-
       // Reset form on success
       setFormData({ 
         name: '', 
@@ -220,13 +174,6 @@ export default function ContactForm({ className }: ContactFormProps) {
         subject: '', 
         category: '', 
         message: '', 
-        file: null, 
-        fileData: null, 
-        fileName: null, 
-        fileType: null, 
-        phone: '', 
-        preferredContactMethod: '', 
-        budgetRange: '' 
       });
       setFieldTouched({ 
         name: false, 
@@ -234,10 +181,6 @@ export default function ContactForm({ className }: ContactFormProps) {
         subject: false, 
         category: false, 
         message: false, 
-        phone: false, 
-        preferredContactMethod: false, 
-        budgetRange: false, 
-        file: false 
       });
       setValidationErrors({ 
         name: '', 
@@ -245,16 +188,11 @@ export default function ContactForm({ className }: ContactFormProps) {
         subject: '', 
         category: '', 
         message: '', 
-        phone: '', 
-        preferredContactMethod: '', 
-        budgetRange: '', 
-        file: '' 
       });
       setSubmitStatus('success');
 
       setTimeout(() => {
         setSubmitStatus('idle');
-        setAttachmentWarning(null);
       }, 10000);
     } catch (error) {
       setSubmitStatus('error');
@@ -263,8 +201,6 @@ export default function ContactForm({ className }: ContactFormProps) {
       setTimeout(() => {
         setSubmitStatus('idle');
         setErrorMessage('');
-        setWhatsappUrl(null);
-        setAttachmentWarning(null);
       }, 10000);
     } finally {
       setIsSubmitting(false);
@@ -698,16 +634,6 @@ export default function ContactForm({ className }: ContactFormProps) {
                     <p className="text-sm text-muted-foreground mt-4 animate-[fadeSlideUp_0.5s_0.9s_both]">
                       A confirmation email has been sent to your inbox.
                     </p>
-                    {attachmentWarning && (
-                      <div className="mt-4 p-3 bg-yellow-100 border border-yellow-300 text-yellow-800 rounded-lg animate-[fadeSlideUp_0.5s_1.1s_both]">
-                        <div className="flex items-start">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                          </svg>
-                          <p className="text-sm text-left">{attachmentWarning}</p>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </div>
               ) : (
@@ -717,19 +643,6 @@ export default function ContactForm({ className }: ContactFormProps) {
                     <div className="whitespace-pre-line">
                       {errorMessage || errorMessages.generic}
                     </div>
-                    {whatsappUrl && (
-                      <div className="mt-3">
-                        <a
-                          href={whatsappUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors duration-200"
-                        >
-                          <FaWhatsapp className="mr-2" />
-                          Contact via WhatsApp
-                        </a>
-                      </div>
-                    )}
                   </div>
                 </>
               )}

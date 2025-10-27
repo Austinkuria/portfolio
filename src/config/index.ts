@@ -17,7 +17,6 @@ export const personalInfo = {
     location: 'Nairobi, Kenya',
     email: process.env.NEXT_PUBLIC_EMAIL || '',
     phone: process.env.NEXT_PUBLIC_PHONE || '',
-    whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP || '', // Without + for WhatsApp URLs
     image: '/images/Passport_Photo_AustinMaina.jpg',
     logo: '/images/am-logo.jpg',
     initials: 'AM',
@@ -50,7 +49,6 @@ export const socialLinks = {
     github: 'https://github.com/Austinkuria',
     linkedin: 'https://www.linkedin.com/in/austin-maina/',
     discord: 'https://discord.gg/austin.125',
-    whatsapp: `https://wa.me/${personalInfo.whatsappNumber}`,
     email: `mailto:${personalInfo.email}`,
     phone: `tel:${personalInfo.phone}`,
     resume: 'https://drive.google.com/file/d/1kVVnj5fCLo0NOxDDC8o1HqVurEvqIpJn/view?usp=drive_link',
@@ -208,7 +206,6 @@ export const emailConfig = {
 
 // Contact Form Configuration
 export const contactConfig = {
-    whatsappMessage: `Hi ${personalInfo.name.first}! I found your portfolio and would like to discuss a project with you.`,
     phoneFormatExample: '+254712345678',
     emailPlaceholder: 'austinexample@gmail.com',
     subjectPlaceholder: 'Project Inquiry',
@@ -233,10 +230,6 @@ export const contactConfig = {
     ],
     validCategories: [
         'build-website', 'design-redesign', 'ecommerce', 'maintenance-support', 'developer-collaboration', 'other'
-    ],
-    validContactMethods: ['email', 'phone', 'whatsapp'],
-    validBudgetRanges: [
-        'under-500', '500-1000', '1000-2500', '2500-5000', 'over-5000'
     ],
     spamKeywords: [
         'urgent!!', 'click here', 'free money', 'winner!', 'viagra', 'casino',

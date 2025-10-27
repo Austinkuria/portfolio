@@ -4,13 +4,6 @@ export interface FormData {
     subject: string;
     category: string;
     message: string;
-    file: File | null;
-    fileData: string | null;
-    fileName: string | null;
-    fileType: string | null;
-    phone: string;
-    preferredContactMethod: string;
-    budgetRange: string;
 }
 
 export interface ValidationErrors {
@@ -19,10 +12,6 @@ export interface ValidationErrors {
     subject: string;
     category: string;
     message: string;
-    phone: string;
-    preferredContactMethod: string;
-    budgetRange: string;
-    file: string;
 }
 
 export interface FieldTouched {
@@ -31,10 +20,6 @@ export interface FieldTouched {
     subject: boolean;
     category: boolean;
     message: boolean;
-    phone: boolean;
-    file: boolean;
-    preferredContactMethod: boolean;
-    budgetRange: boolean;
 }
 
 export type SubmitStatus = 'idle' | 'success' | 'error';

@@ -113,41 +113,7 @@ export const validateCategory = (category: string): string => {
     return '';
 };
 
-export const validatePhone = (phone: string): string => {
-    if (!phone.trim()) return '';
-
-    const phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
-    const cleanPhone = phone.replace(/[\s\-()]/g, '');
-
-    if (!phoneRegex.test(cleanPhone)) {
-        return 'Please enter a valid phone number';
-    }
-
-    if (cleanPhone.length < 7) {
-        return 'Phone number is too short';
-    }
-
-    if (cleanPhone.length > 15) {
-        return 'Phone number is too long';
-    }
-
-    return '';
-};
-
-export const validatePreferredContactMethod = (method: string): string => {
-    const validMethods = ['Email', 'Phone', 'WhatsApp'];
-    if (!method) return '';
-    if (!validMethods.includes(method)) return 'Please select a valid contact method';
-    return '';
-};
-
-export const validateBudgetRange = (budget: string): string => {
-    const validBudgets = ['Under $1,000', '$1,000 - $5,000', '$5,000 - $10,000', 'Over $10,000', 'Discuss'];
-    if (!budget) return '';
-    if (!validBudgets.includes(budget)) return 'Please select a valid budget range';
-    return '';
-};
-
+// Comprehensive form validation
 export const isFormValid = (formData: FormData, validationErrors: ValidationErrors): boolean => {
     const requiredFields = ['name', 'email', 'subject', 'message'];
     const hasRequiredFields = requiredFields.every(field =>
@@ -166,9 +132,5 @@ export const performFullValidation = (formData: FormData): ValidationErrors => {
         subject: validateSubject(formData.subject),
         category: validateCategory(formData.category),
         message: validateMessage(formData.message),
-        phone: validatePhone(formData.phone),
-        preferredContactMethod: validatePreferredContactMethod(formData.preferredContactMethod),
-        budgetRange: validateBudgetRange(formData.budgetRange),
-        file: '', // File validation would go here if needed\
     };
 };
