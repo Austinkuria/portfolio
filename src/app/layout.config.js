@@ -2,7 +2,7 @@
 // This must be a separate file from page.ts or layout.ts files
 
 // Import configuration
-const { personalInfo, seoConfig } = require('@/config');
+import { personalInfo, seoConfig } from '@/config';
 
 // Metadata 
 export const metadata = {

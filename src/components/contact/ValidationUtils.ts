@@ -1,17 +1,16 @@
 import { contactConfig } from '@/config';
 import { FormData, ValidationErrors } from './types';
+import {
+    validateName as validateNameShared,
+    validateEmail as validateEmailShared,
+    validateSubject as validateSubjectShared,
+    validateCategory as validateCategoryShared,
+    validateMessage as validateMessageShared,
+} from '@/lib/validation';
 
 export const validateName = (name: string): string => {
-    if (!name.trim()) return 'Name is required';
-    if (name.length < 2) return 'Name must be at least 2 characters';
-    if (name.length > 50) return 'Name must be less than 50 characters';
-
-    // Adjust regex to allow valid names with spaces and hyphens
-    if (/[^a-zA-Z\s-]/.test(name)) {
-        return 'Name should only contain letters, spaces, and hyphens';
-    }
-
-    return '';
+    const result = validateNameShared(name);
+    return result.isValid ? '' : (result.error || '');
 };
 
 // Simplified email validation - pattern-based only
@@ -44,12 +43,8 @@ export const validateEmailPattern = (email: string): { valid: boolean; reason?: 
 };
 
 export const validateEmail = (email: string): string => {
-    if (!email.trim()) return 'Email is required';
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return 'Please enter a valid email address';
-
-    // Fast pattern check only - full validation happens on blur/submit
-    return '';
+    const result = validateEmailShared(email);
+    return result.isValid ? '' : (result.error || '');
 };
 
 // Full validation with all checks - only called on blur or submit
@@ -79,10 +74,8 @@ export const validateEmailFull = (email: string): string => {
 };
 
 export const validateSubject = (subject: string): string => {
-    if (!subject.trim()) return 'Subject is required';
-    if (subject.length < 5) return 'Subject must be at least 5 characters';
-    if (subject.length > 100) return 'Subject must be less than 100 characters';
-    return '';
+    const result = validateSubjectShared(subject);
+    return result.isValid ? '' : (result.error || '');
 };
 
 // Category display names for validation and UI
@@ -95,22 +88,13 @@ export const categoryDisplayNames = {
 } as const;
 
 export const validateCategory = (category: string): string => {
-    const validCategories = [
-        'build-website',
-        'design-redesign',
-        'ecommerce',
-        'maintenance-support',
-        'other'
-    ];
-    // Category is optional - only validate if a value is provided
-    if (!category) return '';
-    if (!validCategories.includes(category)) return 'Please select a valid category';
-    return '';
-}; export const validateMessage = (message: string): string => {
-    if (!message.trim()) return 'Message is required';
-    if (message.length < 10) return 'Message must be at least 10 characters';
-    if (message.length > 1000) return 'Message must be less than 1000 characters';
-    return '';
+    const result = validateCategoryShared(category);
+    return result.isValid ? '' : (result.error || '');
+};
+
+export const validateMessage = (message: string): string => {
+    const result = validateMessageShared(message);
+    return result.isValid ? '' : (result.error || '');
 };
 
 // Comprehensive form validation
