@@ -213,11 +213,11 @@ export async function POST(request: NextRequest) {
 
     // Validate all fields using shared validation module
     const validationErrors = validateContactForm({ name, email, subject, category, message });
-    
+
     if (hasValidationErrors(validationErrors)) {
       const firstError = Object.values(validationErrors).find(err => err);
       return NextResponse.json(
-        { 
+        {
           error: firstError || 'Validation failed.',
           code: 'VALIDATION_ERROR',
           errors: validationErrors
@@ -298,6 +298,14 @@ Reference ID: ${referenceId}`;
       urgencyScore: urgencyScore as 'HIGH' | 'NORMAL',
     });
 
+    // Generate second notification for devhubmailer
+    const devhubNotificationEmail = {
+      ...notificationEmail,
+      from: 'onboarding@resend.dev', // Use Resend onboarding email
+      to: emailConfig.to.devhub,
+      subject: `[NEW LEAD] ${subject}`, // Use original subject, not the generated one
+    };
+
     const isSimpleClient = isSimpleClientRequest(category, message);
     const autoReplyEmailGmail = generateAutoReplyEmail({
       name,
@@ -318,11 +326,12 @@ Reference ID: ${referenceId}`;
       }
     });
 
-    // Send emails in background without blocking response
+    // Send emails in background without blocking response (3 emails total)
     Promise.allSettled([
-      resend.emails.send(notificationEmail),
-      gmailTransporter.sendMail(autoReplyEmailGmail),
-    ]).then(([notificationResult, autoReplyResult]) => {
+      resend.emails.send(notificationEmail),           // To your personal email
+      resend.emails.send(devhubNotificationEmail),    // To devhubmailer
+      gmailTransporter.sendMail(autoReplyEmailGmail), // Auto-reply to client
+    ]).then(([notificationResult, devhubResult, autoReplyResult]) => {
       // Log results for monitoring
       if (notificationResult.status === 'rejected') {
         console.error('Notification email failed:', notificationResult.reason);
@@ -349,6 +358,13 @@ Reference ID: ${referenceId}`;
         }
       } else {
         console.log('Notification email sent successfully');
+      }
+
+      // Log devhub notification result
+      if (devhubResult.status === 'rejected') {
+        console.error('Devhub notification email failed:', devhubResult.reason);
+      } else {
+        console.log('Devhub notification email sent successfully');
       }
 
       // Log auto-reply result

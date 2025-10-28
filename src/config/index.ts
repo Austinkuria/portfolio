@@ -181,6 +181,8 @@ export const emailConfig = {
     to: {
         default: process.env.TO_EMAIL || personalInfo.email,
         support: personalInfo.email,
+        // Additional notification email for new leads
+        devhub: 'devhubmailer@gmail.com',
     },
     apiKey: process.env.RESEND_API_KEY || '',
     // Gmail SMTP Configuration
