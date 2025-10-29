@@ -286,26 +286,24 @@ Reference ID: ${referenceId}`;
     const messageWordCount = message.trim().split(/\s+/).length;
     const urgencyScore = message.toLowerCase().includes('urgent') || message.toLowerCase().includes('asap') || message.toLowerCase().includes('immediate') ? 'HIGH' : 'NORMAL';
 
-    // Generate email templates
-    const notificationEmail = generateNotificationEmail({
-      name,
-      email,
-      subject,
-      message,
-      category,
-      timestamp,
-      messageWordCount,
-      urgencyScore: urgencyScore as 'HIGH' | 'NORMAL',
-    });
-
-    // Generate second notification for devhubmailer
+    // Generate notification email to devhubmailer about new lead
     const devhubNotificationEmail = {
-      ...notificationEmail,
-      from: 'onboarding@resend.dev', // Use Resend onboarding email
-      to: emailConfig.to.devhub,
-      subject: `[NEW LEAD] ${subject}`, // Use original subject, not the generated one
+      from: 'onboarding@resend.dev',
+      to: emailConfig.to.devhub, // devhubmailer@gmail.com
+      subject: urgencyScore === 'HIGH' ? `[URGENT] New Project Inquiry - ${name}` : `New Project Inquiry - ${name}`,
+      html: generateNotificationEmail({
+        name,
+        email,
+        subject,
+        message,
+        category,
+        timestamp,
+        messageWordCount,
+        urgencyScore: urgencyScore as 'HIGH' | 'NORMAL',
+      }).html,
     };
 
+    // Generate auto-reply email from devhubmailer to client
     const isSimpleClient = isSimpleClientRequest(category, message);
     const autoReplyEmailGmail = generateAutoReplyEmail({
       name,
@@ -326,45 +324,16 @@ Reference ID: ${referenceId}`;
       }
     });
 
-    // Send emails in background without blocking response (3 emails total)
+    // Send 2 emails in background without blocking response
     Promise.allSettled([
-      resend.emails.send(notificationEmail),           // To your personal email
-      resend.emails.send(devhubNotificationEmail),    // To devhubmailer
-      gmailTransporter.sendMail(autoReplyEmailGmail), // Auto-reply to client
-    ]).then(([notificationResult, devhubResult, autoReplyResult]) => {
+      resend.emails.send(devhubNotificationEmail),    // To devhubmailer (new lead notification)
+      gmailTransporter.sendMail(autoReplyEmailGmail), // Auto-reply to client from devhubmailer
+    ]).then(([devhubResult, autoReplyResult]) => {
       // Log results for monitoring
-      if (notificationResult.status === 'rejected') {
-        console.error('Notification email failed:', notificationResult.reason);
-
-        // Check if the error is related to the attachment
-        const errorMsg = notificationResult.reason?.toString() || '';
-        const isAttachmentError = errorMsg.toLowerCase().includes('attachment') ||
-          errorMsg.toLowerCase().includes('file') ||
-          errorMsg.toLowerCase().includes('base64');
-
-        // If it's an attachment error, try again without the attachment
-        if (isAttachmentError && body.fileData) {
-          console.log('Attempting to send email without attachment due to attachment error');
-
-          // Remove attachments and try again
-          const notificationWithoutAttachment = {
-            ...notificationEmail,
-            attachments: [],
-          };
-
-          resend.emails.send(notificationWithoutAttachment).catch(err => {
-            console.error('Retry without attachment also failed:', err);
-          });
-        }
-      } else {
-        console.log('Notification email sent successfully');
-      }
-
-      // Log devhub notification result
       if (devhubResult.status === 'rejected') {
         console.error('Devhub notification email failed:', devhubResult.reason);
       } else {
-        console.log('Devhub notification email sent successfully');
+        console.log('Devhub notification email sent successfully to devhubmailer@gmail.com');
       }
 
       // Log auto-reply result
