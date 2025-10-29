@@ -78,19 +78,6 @@ interface NotificationEmailParams {
 export function generateNotificationEmail(params: NotificationEmailParams) {
   const { name, email, subject, message, category, timestamp, messageWordCount, urgencyScore } = params;
 
-  // SVG Icons as data URIs
-  const icons = {
-    mail: `<svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="22,6 12,13 2,6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    document: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    zap: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"/></svg>`,
-    star: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="currentColor"/></svg>`,
-    clock: `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    user: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="7" r="4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    messageSquare: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-    lightbulb: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6M10 22h4M15 8a3 3 0 1 0-6 0c0 2 3 3 3 5.5M12 17v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/></svg>`,
-    send: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="22" y1="2" x2="11" y2="13" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><polygon points="22 2 15 22 11 13 2 9 22 2" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-  };
-
   return {
     from: emailConfig.from.notification,
     to: emailConfig.to.default,
@@ -113,9 +100,6 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
             <div style="background: ${emailTheme.danger}; color: white; padding: 6px 16px; border-radius: 20px; font-size: 11px; font-weight: 700; display: inline-block; margin-bottom: 16px; letter-spacing: 1px; box-shadow: 0 4px 12px rgba(239,68,68,0.3);">
               URGENT
             </div>` : ''}
-            <div style="background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
-              ${icons.mail}
-            </div>
             <h1 style="margin: 0; font-size: 32px; color: white; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">New Lead Alert!</h1>
             <p style="margin: 12px 0 0 0; color: rgba(255,255,255,0.95); font-size: 16px; font-weight: 500;">${name} wants to work with you</p>
           </div>
@@ -123,26 +107,17 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
           <!-- Content -->
           <div style="padding: 40px 32px;">
             
-            <!-- Stats Bar with icons -->
+            <!-- Stats Bar -->
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;">
               <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, ${emailTheme.primaryLight} 0%, #dbeafe 100%); border-radius: 12px; border: 2px solid ${emailTheme.border};">
-                <div style="width: 28px; height: 28px; margin: 0 auto 12px; color: ${emailTheme.primary};">
-                  ${icons.document}
-                </div>
                 <div style="font-size: 28px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">${messageWordCount}</div>
                 <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Words</div>
               </div>
               <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, ${urgencyScore === 'HIGH' ? '#fee2e2' : '#dcfce7'} 0%, ${urgencyScore === 'HIGH' ? '#fecaca' : '#bbf7d0'} 100%); border-radius: 12px; border: 2px solid ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success};">
-                <div style="width: 28px; height: 28px; margin: 0 auto 12px; color: ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success};">
-                  ${urgencyScore === 'HIGH' ? icons.zap : icons.star}
-                </div>
                 <div style="font-size: 28px; font-weight: 700; color: ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success}; margin-bottom: 4px;">${urgencyScore === 'HIGH' ? 'High' : 'Normal'}</div>
                 <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Priority</div>
               </div>
               <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-radius: 12px; border: 2px solid ${emailTheme.purple};">
-                <div style="width: 28px; height: 28px; margin: 0 auto 12px; color: ${emailTheme.purple};">
-                  ${icons.clock}
-                </div>
                 <div style="font-size: 28px; font-weight: 700; color: ${emailTheme.purple}; margin-bottom: 4px;">Now</div>
                 <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Received</div>
               </div>
@@ -150,10 +125,7 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
 
             <!-- Contact Info Card -->
             <div style="margin-bottom: 28px; background: ${emailTheme.backgroundAlt}; border-radius: 12px; padding: 24px; border: 1px solid ${emailTheme.border};">
-              <h2 style="margin: 0 0 20px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center;">
-                <span style="background: ${emailTheme.primary}; color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
-                  ${icons.user}
-                </span>
+              <h2 style="margin: 0 0 20px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px;">
                 Contact Details
               </h2>
               <table style="width: 100%; border-collapse: collapse;">
@@ -188,10 +160,7 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
 
             <!-- Message Card -->
             <div style="margin-bottom: 28px;">
-              <h2 style="margin: 0 0 16px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px; display: flex; align-items: center;">
-                <span style="background: ${emailTheme.primary}; color: white; width: 24px; height: 24px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-right: 8px;">
-                  ${icons.messageSquare}
-                </span>
+              <h2 style="margin: 0 0 16px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px;">
                 Their Message
               </h2>
               <div style="padding: 24px; background: linear-gradient(135deg, #ffffff 0%, ${emailTheme.backgroundAlt} 100%); border-left: 4px solid ${emailTheme.primary}; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -207,7 +176,6 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
                   <td style="padding-right: 8px;">
                     <a href="mailto:${email}?subject=Re:%20${encodeURIComponent(subject)}" 
                        style="display: block; background: linear-gradient(135deg, ${emailTheme.primary} 0%, #1e40af 100%); color: white; padding: 16px 24px; border-radius: 8px; text-decoration: none; font-size: 15px; font-weight: 600; text-align: center; box-shadow: 0 4px 12px rgba(59,130,246,0.3);">
-                      <span style="display: inline-block; width: 16px; height: 16px; margin-right: 8px; vertical-align: middle;">${icons.send}</span>
                       Reply to ${name.split(' ')[0]}
                     </a>
                   </td>
@@ -223,12 +191,7 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
 
             <!-- Recommendation Box -->
             <div style="padding: 20px 24px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid ${emailTheme.warning}; border-radius: 8px; box-shadow: 0 2px 8px rgba(245,158,11,0.15);">
-              <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                <span style="width: 20px; height: 20px; margin-right: 8px; color: #92400e;">
-                  ${icons.lightbulb}
-                </span>
-                <div style="font-size: 13px; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: 0.5px;">Smart Recommendation</div>
-              </div>
+              <div style="font-size: 13px; font-weight: 700; color: #92400e; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Smart Recommendation</div>
               <div style="font-size: 14px; color: #78350f; line-height: 1.6; font-weight: 500;">
                 ${urgencyScore === 'HIGH' ? 'High priority lead! Respond within 12 hours for best conversion rate.' : 'Respond within 24-48 hours to maintain professionalism and close the deal.'}
               </div>
