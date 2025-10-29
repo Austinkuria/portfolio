@@ -356,43 +356,37 @@ Reference ID: ${referenceId}`;
     // Send 2 emails in background without blocking response
     Promise.allSettled([
       resend.emails.send(devhubNotificationEmail),    // To devhubmailer (new lead notification)
-      gmailTransporter.sendMail(autoReplyEmailGmail), // Auto-reply to client from devhubmailer
+      gmailTransporter.sendMail(autoReplyEmailGmail).catch(async (gmailError) => {
+        // Gmail failed, immediately try Resend fallback
+        console.error('⚠️ Gmail SMTP failed, using Resend fallback:', gmailError.message);
+
+        const autoReplyViaResend = {
+          from: 'onboarding@resend.dev',
+          replyTo: emailConfig.gmail.user, // Reply goes to devhubmailer
+          to: email,
+          subject: autoReplyEmailGmail.subject,
+          html: autoReplyEmailGmail.html,
+        };
+
+        return await resend.emails.send(autoReplyViaResend);
+      }),
     ]).then(async ([devhubResult, autoReplyResult]) => {
       // Log results for monitoring
       if (devhubResult.status === 'rejected') {
-        console.error('Devhub notification email failed:', devhubResult.reason);
+        console.error('❌ Devhub notification email failed:', devhubResult.reason);
       } else {
-        console.log('Devhub notification email sent successfully to devhubmailer@gmail.com');
+        console.log('✅ Devhub notification email sent to devhubmailer@gmail.com');
       }
 
-      // Log auto-reply result and fallback to Resend if Gmail fails
+      // Log auto-reply result
       if (autoReplyResult.status === 'rejected') {
-        console.error('Auto-reply email via Gmail failed:', autoReplyResult.reason);
-        console.log('Attempting to send auto-reply via Resend as fallback...');
-
-        // Fallback: Send auto-reply via Resend
-        try {
-          const autoReplyViaResend = {
-            from: 'onboarding@resend.dev',
-            replyTo: emailConfig.gmail.user, // Reply goes to devhubmailer
-            to: email,
-            subject: autoReplyEmailGmail.subject,
-            html: autoReplyEmailGmail.html,
-          };
-
-          await resend.emails.send(autoReplyViaResend);
-          console.log('✅ Auto-reply sent successfully via Resend fallback');
-        } catch (resendError) {
-          console.error('❌ Auto-reply fallback via Resend also failed:', resendError);
-        }
+        console.error('❌ Auto-reply email failed completely:', autoReplyResult.reason);
       } else {
-        console.log('✅ Auto-reply email sent successfully via Gmail');
+        console.log('✅ Auto-reply email sent to client');
       }
     }).catch(err => {
-      console.error('Email sending error:', err);
-    });
-
-    return response;
+      console.error('❌ Email sending error:', err);
+    }); return response;
   } catch (error) {
     console.error('Contact form error:', error);
 
