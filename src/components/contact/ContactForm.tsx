@@ -416,6 +416,8 @@ export default function ContactForm({ className }: ContactFormProps) {
                     ? 'border-red-500 focus:ring-red-500/30 focus:border-red-500'
                     : validationErrors.category === '' && formData.category && fieldTouched.category
                     ? 'border-green-500 focus:ring-green-500/30 focus:border-green-500'
+                    : formData.category
+                    ? 'border-primary/50 focus:ring-primary/30 focus:border-primary text-primary font-medium'
                     : 'border-border focus:ring-primary/30 focus:border-primary'
                 }`}
               >
@@ -430,6 +432,8 @@ export default function ContactForm({ className }: ContactFormProps) {
                   ? 'text-red-500'
                   : validationErrors.category === '' && formData.category && fieldTouched.category
                   ? 'text-green-500'
+                  : formData.category
+                  ? 'text-primary'
                   : 'text-muted-foreground'
               }`}>
                 <FaFolderOpen className="w-5 h-5" />

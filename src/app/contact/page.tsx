@@ -36,6 +36,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState('');
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const [selectedQuickIntent, setSelectedQuickIntent] = useState<string>('');
 
   // Cleanup debounce timers on unmount
   useEffect(() => {
@@ -536,8 +537,13 @@ export default function Contact() {
                     onClick={() => {
                       setFormData(prev => ({ ...prev, category: 'build-website', subject: 'New Website Project' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
+                      setSelectedQuickIntent('build-website');
                     }}
-                    className="text-xs px-2 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5"
+                    className={`text-xs px-2 py-1.5 rounded-lg border transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5 ${
+                      selectedQuickIntent === 'build-website'
+                        ? 'bg-primary/20 border-primary text-primary font-semibold'
+                        : 'border-primary/30 hover:bg-primary/10 hover:border-primary'
+                    }`}
                     title="Need a new website or complete redesign"
                   >
                     <FaBriefcase className="w-3 h-3" />
@@ -548,8 +554,13 @@ export default function Contact() {
                     onClick={() => {
                       setFormData(prev => ({ ...prev, category: 'design-redesign', subject: 'Design & UX Improvement' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
+                      setSelectedQuickIntent('design-redesign');
                     }}
-                    className="text-xs px-2 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5"
+                    className={`text-xs px-2 py-1.5 rounded-lg border transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5 ${
+                      selectedQuickIntent === 'design-redesign'
+                        ? 'bg-primary/20 border-primary text-primary font-semibold'
+                        : 'border-primary/30 hover:bg-primary/10 hover:border-primary'
+                    }`}
                     title="Improve design, UX, or user experience"
                   >
                     <FaPalette className="w-3 h-3" />
@@ -560,8 +571,13 @@ export default function Contact() {
                     onClick={() => {
                       setFormData(prev => ({ ...prev, category: 'developer-collaboration', subject: 'Developer Collaboration' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
+                      setSelectedQuickIntent('developer-collaboration');
                     }}
-                    className="text-xs px-2 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5"
+                    className={`text-xs px-2 py-1.5 rounded-lg border transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5 ${
+                      selectedQuickIntent === 'developer-collaboration'
+                        ? 'bg-primary/20 border-primary text-primary font-semibold'
+                        : 'border-primary/30 hover:bg-primary/10 hover:border-primary'
+                    }`}
                     title="Developer partnerships, open-source, or joint projects"
                   >
                     <FaLightbulb className="w-3 h-3" />
@@ -572,8 +588,13 @@ export default function Contact() {
                     onClick={() => {
                       setFormData(prev => ({ ...prev, category: 'other', subject: 'Project Inquiry' }));
                       setFieldTouched(prev => ({ ...prev, category: true, subject: true }));
+                      setSelectedQuickIntent('other');
                     }}
-                    className="text-xs px-2 py-1.5 rounded-lg border border-primary/30 hover:bg-primary/10 hover:border-primary transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5"
+                    className={`text-xs px-2 py-1.5 rounded-lg border transition-all text-center font-medium flex flex-col items-center justify-center gap-0.5 ${
+                      selectedQuickIntent === 'other'
+                        ? 'bg-primary/20 border-primary text-primary font-semibold'
+                        : 'border-primary/30 hover:bg-primary/10 hover:border-primary'
+                    }`}
                     title="Something different - tell me about it"
                   >
                     <FaQuestion className="w-3 h-3" />

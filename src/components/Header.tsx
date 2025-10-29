@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import Link from 'next/link';
@@ -21,6 +22,7 @@ const navLinks = [
 export default function Header() {
 	const [isScrolled, setIsScrolled] = useState(false);
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+	const pathname = usePathname();
 
 	// Handle scroll event to change header style
 	useEffect(() => {
@@ -46,17 +48,26 @@ export default function Header() {
 				{/* Desktop Navigation */}
 				<nav className="hidden md:flex items-center space-x-8">
 					<ul className="flex space-x-7">
-						{navLinks.map((link) => (
-							<li key={link.name} className="relative group">
-								<CustomLink
-									href={link.href}
-									className="text-muted-foreground hover:text-primary transition-colors py-2"
-								>
-									{link.name}
-									<span className="absolute bottom-0 left-0 w-0 h-0.5 bg-primary group-hover:w-full transition-all duration-300"></span>
-								</CustomLink>
-							</li>
-						))}
+						{navLinks.map((link) => {
+							const isActive = pathname === link.href;
+							return (
+								<li key={link.name} className="relative group">
+									<CustomLink
+										href={link.href}
+										className={`transition-colors py-2 ${
+											isActive 
+												? 'text-primary font-semibold' 
+												: 'text-muted-foreground hover:text-primary'
+										}`}
+									>
+										{link.name}
+										<span className={`absolute bottom-0 left-0 h-0.5 bg-primary transition-all duration-300 ${
+											isActive ? 'w-full' : 'w-0 group-hover:w-full'
+										}`}></span>
+									</CustomLink>
+								</li>
+							);
+						})}
 					</ul>
 					<div className="h-6 w-px bg-border/50 mx-2"></div>
 					<ThemeToggle />
@@ -104,33 +115,42 @@ export default function Header() {
 					>
 						<nav className="container mx-auto px-4 py-6">
 							<ul className="flex flex-col space-y-0 divide-y divide-border/30">
-								{navLinks.map((link, index) => (
-									<MotionLi
-										key={link.name}
-										initial={{ opacity: 0, x: -20 }}
-										animate={{ opacity: 1, x: 0 }}
-										transition={{ duration: 0.3, delay: index * 0.05 }}
-									>
-										<Link
-											href={link.href}
-											onClick={() => setMobileMenuOpen(false)}
-											className="group flex items-center justify-between py-4 text-foreground hover:text-primary transition-colors"
+								{navLinks.map((link, index) => {
+									const isActive = pathname === link.href;
+									return (
+										<MotionLi
+											key={link.name}
+											initial={{ opacity: 0, x: -20 }}
+											animate={{ opacity: 1, x: 0 }}
+											transition={{ duration: 0.3, delay: index * 0.05 }}
 										>
-											<span>{link.name}</span>
-											<MotionSpan
-												initial={{ x: -8, opacity: 0 }}
-												animate={{ x: 0, opacity: 1 }}
-												transition={{ duration: 0.2, delay: index * 0.05 + 0.3 }}
-												className="text-primary opacity-0 group-hover:opacity-100 transition-opacity"
+											<Link
+												href={link.href}
+												onClick={() => setMobileMenuOpen(false)}
+												className={`group flex items-center justify-between py-4 transition-colors ${
+													isActive
+														? 'text-primary font-semibold'
+														: 'text-foreground hover:text-primary'
+												}`}
 											>
-												<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-													<path d="M5 12h14"></path>
-													<path d="m12 5 7 7-7 7"></path>
-												</svg>
-											</MotionSpan>
-										</Link>
-									</MotionLi>
-								))}
+												<span>{link.name}</span>
+												<MotionSpan
+													initial={{ x: -8, opacity: 0 }}
+													animate={{ x: 0, opacity: 1 }}
+													transition={{ duration: 0.2, delay: index * 0.05 + 0.3 }}
+													className={`text-primary transition-opacity ${
+														isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+													}`}
+												>
+													<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+														<path d="M5 12h14"></path>
+														<path d="m12 5 7 7-7 7"></path>
+													</svg>
+												</MotionSpan>
+											</Link>
+										</MotionLi>
+									);
+								})}
 								<MotionLi
 									initial={{ opacity: 0, x: -20 }}
 									animate={{ opacity: 1, x: 0 }}
