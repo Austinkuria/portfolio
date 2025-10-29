@@ -14,14 +14,19 @@ const resend = new Resend(emailConfig.apiKey);
 
 // Initialize Gmail SMTP transporter for auto-reply emails
 const gmailTransporter = nodemailer.createTransport({
-  service: emailConfig.gmail.service,
-  host: emailConfig.gmail.host,
-  port: emailConfig.gmail.port,
-  secure: emailConfig.gmail.secure,
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // true for 465, false for other ports
   auth: {
     user: emailConfig.gmail.user,
     pass: emailConfig.gmail.password,
   },
+  tls: {
+    rejectUnauthorized: false, // Allow self-signed certificates
+  },
+  connectionTimeout: 10000, // 10 seconds
+  greetingTimeout: 10000,
+  socketTimeout: 30000,
 });
 
 // Simple in-memory rate limiter (for basic protection)
@@ -151,19 +156,43 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Verify reCAPTCHA with Google
-    const recaptchaResponse = await fetch(
-      `https://www.google.com/recaptcha/api/siteverify`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
-      }
-    );
+    // Verify reCAPTCHA with Google (with retry and timeout)
+    let recaptchaData;
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
 
-    const recaptchaData = await recaptchaResponse.json();
+      const recaptchaResponse = await fetch(
+        `https://www.google.com/recaptcha/api/siteverify`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${recaptchaToken}`,
+          signal: controller.signal,
+        }
+      );
+
+      clearTimeout(timeoutId);
+      recaptchaData = await recaptchaResponse.json();
+    } catch (fetchError) {
+      console.error('reCAPTCHA verification network error:', fetchError);
+
+      // In development, allow bypassing reCAPTCHA if network fails
+      if (appConfig.isDevelopment) {
+        console.warn('⚠️ Development mode: Bypassing reCAPTCHA due to network error');
+        recaptchaData = { success: true, score: 0.9 };
+      } else {
+        return NextResponse.json(
+          {
+            error: 'Unable to verify security. Please check your internet connection and try again.',
+            code: 'RECAPTCHA_NETWORK_ERROR'
+          },
+          { status: 503 }
+        );
+      }
+    }
 
     // Log reCAPTCHA score for monitoring
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -328,7 +357,7 @@ Reference ID: ${referenceId}`;
     Promise.allSettled([
       resend.emails.send(devhubNotificationEmail),    // To devhubmailer (new lead notification)
       gmailTransporter.sendMail(autoReplyEmailGmail), // Auto-reply to client from devhubmailer
-    ]).then(([devhubResult, autoReplyResult]) => {
+    ]).then(async ([devhubResult, autoReplyResult]) => {
       // Log results for monitoring
       if (devhubResult.status === 'rejected') {
         console.error('Devhub notification email failed:', devhubResult.reason);
@@ -336,11 +365,28 @@ Reference ID: ${referenceId}`;
         console.log('Devhub notification email sent successfully to devhubmailer@gmail.com');
       }
 
-      // Log auto-reply result
+      // Log auto-reply result and fallback to Resend if Gmail fails
       if (autoReplyResult.status === 'rejected') {
-        console.error('Auto-reply email failed:', autoReplyResult.reason);
+        console.error('Auto-reply email via Gmail failed:', autoReplyResult.reason);
+        console.log('Attempting to send auto-reply via Resend as fallback...');
+
+        // Fallback: Send auto-reply via Resend
+        try {
+          const autoReplyViaResend = {
+            from: 'onboarding@resend.dev',
+            replyTo: emailConfig.gmail.user, // Reply goes to devhubmailer
+            to: email,
+            subject: autoReplyEmailGmail.subject,
+            html: autoReplyEmailGmail.html,
+          };
+
+          await resend.emails.send(autoReplyViaResend);
+          console.log('✅ Auto-reply sent successfully via Resend fallback');
+        } catch (resendError) {
+          console.error('❌ Auto-reply fallback via Resend also failed:', resendError);
+        }
       } else {
-        console.log('Auto-reply email sent successfully');
+        console.log('✅ Auto-reply email sent successfully via Gmail');
       }
     }).catch(err => {
       console.error('Email sending error:', err);
