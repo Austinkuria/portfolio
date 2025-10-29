@@ -25,6 +25,7 @@ export const VALID_CATEGORIES = [
     'design-redesign',
     'ecommerce',
     'maintenance-support',
+    'developer-collaboration',
     'other'
 ] as const;
 
