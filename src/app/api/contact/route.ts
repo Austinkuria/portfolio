@@ -353,8 +353,8 @@ Reference ID: ${referenceId}`;
       }
     });
 
-    // Send 2 emails in background without blocking response
-    Promise.allSettled([
+    // Send 2 emails and wait for them to complete
+    await Promise.allSettled([
       resend.emails.send(devhubNotificationEmail),    // To devhubmailer (new lead notification)
       gmailTransporter.sendMail(autoReplyEmailGmail).catch(async (gmailError) => {
         // Gmail failed, immediately try Resend fallback
@@ -386,7 +386,9 @@ Reference ID: ${referenceId}`;
       }
     }).catch(err => {
       console.error('❌ Email sending error:', err);
-    }); return response;
+    });
+
+    return response;
   } catch (error) {
     console.error('Contact form error:', error);
 
