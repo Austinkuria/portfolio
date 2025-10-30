@@ -21,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <meta name="google-site-verification" content="MITiuqfxCk5vimfFWcFiLCrXRpRx99Py6WwGRjz0AvQ" />
         {/* Preconnect to critical domains - early */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://vitals.vercel-insights.com" />

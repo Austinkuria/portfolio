@@ -39,7 +39,7 @@ export const siteConfig = {
     siteName: `${personalInfo.name.full} Portfolio`,
     domain: 'austinmaina.vercel.app',
     googleSiteVerification: '771005efe7b937ff',
-    googleAnalyticsId: '', // Add your GA4 Measurement ID here (e.g., 'G-XXXXXXXXXX')
+    googleAnalyticsId: 'G-S0LJ0MV7MY', // GA4 Measurement ID
     defaultMetaImage: '/images/am-logo.jpg',
     favicon: '/images/am-logo.jpg',
     themeColor: '#ffffff',
