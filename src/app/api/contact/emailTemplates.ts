@@ -321,7 +321,7 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
                   </div>
                   
                   ${!isSimpleClient ? `
-                  <div style="display: flex; gap: 16px; position: relative;">
+                  <div style="display: flex; gap: 16px; position: relative; margin-bottom: 24px;">
                     <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #374151; font-weight: 700; font-size: 16px;">4</div>
                     <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.purple};">
                       <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">We Start Building!</div>
