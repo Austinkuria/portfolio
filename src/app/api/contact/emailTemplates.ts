@@ -246,11 +246,8 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
         <div style="max-width: 600px; margin: 0 auto; background: ${emailTheme.background}; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1);">
           
           <!-- Header with gradient -->
-          <div style="background: linear-gradient(135deg, ${emailTheme.success} 0%, #059669 100%); padding: 48px 32px; text-align: center; position: relative;">
+          <div style="background: linear-gradient(135deg, ${emailTheme.success} 0%, #10b981 100%); padding: 40px 20px; text-align: center; position: relative;">
             <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.05&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); opacity: 0.1;"></div>
-            <div style="background: rgba(255,255,255,0.2); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px;">
-              ✓
-            </div>
             <h1 style="margin: 0; font-size: 32px; color: white; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">Message Received!</h1>
             <p style="margin: 12px 0 0 0; color: rgba(255,255,255,0.95); font-size: 16px; font-weight: 500;">I'll get back to you soon, ${firstName}</p>
           </div>
@@ -271,12 +268,12 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
               <h3 style="margin: 0 0 20px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px;">Your Inquiry Summary</h3>
               <div style="display: grid; gap: 16px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid ${emailTheme.borderLight};">
-                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600;">Subject</span>
+                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; margin-right: 8px;">Subject</span>
                   <span style="font-size: 14px; color: ${emailTheme.textPrimary}; font-weight: 600; text-align: right; max-width: 60%;">${subject}</span>
                 </div>
                 ${category ? `
                 <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid ${emailTheme.borderLight};">
-                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600;">Project Type</span>
+                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; margin-right: 8px;">Project Type</span>
                   <span style="display: inline-block; background: ${emailTheme.primaryLight}; color: ${emailTheme.primary}; padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: 600;">${category.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
                 </div>
                 ` : ''}
@@ -298,16 +295,16 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
                 <!-- Timeline line -->
                 <div style="position: absolute; left: 19px; top: 30px; bottom: 30px; width: 2px; background: linear-gradient(to bottom, ${emailTheme.primary}, ${emailTheme.success}); opacity: 0.3;"></div>
                 
-                <div style="display: grid; gap: 16px;">
+                <div style="display: grid; gap: 16px; margin-bottom: 24px;">
                   <div style="display: flex; gap: 16px; position: relative;">
                     <div style="flex-shrink: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #374151; font-weight: 700; font-size: 16px;">1</div>
                     <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.primary};">
                       <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">I'll Review Your Message</div>
-                      <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Usually within 24-48 hours</div>
+                      <div style="font-size:13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Usually within 24-48 hours</div>
                     </div>
                   </div>
                   
-                  <div style="display: flex; gap: 16px; position: relative;">
+                  <div style="display: flex; gap: 16px; position: relative; margin-bottom: 24px;">
                     <div style="flex-shrink: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #374151; font-weight: 700; font-size: 16px;">2</div>
                     <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.success};">
                       <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">Let's Have a Quick Chat</div>
@@ -315,7 +312,7 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
                     </div>
                   </div>
                   
-                  <div style="display: flex; gap: 16px; position: relative;">
+                  <div style="display: flex; gap: 16px; position: relative; margin-bottom: 24px;">
                     <div style="flex-shrink: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #374151; font-weight: 700; font-size: 16px;">3</div>
                     <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.warning};">
                       <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">You'll Get a Detailed Proposal</div>
