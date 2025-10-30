@@ -228,117 +228,147 @@ interface AutoReplyEmailParams {
 
 export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
   const { name, email, subject, message, category, isSimpleClient } = params;
+  const firstName = name.split(' ')[0];
 
   return {
     from: `${personalInfo.name.full} <${emailConfig.gmail.user}>`,
     to: email,
-    subject: `Thanks for your message, ${name}!`,
+    subject: `Thanks for reaching out, ${firstName}! 🎉`,
     html: `
       <!DOCTYPE html>
       <html>
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Message Received - ${personalInfo.name.full}</title>
       </head>
-      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: ${emailTheme.backgroundAlt};">
-        <div style="max-width: 600px; margin: 0 auto; background: ${emailTheme.background};">
+      <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 40px 20px;">
+        <div style="max-width: 600px; margin: 0 auto; background: ${emailTheme.background}; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1);">
           
-          <!-- Header -->
-          <div style="background: ${emailTheme.primary}; padding: 40px 32px; text-align: center;">
-            <h1 style="margin: 0; font-size: 28px; color: white; font-weight: 600;">Message Received</h1>
-            <p style="margin: 12px 0 0 0; color: rgba(255,255,255,0.9); font-size: 15px;">I'll get back to you soon</p>
+          <!-- Header with gradient -->
+          <div style="background: linear-gradient(135deg, ${emailTheme.success} 0%, #059669 100%); padding: 48px 32px; text-align: center; position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: url('data:image/svg+xml,%3Csvg width=&quot;60&quot; height=&quot;60&quot; viewBox=&quot;0 0 60 60&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cg fill=&quot;none&quot; fill-rule=&quot;evenodd&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.05&quot;%3E%3Cpath d=&quot;M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z&quot;/%3E%3C/g%3E%3C/g%3E%3C/svg%3E'); opacity: 0.1;"></div>
+            <div style="background: rgba(255,255,255,0.2); border-radius: 50%; width: 80px; height: 80px; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 40px;">
+              ✓
+            </div>
+            <h1 style="margin: 0; font-size: 32px; color: white; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.1);">Message Received!</h1>
+            <p style="margin: 12px 0 0 0; color: rgba(255,255,255,0.95); font-size: 16px; font-weight: 500;">I'll get back to you soon, ${firstName}</p>
           </div>
 
           <!-- Content -->
-          <div style="padding: 32px;">
+          <div style="padding: 40px 32px;">
             
-            <!-- Greeting -->
-            <div style="margin-bottom: 32px;">
-              <h2 style="margin: 0 0 12px 0; font-size: 20px; font-weight: 600; color: ${emailTheme.textPrimary};">Hi ${name}!</h2>
-              <p style="margin: 0; color: ${emailTheme.textSecondary}; line-height: 1.6; font-size: 15px;">
-                Thanks for reaching out about "${subject}". I received your message and will review it carefully.
+            <!-- Personal Greeting -->
+            <div style="margin-bottom: 32px; text-align: center;">
+              <h2 style="margin: 0 0 12px 0; font-size: 24px; font-weight: 700; color: ${emailTheme.textPrimary};">Hey ${firstName}! 👋</h2>
+              <p style="margin: 0; color: ${emailTheme.textSecondary}; line-height: 1.7; font-size: 15px;">
+                Thanks for reaching out about <strong style="color: ${emailTheme.primary};">"${subject}"</strong>. I've received your message and I'm excited to learn more about your project!
               </p>
             </div>
 
-            <!-- What I Received -->
-            <div style="margin-bottom: 32px; padding: 20px; background: ${emailTheme.primaryLight}; border-radius: 8px; border: 1px solid ${emailTheme.border};">
-              <h3 style="margin: 0 0 16px 0; font-size: 14px; font-weight: 600; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 0.5px;">Your Inquiry</h3>
-              <table style="width: 100%; border-collapse: collapse;">
-                <tr>
-                  <td style="padding: 8px 0; font-size: 13px; color: ${emailTheme.textMuted};">Subject:</td>
-                  <td style="padding: 8px 0; font-size: 14px; color: ${emailTheme.textPrimary}; font-weight: 500; text-align: right;">${subject}</td>
-                </tr>
+            <!-- What I Received Card -->
+            <div style="margin-bottom: 32px; background: ${emailTheme.backgroundAlt}; border-radius: 12px; padding: 24px; border: 2px solid ${emailTheme.border};">
+              <h3 style="margin: 0 0 20px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px;">Your Inquiry Summary</h3>
+              <div style="display: grid; gap: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid ${emailTheme.borderLight};">
+                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600;">Subject</span>
+                  <span style="font-size: 14px; color: ${emailTheme.textPrimary}; font-weight: 600; text-align: right; max-width: 60%;">${subject}</span>
+                </div>
                 ${category ? `
-                <tr>
-                  <td style="padding: 8px 0; border-top: 1px solid ${emailTheme.border}; font-size: 13px; color: ${emailTheme.textMuted};">Project Type:</td>
-                  <td style="padding: 8px 0; border-top: 1px solid ${emailTheme.border}; font-size: 14px; color: ${emailTheme.textPrimary}; font-weight: 500; text-align: right;">${category.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</td>
-                </tr>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid ${emailTheme.borderLight};">
+                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600;">Project Type</span>
+                  <span style="display: inline-block; background: ${emailTheme.primaryLight}; color: ${emailTheme.primary}; padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: 600;">${category.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                </div>
                 ` : ''}
-              </table>
-              ${message.length > 50 ? `
-              <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid ${emailTheme.border};">
-                <p style="margin: 0; color: ${emailTheme.textMuted}; font-size: 13px; font-style: italic; line-height: 1.5;">
-                  "${message.substring(0, 120)}${message.length > 120 ? '...' : ''}"
-                </p>
+                ${message.length > 50 ? `
+                <div style="padding-top: 4px;">
+                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; display: block; margin-bottom: 8px;">Your Message</span>
+                  <p style="margin: 0; color: ${emailTheme.textSecondary}; font-size: 14px; font-style: italic; line-height: 1.6; background: ${emailTheme.background}; padding: 12px; border-radius: 6px; border-left: 3px solid ${emailTheme.primary};">
+                    "${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"
+                  </p>
+                </div>
+                ` : ''}
               </div>
-              ` : ''}
             </div>
 
-            <!-- Next Steps -->
+            <!-- Next Steps Timeline -->
             <div style="margin-bottom: 32px;">
-              <h3 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600; color: ${emailTheme.textPrimary};">What's Next</h3>
-              <div style="display: grid; gap: 12px;">
-                <div style="padding: 16px; background: ${emailTheme.backgroundAlt}; border-left: 4px solid ${emailTheme.primary}; border-radius: 4px;">
-                  <div style="font-size: 14px; font-weight: 600; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">1. I'll read your message</div>
-                  <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Usually get to messages within a day or two</div>
+              <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 700; color: ${emailTheme.textPrimary}; text-align: center;">What Happens Next?</h3>
+              <div style="position: relative;">
+                <!-- Timeline line -->
+                <div style="position: absolute; left: 19px; top: 30px; bottom: 30px; width: 2px; background: linear-gradient(to bottom, ${emailTheme.primary}, ${emailTheme.success}); opacity: 0.3;"></div>
+                
+                <div style="display: grid; gap: 16px;">
+                  <div style="display: flex; gap: 16px; position: relative;">
+                    <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, ${emailTheme.primary} 0%, #1e40af 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; box-shadow: 0 4px 12px rgba(59,130,246,0.3); z-index: 1;">1</div>
+                    <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.primary};">
+                      <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">I'll Review Your Message</div>
+                      <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Usually within 24-48 hours</div>
+                    </div>
+                  </div>
+                  
+                  <div style="display: flex; gap: 16px; position: relative;">
+                    <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, ${emailTheme.success} 0%, #059669 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; box-shadow: 0 4px 12px rgba(16,185,129,0.3); z-index: 1;">2</div>
+                    <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.success};">
+                      <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">Let's Have a Quick Chat</div>
+                      <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">15-30 minute call to discuss your needs</div>
+                    </div>
+                  </div>
+                  
+                  <div style="display: flex; gap: 16px; position: relative;">
+                    <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, ${emailTheme.warning} 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; box-shadow: 0 4px 12px rgba(245,158,11,0.3); z-index: 1;">3</div>
+                    <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.warning};">
+                      <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">You'll Get a Detailed Proposal</div>
+                      <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Scope, timeline, and investment - crystal clear</div>
+                    </div>
+                  </div>
+                  
+                  ${!isSimpleClient ? `
+                  <div style="display: flex; gap: 16px; position: relative;">
+                    <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, ${emailTheme.purple} 0%, #7c3aed 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 16px; box-shadow: 0 4px 12px rgba(139,92,246,0.3); z-index: 1;">4</div>
+                    <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.purple};">
+                      <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">We Start Building!</div>
+                      <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Once approved, I'll bring your vision to life</div>
+                    </div>
+                  </div>
+                  ` : ''}
                 </div>
-                <div style="padding: 16px; background: ${emailTheme.backgroundAlt}; border-left: 4px solid ${emailTheme.success}; border-radius: 4px;">
-                  <div style="font-size: 14px; font-weight: 600; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">2. We'll set up a meeting</div>
-                  <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Quick 15-30 min call to discuss your project and answer questions</div>
-                </div>
-                <div style="padding: 16px; background: ${emailTheme.backgroundAlt}; border-left: 4px solid ${emailTheme.warning}; border-radius: 4px;">
-                  <div style="font-size: 14px; font-weight: 600; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">3. I'll send you a proposal</div>
-                  <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">What we'll build, timeline, and cost - all written down clearly</div>
-                </div>
-                ${!isSimpleClient ? `
-                <div style="padding: 16px; background: ${emailTheme.backgroundAlt}; border-left: 4px solid ${emailTheme.purple}; border-radius: 4px;">
-                  <div style="font-size: 14px; font-weight: 600; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">4. Start building</div>
-                  <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Once you approve the proposal, I get to work on your project</div>
-                </div>
-                ` : ''}
               </div>
             </div>
 
-            <!-- Schedule Meeting CTA -->
-            <div style="margin-bottom: 32px; padding: 24px; background: linear-gradient(135deg, ${emailTheme.primaryLight} 0%, #dbeafe 100%); border-radius: 8px; border: 1px solid ${emailTheme.primary};">
-              <h3 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: ${emailTheme.textPrimary};">Want to talk now?</h3>
-              <p style="margin: 0 0 16px 0; color: ${emailTheme.textSecondary}; font-size: 14px; line-height: 1.6;">
-                If you'd like a quick 15-30 minute meeting to discuss your project, pick a time that works for you. The scheduler will ask how you prefer to meet (video call or phone).
+            <!-- CTA Box -->
+            <div style="margin-bottom: 32px; padding: 28px; background: linear-gradient(135deg, ${emailTheme.primaryLight} 0%, #dbeafe 100%); border-radius: 12px; border: 2px solid ${emailTheme.primary}; text-align: center;">
+              <h3 style="margin: 0 0 12px 0; font-size: 18px; font-weight: 700; color: ${emailTheme.textPrimary};">Ready to Talk Now?</h3>
+              <p style="margin: 0 0 20px 0; color: ${emailTheme.textSecondary}; font-size: 14px; line-height: 1.6;">
+                Skip the wait! Pick a time that works for you and let's discuss your project right away.
               </p>
               <a href="${buildPrefilledSchedulingUrl(name, email, subject)}" target="_blank" rel="noopener noreferrer"
-                 style="display: inline-block; background: ${emailTheme.primary}; color: white; padding: 12px 24px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px;">
-                Schedule a Meeting
+                 style="display: inline-block; background: linear-gradient(135deg, ${emailTheme.primary} 0%, #1e40af 100%); color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 15px; box-shadow: 0 4px 12px rgba(59,130,246,0.3); transition: transform 0.2s;">
+                📅 Schedule a Meeting
               </a>
-              <p style="margin: 12px 0 0 0; color: ${emailTheme.textMuted}; font-size: 13px;">
+              <p style="margin: 16px 0 0 0; color: ${emailTheme.textMuted}; font-size: 12px;">
                 Prefer a phone call? Just reply to this email with your number and best time.
               </p>
             </div>
 
-            <!-- While You Wait -->
+            <!-- While You Wait Section -->
             <div style="margin-bottom: 24px;">
-              <h3 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 600; color: ${emailTheme.textPrimary};">While You Wait</h3>
+              <h3 style="margin: 0 0 16px 0; font-size: 16px; font-weight: 700; color: ${emailTheme.textPrimary}; text-align: center;">While You Wait...</h3>
               <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;">
-                <a href="${siteConfig.url}/projects" style="padding: 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; text-decoration: none; text-align: center; border: 1px solid ${emailTheme.border};">
-                  <div style="font-size: 13px; font-weight: 600; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">Projects</div>
-                  <div style="font-size: 12px; color: ${emailTheme.textMuted};">View my work</div>
+                <a href="${siteConfig.url}/projects" style="display: block; margin-bottom: 12px; padding: 20px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 10px; text-decoration: none; text-align: center; border: 2px solid ${emailTheme.border}; transition: all 0.3s;">
+                  <div style="font-size: 24px; margin-bottom: 8px;">💼</div>
+                  <div style="font-size: 13px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">My Projects</div>
+                  <div style="font-size: 11px; color: ${emailTheme.textMuted};">See what I've built</div>
                 </a>
-                <a href="${siteConfig.url}/about" style="padding: 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; text-decoration: none; text-align: center; border: 1px solid ${emailTheme.border};">
-                  <div style="font-size: 13px; font-weight: 600; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">About</div>
-                  <div style="font-size: 12px; color: ${emailTheme.textMuted};">Learn about me</div>
+                <a href="${siteConfig.url}/about" style="display: block; margin-bottom: 12px; padding: 20px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 10px; text-decoration: none; text-align: center; border: 2px solid ${emailTheme.border}; transition: all 0.3s;">
+                  <div style="font-size: 24px; margin-bottom: 8px;">👨‍💻</div>
+                  <div style="font-size: 13px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">About Me</div>
+                  <div style="font-size: 11px; color: ${emailTheme.textMuted};">Get to know me</div>
                 </a>
-                <a href="${socialLinks.linkedin}" target="_blank" style="padding: 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; text-decoration: none; text-align: center; border: 1px solid ${emailTheme.border};">
-                  <div style="font-size: 13px; font-weight: 600; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">LinkedIn</div>
-                  <div style="font-size: 12px; color: ${emailTheme.textMuted};">Connect</div>
+                <a href="${socialLinks.linkedin}" target="_blank" style="display: block; margin-bottom: 12px; padding: 20px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 10px; text-decoration: none; text-align: center; border: 2px solid ${emailTheme.border}; transition: all 0.3s;">
+                  <div style="font-size: 24px; margin-bottom: 8px;">🤝</div>
+                  <div style="font-size: 13px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">LinkedIn</div>
+                  <div style="font-size: 11px; color: ${emailTheme.textMuted};">Let's connect</div>
                 </a>
               </div>
             </div>
@@ -346,11 +376,14 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
           </div>
 
           <!-- Footer -->
-          <div style="background: ${emailTheme.backgroundDark}; padding: 32px; text-align: center;">
-            <p style="margin: 0 0 8px 0; color: ${emailTheme.textLight}; font-size: 13px;">Best regards,</p>
-            <p style="margin: 0; color: white; font-size: 18px; font-weight: 600;">${personalInfo.name.full}</p>
-            <p style="margin: 12px 0 0 0; font-size: 12px;">
-              <a href="mailto:${personalInfo.email}" style="color: ${emailTheme.primary}; text-decoration: none;">${personalInfo.email}</a>
+          <div style="background: linear-gradient(135deg, ${emailTheme.backgroundDark} 0%, #0f172a 100%); padding: 32px; text-align: center; border-top: 1px solid ${emailTheme.border};">
+            <p style="margin: 0 0 8px 0; color: ${emailTheme.textLight}; font-size: 13px; font-weight: 500;">Looking forward to working with you!</p>
+            <p style="margin: 0 0 4px 0; color: white; font-size: 20px; font-weight: 700;">${personalInfo.name.full}</p>
+            <p style="margin: 0; font-size: 13px;">
+              <a href="mailto:${personalInfo.email}" style="color: ${emailTheme.primary}; text-decoration: none; font-weight: 500;">${personalInfo.email}</a>
+            </p>
+            <p style="margin: 12px 0 0 0; color: rgba(255,255,255,0.5); font-size: 11px;">
+              ${siteConfig.siteName} • Building Digital Experiences
             </p>
           </div>
 
