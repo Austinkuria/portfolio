@@ -8,13 +8,14 @@ export const siteMetadata: Metadata = {
   },
   description: personalInfo.description,
   creator: personalInfo.name.full,
-  keywords: seoConfig.keywords,
+  keywords: [...seoConfig.keywords],
   applicationName: siteConfig.applicationName,
   authors: [
     { name: personalInfo.name.full, url: siteConfig.url },
     { name: 'GitHub', url: socialLinks.github },
     { name: 'LinkedIn', url: socialLinks.linkedin }
-  ], icons: {
+  ],
+  icons: {
     icon: siteConfig.favicon,
     shortcut: siteConfig.favicon,
     apple: siteConfig.favicon,
@@ -35,6 +36,12 @@ export const siteMetadata: Metadata = {
     locale: seoConfig.openGraph.locale,
     type: seoConfig.openGraph.type,
   },
+  twitter: {
+    card: seoConfig.twitter.card,
+    title: seoConfig.defaultTitle,
+    description: personalInfo.description,
+    images: [seoConfig.openGraph.images.url],
+  },
   alternates: {
     canonical: siteConfig.url,
   },
@@ -43,4 +50,7 @@ export const siteMetadata: Metadata = {
     google: siteConfig.googleSiteVerification
   },
   robots: seoConfig.robots,
+  other: {
+    'google-site-verification': siteConfig.googleSiteVerification,
+  },
 };

@@ -6,6 +6,7 @@ import './globals.css';
 import Script from 'next/script';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
+import { siteConfig } from '@/config';
 
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -33,6 +34,27 @@ export default function RootLayout({
             'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-P2G8NGPF');`}
         </Script>
+        
+        {/* Google Analytics 4 - Only load if ID is configured */}
+        {siteConfig.googleAnalyticsId && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.googleAnalyticsId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-script" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${siteConfig.googleAnalyticsId}', {
+                  page_path: window.location.pathname,
+                  send_page_view: true
+                });
+              `}
+            </Script>
+          </>
+        )}
         
         {/* Humans.txt link */}
         <link rel="author" href="/humans.txt" />
