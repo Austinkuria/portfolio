@@ -109,15 +109,15 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
             
             <!-- Stats Bar -->
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;">
-              <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, ${emailTheme.primaryLight} 0%, #dbeafe 100%); border-radius: 12px; border: 2px solid ${emailTheme.border};">
+              <div style="display: block; margin-bottom: 12px; text-align: center; padding: 20px; background: linear-gradient(135deg, ${emailTheme.primaryLight} 0%, #dbeafe 100%); border-radius: 12px; border: 2px solid ${emailTheme.border};">
                 <div style="font-size: 28px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">${messageWordCount}</div>
                 <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Words</div>
               </div>
-              <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, ${urgencyScore === 'HIGH' ? '#fee2e2' : '#dcfce7'} 0%, ${urgencyScore === 'HIGH' ? '#fecaca' : '#bbf7d0'} 100%); border-radius: 12px; border: 2px solid ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success};">
+              <div style="display: block; margin-bottom: 12px; text-align: center; padding: 20px; background: linear-gradient(135deg, ${urgencyScore === 'HIGH' ? '#fee2e2' : '#dcfce7'} 0%, ${urgencyScore === 'HIGH' ? '#fecaca' : '#bbf7d0'} 100%); border-radius: 12px; border: 2px solid ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success};">
                 <div style="font-size: 28px; font-weight: 700; color: ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success}; margin-bottom: 4px;">${urgencyScore === 'HIGH' ? 'High' : 'Normal'}</div>
                 <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Priority</div>
               </div>
-              <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-radius: 12px; border: 2px solid ${emailTheme.purple};">
+              <div style="display: block; margin-bottom: 12px; text-align: center; padding: 20px; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-radius: 12px; border: 2px solid ${emailTheme.purple};">
                 <div style="font-size: 28px; font-weight: 700; color: ${emailTheme.purple}; margin-bottom: 4px;">Now</div>
                 <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Received</div>
               </div>
