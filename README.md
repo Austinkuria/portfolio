@@ -137,9 +137,6 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🙏 Acknowledgments
-
-Built with ❤️ by **Austin Maina** using modern web technologies.
 
 **Keywords**: Austin Maina, Full Stack Developer, Software Engineer, React Developer, Next.js Developer, TypeScript, Web Developer Kenya, Nairobi Developer, Portfolio Website
 
