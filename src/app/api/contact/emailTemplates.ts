@@ -264,23 +264,23 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
             </div>
 
             <!-- What I Received Card -->
-            <div style="margin-bottom: 32px; background: ${emailTheme.backgroundAlt}; border-radius: 12px; padding: 24px; border: 2px solid ${emailTheme.border};">
-              <h3 style="margin: 0 0 20px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px;">Your Inquiry Summary</h3>
-              <div style="display: grid; gap: 16px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid ${emailTheme.borderLight};">
-                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; margin-right: 8px;">Subject</span>
-                  <span style="font-size: 14px; color: ${emailTheme.textPrimary}; font-weight: 600; text-align: right; max-width: 60%;">${subject}</span>
+            <div style="margin-bottom: 32px; background: ${emailTheme.backgroundAlt}; border-radius: 12px; padding: 28px; border: 1px solid ${emailTheme.border};">
+              <h3 style="margin: 0 0 18px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px;">Your Inquiry Summary</h3>
+              <div style="display: grid; gap: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid ${emailTheme.borderLight}; gap: 12px;">
+                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; min-width: 90px;">Subject</span>
+                  <span style="font-size: 14px; color: ${emailTheme.textPrimary}; font-weight: 700; text-align: right; max-width: 420px; word-break: break-word; white-space: normal;">${subject}</span>
                 </div>
                 ${category ? `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid ${emailTheme.borderLight};">
-                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; margin-right: 8px;">Project Type</span>
-                  <span style="display: inline-block; background: ${emailTheme.primaryLight}; color: ${emailTheme.primary}; padding: 4px 12px; border-radius: 6px; font-size: 13px; font-weight: 600;">${category.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid ${emailTheme.borderLight}; gap: 12px;">
+                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; min-width: 90px;">Project Type</span>
+                  <span style="display: inline-block; background: ${emailTheme.primaryLight}; color: ${emailTheme.primary}; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;">${category.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
                 </div>
                 ` : ''}
                 ${message.length > 50 ? `
                 <div style="padding-top: 4px;">
                   <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; display: block; margin-bottom: 8px;">Your Message</span>
-                  <p style="margin: 0; color: ${emailTheme.textSecondary}; font-size: 14px; font-style: italic; line-height: 1.6; background: ${emailTheme.background}; padding: 12px; border-radius: 6px; border-left: 3px solid ${emailTheme.primary};">
+                  <p style="margin: 0; color: ${emailTheme.textSecondary}; font-size: 14px; font-style: italic; line-height: 1.6; background: ${emailTheme.background}; padding: 14px; border-radius: 8px; border-left: 3px solid ${emailTheme.primary}; overflow-wrap: break-word;">
                     "${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"
                   </p>
                 </div>

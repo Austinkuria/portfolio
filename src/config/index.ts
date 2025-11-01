@@ -52,7 +52,7 @@ export const socialLinks = {
     discord: 'https://discord.gg/austin.125',
     email: `mailto:${personalInfo.email}`,
     phone: `tel:${personalInfo.phone}`,
-    resume: 'https://drive.google.com/file/d/16PQxbSwqMmq8b15Yc1zmERL7SV-k9Fmr/view?usp=drivesdk',
+    resume: 'https://drive.google.com/file/d/1kVVnj5fCLo0NOxDDC8o1HqVurEvqIpJn/view?usp=drive_link',
     calendly: 'https://calendly.com/austinmaina',
 } as const;
 
