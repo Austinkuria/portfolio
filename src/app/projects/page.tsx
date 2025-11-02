@@ -53,7 +53,7 @@ export default function Projects() {
             </p>
           </MotionDiv>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative">
             {projects.map((project) => (
               <MotionArticle
                 key={project.id}
@@ -74,38 +74,13 @@ export default function Projects() {
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     loading={project.id <= 3 ? 'eager' : 'lazy'}
                     priority={project.id <= 2}
+                    style={{ aspectRatio: '16/9' }} // Prevent CLS from image loading
                   />
                 </div>
 
                 <div className="p-6 flex-grow">
                   <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                   <p className="text-muted-foreground mb-4">{project.description}</p>
-
-                  {activeProject === project.id && (
-                    <MotionDiv
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <div className="mb-4">
-                        <h4 className="font-semibold text-sm text-primary mb-1">Problem:</h4>
-                        <p className="text-sm text-card-foreground">{project.problem}</p>
-                      </div>
-                      <div className="mb-4">
-                        <h4 className="font-semibold text-sm text-primary mb-1">Solution:</h4>
-                        <p className="text-sm text-card-foreground">{project.solution}</p>
-                      </div>
-                      <div className="mb-4">
-                        <h4 className="font-semibold text-sm text-primary mb-1">Metrics:</h4>
-                        <ul className="list-disc pl-5 text-sm text-card-foreground">
-                          {project.metrics.map((metric: string, i: number) => (
-                            <li key={i}>{metric}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    </MotionDiv>
-                  )}
 
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.techStack.map((tech: string, index: number) => (
@@ -140,6 +115,43 @@ export default function Projects() {
                   </a>
                 </div>
               </MotionArticle>
+            ))}
+
+            {/* Overlay hover content to prevent CLS */}
+            {projects.map((project) => (
+              activeProject === project.id && (
+                <MotionDiv
+                  key={`hover-${project.id}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute inset-0 bg-card/95 backdrop-blur-sm p-6 rounded-xl shadow-xl z-20 flex flex-col justify-center"
+                  style={{
+                    top: `${Math.floor((project.id - 1) / 3) * 400 + 20}px`,
+                    left: `${((project.id - 1) % 3) * 33.33}%`,
+                    width: 'calc(33.33% - 1rem)',
+                    height: '380px'
+                  }}
+                >
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-sm text-primary mb-1">Problem:</h4>
+                    <p className="text-sm text-card-foreground">{project.problem}</p>
+                  </div>
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-sm text-primary mb-1">Solution:</h4>
+                    <p className="text-sm text-card-foreground">{project.solution}</p>
+                  </div>
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-sm text-primary mb-1">Metrics:</h4>
+                    <ul className="list-disc pl-5 text-sm text-card-foreground">
+                      {project.metrics.map((metric: string, i: number) => (
+                        <li key={i}>{metric}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </MotionDiv>
+              )
             ))}
           </div>
 
