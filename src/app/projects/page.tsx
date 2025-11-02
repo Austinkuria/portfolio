@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import Image from 'next/image';
 import { MotionDiv, MotionArticle } from '@/lib/motion';
@@ -12,6 +12,24 @@ import { socialLinks } from '@/config';
 
 export default function Projects() {
   const [activeProject, setActiveProject] = useState<number | null>(null);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleMouseEnter = useCallback((projectId: number) => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    hoverTimeoutRef.current = setTimeout(() => {
+      setActiveProject(projectId);
+    }, 50); // Reduced delay for faster response
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+      hoverTimeoutRef.current = null;
+    }
+    setActiveProject(null);
+  }, []);
 
   return (
     <>
@@ -42,17 +60,17 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: project.id * 0.1 }}
-                className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 h-full flex flex-col"
-                onMouseEnter={() => setActiveProject(project.id)}
-                onMouseLeave={() => setActiveProject(null)}
+                transition={{ duration: 0.4, delay: project.id * 0.1 }}
+                className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 h-full flex flex-col"
+                onMouseEnter={() => handleMouseEnter(project.id)}
+                onMouseLeave={handleMouseLeave}
               >
                 <div className="relative h-56 overflow-hidden">
                   <Image
                     src={project.image}
                     alt={project.title}
                     fill
-                    className="object-contain transition-transform duration-500 hover:scale-[1.02] rounded-xl"
+                    className="object-contain transition-transform duration-300 hover:scale-[1.02] rounded-xl"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     loading={project.id <= 3 ? 'eager' : 'lazy'}
                     priority={project.id <= 2}
@@ -65,9 +83,10 @@ export default function Projects() {
 
                   {activeProject === project.id && (
                     <MotionDiv
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.2 }}
                     >
                       <div className="mb-4">
                         <h4 className="font-semibold text-sm text-primary mb-1">Problem:</h4>
@@ -129,7 +148,7 @@ export default function Projects() {
               href={socialLinks.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-300"
+              className="inline-block border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200"
             >
               View More Projects on GitHub
             </a>
