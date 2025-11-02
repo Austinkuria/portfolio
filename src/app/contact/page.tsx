@@ -457,7 +457,7 @@ export default function Contact() {
   return (
     <>
       <RouteOptimizer pageName="contact" />
-      <section id="contact" className="py-20 w-full">
+      <main id="contact" className="py-20 w-full">
       <div className="container mx-auto px-4">
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
@@ -1098,7 +1098,7 @@ export default function Contact() {
         </MotionDiv>
 
       </div>
-    </section>
+    </main>
     </>
   );
 }

@@ -38,7 +38,7 @@ export default function Projects() {
         <ProjectSchema key={`schema-${project.id}`} project={project} />
       ))}
       <CanonicalURL />
-      <section id="projects" className="py-20 w-full">
+      <main id="projects" className="py-20 w-full">
         <div className="container mx-auto px-4">
           <MotionDiv
             initial={{ opacity: 0, y: 20 }}
@@ -154,7 +154,7 @@ export default function Projects() {
             </a>
           </div>
         </div>
-      </section>
+      </main>
     </>
   );
 }

@@ -7,7 +7,7 @@ import { personalInfo } from '@/config';
 
 export default function About() {
   return (
-    <section id="about" className="py-20 w-full bg-muted/30">
+    <main id="about" className="py-20 w-full bg-muted/30">
       <div className="container mx-auto px-4">
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
@@ -84,6 +84,6 @@ export default function About() {
           </MotionDiv>
         </div>
       </div>
-    </section>
+    </main>
   );
 }

@@ -58,7 +58,7 @@ export default function Skills() {
     : skills.filter(skill => skill.category === activeCategory);
 
   return (
-    <section id="skills" className="py-20 w-full">
+    <main id="skills" className="py-20 w-full">
       <div className="container mx-auto px-4">
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
@@ -152,6 +152,6 @@ export default function Skills() {
           </AnimatePresence>
         </div>
       </div>
-    </section>
+    </main>
   );
 }
