@@ -1,6 +1,6 @@
 # Portfolio
 
-Live site: https://austinmaina.vercel.app
+Live site: [Portfolio](https://austinmaina.vercel.app)
 
 This repository contains a personal portfolio site built with Next.js and TypeScript. It highlights professional work, technical skills, and ways to get in touch.
 
@@ -24,7 +24,7 @@ This repository contains a personal portfolio site built with Next.js and TypeSc
 Clone the repo and start the dev server (pnpm is recommended):
 
 ```powershell
-git clone https://github.com/Austinkuria/portfolio.git
+git clone git@github.com:Austinkuria/portfolio.git
 cd portfolio
 pnpm install
 pnpm dev
@@ -58,9 +58,9 @@ The email templates include table-based fallbacks for better compatibility with 
 
 ## Contact
 
-- Website: https://austinmaina.vercel.app
-- GitHub: https://github.com/Austinkuria
-- LinkedIn: https://www.linkedin.com/in/austin-maina/
+- Website: [Portfolio](https://austinmaina.vercel.app)
+- GitHub: [Austinkuria](https://github.com/Austinkuria)
+- LinkedIn: [Austin Maina](https://www.linkedin.com/in/austin-maina/)
 
 ## License
 
