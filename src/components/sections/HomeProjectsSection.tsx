@@ -76,7 +76,7 @@ export default function HomeProjectsSection() {
 										{project.technologies.map((tech, techIndex) => (
 											<span
 												key={techIndex}
-												className="text-xs px-2 py-1 bg-muted rounded-full text-muted-foreground"
+												className="text-xs px-2 py-1 bg-secondary rounded-full text-secondary-foreground"
 											>
 												{tech}
 											</span>
