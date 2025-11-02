@@ -118,7 +118,7 @@ export default function Hero() {
             >
               <CustomLink 
                 href="/projects" 
-                className="bg-primary text-primary-foreground hover:bg-primary/80 hover:text-white px-5 py-2.5 rounded-xl font-medium transition-all duration-300 text-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 text-sm"
+                className="bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground px-5 py-2.5 rounded-xl font-medium transition-all duration-300 text-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 text-sm"
               >
                 View Projects
               </CustomLink>
