@@ -89,6 +89,14 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>New Lead Notification</title>
+        <style type="text/css">
+          /* Mobile friendly helpers for email clients that support media queries */
+          @media only screen and (max-width: 600px) {
+            .stack-column { display: block !important; width: 100% !important; box-sizing: border-box !important; padding: 10px 0 !important; }
+            .full-width { width: 100% !important; max-width: 100% !important; }
+            .center-on-mobile { text-align: center !important; }
+          }
+        </style>
       </head>
       <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 40px 20px;">
         <div style="max-width: 600px; margin: 0 auto; background: ${emailTheme.background}; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1);">
@@ -107,21 +115,41 @@ export function generateNotificationEmail(params: NotificationEmailParams) {
           <!-- Content -->
           <div style="padding: 40px 32px;">
             
-            <!-- Stats Bar -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px;">
-              <div style="display: block; margin-bottom: 12px; text-align: center; padding: 20px; background: linear-gradient(135deg, ${emailTheme.primaryLight} 0%, #dbeafe 100%); border-radius: 12px; border: 2px solid ${emailTheme.border};">
-                <div style="font-size: 28px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">${messageWordCount}</div>
-                <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Words</div>
-              </div>
-              <div style="display: block; margin-bottom: 12px; text-align: center; padding: 20px; background: linear-gradient(135deg, ${urgencyScore === 'HIGH' ? '#fee2e2' : '#dcfce7'} 0%, ${urgencyScore === 'HIGH' ? '#fecaca' : '#bbf7d0'} 100%); border-radius: 12px; border: 2px solid ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success};">
-                <div style="font-size: 28px; font-weight: 700; color: ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success}; margin-bottom: 4px;">${urgencyScore === 'HIGH' ? 'High' : 'Normal'}</div>
-                <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Priority</div>
-              </div>
-              <div style="display: block; margin-bottom: 12px; text-align: center; padding: 20px; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-radius: 12px; border: 2px solid ${emailTheme.purple};">
-                <div style="font-size: 28px; font-weight: 700; color: ${emailTheme.purple}; margin-bottom: 4px;">Now</div>
-                <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Received</div>
-              </div>
-            </div>
+            <!-- Stats Bar (table-based for email client compatibility) -->
+            <table role="presentation" width="100%" class="full-width responsive-stack" style="border-collapse: collapse; margin-bottom: 32px;">
+              <tr>
+                <td class="stack-column" style="width:33.33%; padding: 0 8px; vertical-align: top;">
+                  <table role="presentation" width="100%" style="border-collapse: collapse; background: linear-gradient(135deg, ${emailTheme.primaryLight} 0%, #dbeafe 100%); border-radius: 12px; border: 1px solid ${emailTheme.border};">
+                    <tr>
+                      <td style="padding: 20px; text-align: center;">
+                        <div style="font-size: 28px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">${messageWordCount}</div>
+                        <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Words</div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td class="stack-column" style="width:33.33%; padding: 0 8px; vertical-align: top;">
+                  <table role="presentation" width="100%" style="border-collapse: collapse; background: linear-gradient(135deg, ${urgencyScore === 'HIGH' ? '#fee2e2' : '#dcfce7'} 0%, ${urgencyScore === 'HIGH' ? '#fecaca' : '#bbf7d0'} 100%); border-radius: 12px; border: 1px solid ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success};">
+                    <tr>
+                      <td style="padding: 20px; text-align: center;">
+                        <div style="font-size: 28px; font-weight: 700; color: ${urgencyScore === 'HIGH' ? emailTheme.danger : emailTheme.success}; margin-bottom: 4px;">${urgencyScore === 'HIGH' ? 'High' : 'Normal'}</div>
+                        <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Priority</div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td class="stack-column" style="width:33.33%; padding: 0 8px; vertical-align: top;">
+                  <table role="presentation" width="100%" style="border-collapse: collapse; background: linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%); border-radius: 12px; border: 1px solid ${emailTheme.purple};">
+                    <tr>
+                      <td style="padding: 20px; text-align: center;">
+                        <div style="font-size: 28px; font-weight: 700; color: ${emailTheme.purple}; margin-bottom: 4px;">Now</div>
+                        <div style="font-size: 12px; color: ${emailTheme.textMuted}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Received</div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
 
             <!-- Contact Info Card -->
             <div style="margin-bottom: 28px; background: ${emailTheme.backgroundAlt}; border-radius: 12px; padding: 24px; border: 1px solid ${emailTheme.border};">
@@ -241,6 +269,14 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Message Received - ${personalInfo.name.full}</title>
+        <style type="text/css">
+          /* Mobile helpers for responsive stacking in supported email clients */
+          @media only screen and (max-width: 600px) {
+            .stack-column { display: block !important; width: 100% !important; box-sizing: border-box !important; padding: 10px 0 !important; }
+            .full-width { width: 100% !important; max-width: 100% !important; }
+            .center-on-mobile { text-align: center !important; }
+          }
+        </style>
       </head>
       <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 40px 20px;">
         <div style="max-width: 600px; margin: 0 auto; background: ${emailTheme.background}; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1);">
@@ -263,74 +299,90 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
               </p>
             </div>
 
-            <!-- What I Received Card -->
-            <div style="margin-bottom: 32px; background: ${emailTheme.backgroundAlt}; border-radius: 12px; padding: 28px; border: 1px solid ${emailTheme.border};">
-              <h3 style="margin: 0 0 18px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px;">Your Inquiry Summary</h3>
-              <div style="display: grid; gap: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 14px; border-bottom: 1px solid ${emailTheme.borderLight}; gap: 12px;">
-                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; min-width: 90px;">Subject</span>
-                  <span style="font-size: 14px; color: ${emailTheme.textPrimary}; font-weight: 700; text-align: right; max-width: 420px; word-break: break-word; white-space: normal;">${subject}</span>
-                </div>
-                ${category ? `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 14px; border-bottom: 1px solid ${emailTheme.borderLight}; gap: 12px;">
-                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; min-width: 90px;">Project Type</span>
-                  <span style="display: inline-block; background: ${emailTheme.primaryLight}; color: ${emailTheme.primary}; padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 700;">${category.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
-                </div>
-                ` : ''}
-                ${message.length > 50 ? `
-                <div style="padding-top: 4px;">
-                  <span style="font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600; display: block; margin-bottom: 8px;">Your Message</span>
-                  <p style="margin: 0; color: ${emailTheme.textSecondary}; font-size: 14px; font-style: italic; line-height: 1.6; background: ${emailTheme.background}; padding: 14px; border-radius: 8px; border-left: 3px solid ${emailTheme.primary}; overflow-wrap: break-word;">
-                    "${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"
-                  </p>
-                </div>
-                ` : ''}
-              </div>
-            </div>
+            <!-- What I Received Card (table fallback for Outlook) -->
+            <table role="presentation" width="100%" style="border-collapse: collapse; margin-bottom: 32px; background: ${emailTheme.backgroundAlt}; border-radius: 12px; padding: 0; border: 1px solid ${emailTheme.border};">
+              <tr>
+                <td style="padding: 20px 28px;">
+                  <h3 style="margin: 0 0 14px 0; font-size: 14px; font-weight: 700; color: ${emailTheme.textMuted}; text-transform: uppercase; letter-spacing: 1px;">Your Inquiry Summary</h3>
+                  <table role="presentation" width="100%" style="border-collapse: collapse;">
+                    <tr style="border-bottom: 1px solid ${emailTheme.borderLight};">
+                      <td style="padding: 12px 0; vertical-align: top; width: 110px; font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600;">Subject</td>
+                      <td style="padding: 12px 0; vertical-align: top; font-size: 14px; color: ${emailTheme.textPrimary}; font-weight: 700; word-break: break-word;">${subject}</td>
+                    </tr>
+                    ${category ? `
+                    <tr style="border-bottom: 1px solid ${emailTheme.borderLight};">
+                      <td style="padding: 12px 0; vertical-align: middle; font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600;">Project Type</td>
+                      <td style="padding: 12px 0; vertical-align: middle;">
+                        <span style="display:inline-block;background:${emailTheme.primaryLight};color:${emailTheme.primary};padding:6px 14px;border-radius:8px;font-size:13px;font-weight:700;">${category.split('-').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</span>
+                      </td>
+                    </tr>
+                    ` : ''}
+                    ${message.length > 50 ? `
+                    <tr>
+                      <td style="padding: 12px 0 0 0; vertical-align: top; font-size: 13px; color: ${emailTheme.textMuted}; font-weight: 600;">Your Message</td>
+                      <td style="padding: 12px 0 0 0; vertical-align: top;">
+                        <p style="margin:0;color:${emailTheme.textSecondary};font-size:14px;font-style:italic;line-height:1.6;background:${emailTheme.background};padding:14px;border-radius:8px;border-left:3px solid ${emailTheme.primary};overflow-wrap:break-word;">
+                          "${message.substring(0, 150)}${message.length > 150 ? '...' : ''}"
+                        </p>
+                      </td>
+                    </tr>
+                    ` : ''}
+                  </table>
+                </td>
+              </tr>
+            </table>
 
-            <!-- Next Steps Timeline -->
+            <!-- Next Steps Timeline (table-based for Outlook) -->
             <div style="margin-bottom: 32px;">
               <h3 style="margin: 0 0 20px 0; font-size: 18px; font-weight: 700; color: ${emailTheme.textPrimary}; text-align: center;">What Happens Next?</h3>
-              <div style="position: relative;">
-                <!-- Timeline line -->
-                <div style="position: absolute; left: 19px; top: 30px; bottom: 30px; width: 2px; background: linear-gradient(to bottom, ${emailTheme.primary}, ${emailTheme.success}); opacity: 0.3;"></div>
-                
-                <div style="display: grid; gap: 16px; margin-bottom: 24px;">
-                  <div style="display: flex; gap: 16px; position: relative;">
-                    <div style="flex-shrink: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #374151; font-weight: 700; font-size: 16px;">1</div>
-                    <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.primary};">
-                      <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">I'll Review Your Message</div>
-                      <div style="font-size:13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Usually within 24-48 hours</div>
+              <table role="presentation" width="100%" style="border-collapse: collapse; margin-top: 12px;">
+                <tr>
+                  <td class="stack-column" style="width:56px; vertical-align: top; padding: 8px 0; text-align: center;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:${emailTheme.backgroundAlt};display:inline-flex;align-items:center;justify-content:center;color:#374151;font-weight:700;font-size:16px;">1</div>
+                  </td>
+                  <td class="stack-column" style="vertical-align: top; padding: 8px 0;">
+                    <div style="padding:10px 14px;background:${emailTheme.backgroundAlt};border-radius:8px;border-left:3px solid ${emailTheme.primary};">
+                      <div style="font-size:15px;font-weight:700;color:${emailTheme.textPrimary};margin-bottom:4px;">I'll Review Your Message</div>
+                      <div style="font-size:13px;color:${emailTheme.textMuted};line-height:1.5;">Usually within 24-48 hours</div>
                     </div>
-                  </div>
-                  
-                  <div style="display: flex; gap: 16px; position: relative; margin-bottom: 24px;">
-                    <div style="flex-shrink: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #374151; font-weight: 700; font-size: 16px;">2</div>
-                    <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.success};">
-                      <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">Let's Have a Quick Chat</div>
-                      <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">15-30 minute call to discuss your needs</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stack-column" style="width:56px; vertical-align: top; padding: 8px 0; text-align: center;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:${emailTheme.backgroundAlt};display:inline-flex;align-items:center;justify-content:center;color:#374151;font-weight:700;font-size:16px;">2</div>
+                  </td>
+                  <td class="stack-column" style="vertical-align: top; padding: 8px 0;">
+                    <div style="padding:10px 14px;background:${emailTheme.backgroundAlt};border-radius:8px;border-left:3px solid ${emailTheme.success};">
+                      <div style="font-size:15px;font-weight:700;color:${emailTheme.textPrimary};margin-bottom:4px;">Let's Have a Quick Chat</div>
+                      <div style="font-size:13px;color:${emailTheme.textMuted};line-height:1.5;">15-30 minute call to discuss your needs</div>
                     </div>
-                  </div>
-                  
-                  <div style="display: flex; gap: 16px; position: relative; margin-bottom: 24px;">
-                    <div style="flex-shrink: 0; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; color: #374151; font-weight: 700; font-size: 16px;">3</div>
-                    <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.warning};">
-                      <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">You'll Get a Detailed Proposal</div>
-                      <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Scope, timeline, and investment - crystal clear</div>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stack-column" style="width:56px; vertical-align: top; padding: 8px 0; text-align: center;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:${emailTheme.backgroundAlt};display:inline-flex;align-items:center;justify-content:center;color:#374151;font-weight:700;font-size:16px;">3</div>
+                  </td>
+                  <td class="stack-column" style="vertical-align: top; padding: 8px 0;">
+                    <div style="padding:10px 14px;background:${emailTheme.backgroundAlt};border-radius:8px;border-left:3px solid ${emailTheme.warning};">
+                      <div style="font-size:15px;font-weight:700;color:${emailTheme.textPrimary};margin-bottom:4px;">You'll Get a Detailed Proposal</div>
+                      <div style="font-size:13px;color:${emailTheme.textMuted};line-height:1.5;">Scope, timeline, and investment - crystal clear</div>
                     </div>
-                  </div>
-                  
-                  ${!isSimpleClient ? `
-                  <div style="display: flex; gap: 16px; position: relative; margin-bottom: 24px;">
-                    <div style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb; display: flex; align-items: center; justify-content: center; color: #374151; font-weight: 700; font-size: 16px;">4</div>
-                    <div style="flex: 1; padding: 8px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 8px; border-left: 3px solid ${emailTheme.purple};">
-                      <div style="font-size: 15px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">We Start Building!</div>
-                      <div style="font-size: 13px; color: ${emailTheme.textMuted}; line-height: 1.5;">Once approved, I'll bring your vision to life</div>
+                  </td>
+                </tr>
+                ${!isSimpleClient ? `
+                <tr>
+                  <td class="stack-column" style="width:56px; vertical-align: top; padding: 8px 0; text-align: center;">
+                    <div style="width:40px;height:40px;border-radius:50%;background:#e5e7eb;display:inline-flex;align-items:center;justify-content:center;color:#374151;font-weight:700;font-size:16px;">4</div>
+                  </td>
+                  <td class="stack-column" style="vertical-align: top; padding: 8px 0;">
+                    <div style="padding:10px 14px;background:${emailTheme.backgroundAlt};border-radius:8px;border-left:3px solid ${emailTheme.purple};">
+                      <div style="font-size:15px;font-weight:700;color:${emailTheme.textPrimary};margin-bottom:4px;">We Start Building!</div>
+                      <div style="font-size:13px;color:${emailTheme.textMuted};line-height:1.5;">Once approved, I'll bring your vision to life</div>
                     </div>
-                  </div>
-                  ` : ''}
-                </div>
-              </div>
+                  </td>
+                </tr>
+                ` : ''}
+              </table>
             </div>
 
             <!-- CTA Box -->
