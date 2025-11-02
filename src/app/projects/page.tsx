@@ -64,6 +64,7 @@ export default function Projects() {
                 className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 h-full flex flex-col"
                 onMouseEnter={() => handleMouseEnter(project.id)}
                 onMouseLeave={handleMouseLeave}
+                aria-expanded={activeProject === project.id}
               >
                 <div className="relative h-56 overflow-hidden">
                   <Image
@@ -82,11 +83,35 @@ export default function Projects() {
                   <h3 className="text-xl font-bold mb-2">{project.title}</h3>
                   <p className="text-muted-foreground mb-4">{project.description}</p>
 
+                  {/* Reserve space for expanded content */}
+                  <div
+                    className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                      activeProject === project.id ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                  >
+                    <div className="mb-4">
+                      <h4 className="font-semibold text-sm text-primary mb-1">Problem:</h4>
+                      <p className="text-sm text-card-foreground">{project.problem}</p>
+                    </div>
+                    <div className="mb-4">
+                      <h4 className="font-semibold text-sm text-primary mb-1">Solution:</h4>
+                      <p className="text-sm text-card-foreground">{project.solution}</p>
+                    </div>
+                    <div className="mb-4">
+                      <h4 className="font-semibold text-sm text-primary mb-1">Metrics:</h4>
+                      <ul className="list-disc pl-5 text-sm text-card-foreground">
+                        {project.metrics.map((metric: string, i: number) => (
+                          <li key={i}>{metric}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.techStack.map((tech: string, index: number) => (
                       <span
                         key={index}
-                        className="text-xs px-2 py-1 bg-muted rounded-full text-muted-foreground"
+                        className="text-xs px-2 py-1 bg-secondary text-secondary-foreground rounded-full"
                       >
                         {tech}
                       </span>
@@ -101,7 +126,7 @@ export default function Projects() {
                     rel="noopener noreferrer"
                     className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 text-sm"
                   >
-                    <FaGithub className="h-4 w-4" />
+                    <FaGithub className="h-4 w-4" aria-hidden="true" />
                     <span>Repository</span>
                   </a>
                   <a
@@ -110,48 +135,11 @@ export default function Projects() {
                     rel="noopener noreferrer"
                     className="text-accent hover:text-accent/80 transition-colors flex items-center gap-1 text-sm"
                   >
-                    <FaExternalLinkAlt className="h-3 w-3" />
+                    <FaExternalLinkAlt className="h-3 w-3" aria-hidden="true" />
                     <span>Live Demo</span>
                   </a>
                 </div>
               </MotionArticle>
-            ))}
-
-            {/* Overlay hover content to prevent CLS */}
-            {projects.map((project) => (
-              activeProject === project.id && (
-                <MotionDiv
-                  key={`hover-${project.id}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="absolute inset-0 bg-card/95 backdrop-blur-sm p-6 rounded-xl shadow-xl z-20 flex flex-col justify-center"
-                  style={{
-                    top: `${Math.floor((project.id - 1) / 3) * 400 + 20}px`,
-                    left: `${((project.id - 1) % 3) * 33.33}%`,
-                    width: 'calc(33.33% - 1rem)',
-                    height: '380px'
-                  }}
-                >
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-sm text-primary mb-1">Problem:</h4>
-                    <p className="text-sm text-card-foreground">{project.problem}</p>
-                  </div>
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-sm text-primary mb-1">Solution:</h4>
-                    <p className="text-sm text-card-foreground">{project.solution}</p>
-                  </div>
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-sm text-primary mb-1">Metrics:</h4>
-                    <ul className="list-disc pl-5 text-sm text-card-foreground">
-                      {project.metrics.map((metric: string, i: number) => (
-                        <li key={i}>{metric}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </MotionDiv>
-              )
             ))}
           </div>
 
