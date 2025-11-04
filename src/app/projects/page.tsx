@@ -148,7 +148,7 @@ export default function Projects() {
               href={socialLinks.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block border border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200"
+              className="inline-block bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-all duration-200"
             >
               View More Projects on GitHub
             </a>

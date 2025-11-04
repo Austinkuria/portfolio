@@ -15,7 +15,6 @@ Allow: /about
 Allow: /projects
 Allow: /skills
 Allow: /contact
-Allow: /blog
 
 # Sitemaps
 Sitemap: https://austinmaina.vercel.app/sitemap.xml

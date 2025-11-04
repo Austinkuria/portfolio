@@ -96,10 +96,9 @@ export const navigation = {
         { name: 'About', href: '/about' },
         { name: 'Projects', href: '/projects' },
         { name: 'Skills', href: '/skills' },
-        { name: 'Blog', href: '/blog' },
         { name: 'Contact', href: '/contact' },
     ],
-    prefetchPages: ['/about', '/projects', '/skills', '/blog', '/contact'],
+    prefetchPages: ['/about', '/projects', '/skills', '/contact'],
 } as const;
 
 // SEO Configuration
@@ -343,13 +342,6 @@ export const skillsConfig = {
         'Cloud & DevOps',
         'Tools & Others',
     ],
-} as const;
-
-// Blog Configuration
-export const blogConfig = {
-    postsPerPage: 10,
-    defaultAuthor: personalInfo.name.full,
-    defaultAuthorImage: personalInfo.image,
 } as const;
 
 // Error Messages

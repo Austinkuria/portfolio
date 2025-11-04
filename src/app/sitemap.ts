@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/about',
         '/projects',
         '/skills',
-        '/blog',
         '/contact'
     ]
     const staticPages = routes.map(route => ({
