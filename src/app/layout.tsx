@@ -12,7 +12,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import StructuredData from '@/components/StructuredData';
-import CookiebotLoader from '@/components/CookiebotLoader';
 
 export default function RootLayout({
   children,
@@ -87,7 +86,7 @@ export default function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>        <Providers>
-          <CookiebotLoader />
+          {/* Cookiebot removed - not needed for portfolio site */}
           <Header />
           <ClientLayoutWrapper>{children}</ClientLayoutWrapper>
           <Footer />
