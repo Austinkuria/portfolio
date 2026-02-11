@@ -19,25 +19,25 @@ dependencies:
     version: 1.34.9
   '@vercel/analytics':
     specifier: ^1.5.0
-    version: 1.5.0(next@15.4.8)(react@19.1.0)
+    version: 1.5.0(next@15.4.10)(react@19.1.0)
   '@vercel/speed-insights':
     specifier: ^1.2.0
-    version: 1.2.0(next@15.4.8)(react@19.1.0)
+    version: 1.2.0(next@15.4.10)(react@19.1.0)
   framer-motion:
     specifier: ^12.15.0
     version: 12.15.0(@emotion/is-prop-valid@1.3.1)(react-dom@19.1.0)(react@19.1.0)
   geist:
     specifier: ^1.2.0
-    version: 1.4.2(next@15.4.8)
+    version: 1.4.2(next@15.4.10)
   next:
-    specifier: 15.4.8
-    version: 15.4.8(react-dom@19.1.0)(react@19.1.0)
+    specifier: 15.4.10
+    version: 15.4.10(react-dom@19.1.0)(react@19.1.0)
   next-recaptcha-v3:
     specifier: ^1.5.2
-    version: 1.5.2(next@15.4.8)(react@19.1.0)
+    version: 1.5.2(next@15.4.10)(react@19.1.0)
   next-themes:
     specifier: ^0.2.1
-    version: 0.2.1(next@15.4.8)(react-dom@19.1.0)(react@19.1.0)
+    version: 0.2.1(next@15.4.10)(react-dom@19.1.0)(react@19.1.0)
   nodemailer:
     specifier: ^7.0.11
     version: 7.0.11
@@ -1011,8 +1011,8 @@ packages:
     dev: true
     optional: true
 
-  /@next/env@15.4.8:
-    resolution: {integrity: sha512-LydLa2MDI1NMrOFSkO54mTc8iIHSttj6R6dthITky9ylXV2gCGi0bHQjVCtLGRshdRPjyh2kXbxJukDtBWQZtQ==}
+  /@next/env@15.4.10:
+    resolution: {integrity: sha512-knhmoJ0Vv7VRf6pZEPSnciUG1S4bIhWx+qTYBW/AjxEtlzsiNORPk8sFDCEvqLfmKuey56UB9FL1UdHEV3uBrg==}
     dev: false
 
   /@next/eslint-plugin-next@15.3.2:
@@ -1695,7 +1695,7 @@ packages:
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.2
+      semver: 7.7.3
       ts-api-utils: 2.1.0(typescript@5.8.3)
       typescript: 5.8.3
     transitivePeerDependencies:
@@ -1887,7 +1887,7 @@ packages:
       crypto-js: 4.2.0
     dev: false
 
-  /@vercel/analytics@1.5.0(next@15.4.8)(react@19.1.0):
+  /@vercel/analytics@1.5.0(next@15.4.10)(react@19.1.0):
     resolution: {integrity: sha512-MYsBzfPki4gthY5HnYN7jgInhAZ7Ac1cYDoRWFomwGHWEX7odTEzbtg9kf/QSo7XEsEAqlQugA6gJ2WS2DEa3g==}
     peerDependencies:
       '@remix-run/react': ^2
@@ -1913,11 +1913,11 @@ packages:
       vue-router:
         optional: true
     dependencies:
-      next: 15.4.8(react-dom@19.1.0)(react@19.1.0)
+      next: 15.4.10(react-dom@19.1.0)(react@19.1.0)
       react: 19.1.0
     dev: false
 
-  /@vercel/speed-insights@1.2.0(next@15.4.8)(react@19.1.0):
+  /@vercel/speed-insights@1.2.0(next@15.4.10)(react@19.1.0):
     resolution: {integrity: sha512-y9GVzrUJ2xmgtQlzFP2KhVRoCglwfRQgjyfY607aU0hh0Un6d0OUyrJkjuAlsV18qR4zfoFPs/BiIj9YDS6Wzw==}
     requiresBuild: true
     peerDependencies:
@@ -1941,7 +1941,7 @@ packages:
       vue-router:
         optional: true
     dependencies:
-      next: 15.4.8(react-dom@19.1.0)(react@19.1.0)
+      next: 15.4.10(react-dom@19.1.0)(react@19.1.0)
       react: 19.1.0
     dev: false
 
@@ -3059,12 +3059,12 @@ packages:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
     dev: true
 
-  /geist@1.4.2(next@15.4.8):
+  /geist@1.4.2(next@15.4.10):
     resolution: {integrity: sha512-OQUga/KUc8ueijck6EbtT07L4tZ5+TZgjw8PyWfxo16sL5FWk7gNViPNU8hgCFjy6bJi9yuTP+CRpywzaGN8zw==}
     peerDependencies:
       next: '>=13.2.0'
     dependencies:
-      next: 15.4.8(react-dom@19.1.0)(react@19.1.0)
+      next: 15.4.10(react-dom@19.1.0)(react@19.1.0)
     dev: false
 
   /get-intrinsic@1.3.0:
@@ -3688,31 +3688,31 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /next-recaptcha-v3@1.5.2(next@15.4.8)(react@19.1.0):
+  /next-recaptcha-v3@1.5.2(next@15.4.10)(react@19.1.0):
     resolution: {integrity: sha512-CTFQvyWWQLrIuI++NhOFeQKdELUFvTDGfCty+bz6hxU8frS59ycl4TInvWhCn+9eKjAqV6LqQZZGHdwla8t8GQ==}
     engines: {node: '>=18'}
     peerDependencies:
       next: ^13 || ^14 || ^15
       react: ^18 || ^19
     dependencies:
-      next: 15.4.8(react-dom@19.1.0)(react@19.1.0)
+      next: 15.4.10(react-dom@19.1.0)(react@19.1.0)
       react: 19.1.0
     dev: false
 
-  /next-themes@0.2.1(next@15.4.8)(react-dom@19.1.0)(react@19.1.0):
+  /next-themes@0.2.1(next@15.4.10)(react-dom@19.1.0)(react@19.1.0):
     resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
     peerDependencies:
       next: '*'
       react: '*'
       react-dom: '*'
     dependencies:
-      next: 15.4.8(react-dom@19.1.0)(react@19.1.0)
+      next: 15.4.10(react-dom@19.1.0)(react@19.1.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
     dev: false
 
-  /next@15.4.8(react-dom@19.1.0)(react@19.1.0):
-    resolution: {integrity: sha512-jwOXTz/bo0Pvlf20FSb6VXVeWRssA2vbvq9SdrOPEg9x8E1B27C2rQtvriAn600o9hH61kjrVRexEffv3JybuA==}
+  /next@15.4.10(react-dom@19.1.0)(react@19.1.0):
+    resolution: {integrity: sha512-itVlc79QjpKMFMRhP+kbGKaSG/gZM6RCvwhEbwmCNF06CdDiNaoHcbeg0PqkEa2GOcn8KJ0nnc7+yL7EjoYLHQ==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
     hasBin: true
     peerDependencies:
@@ -3732,7 +3732,7 @@ packages:
       sass:
         optional: true
     dependencies:
-      '@next/env': 15.4.8
+      '@next/env': 15.4.10
       '@swc/helpers': 0.5.15
       caniuse-lite: 1.0.30001759
       postcss: 8.4.31
@@ -4244,12 +4244,6 @@ packages:
 
   /semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
-    hasBin: true
-    dev: true
-
-  /semver@7.7.2:
-    resolution: {integrity: sha512-RF0Fw+rO5AMf9MAyaRXI4AV0Ulj5lMHqVxxdSgiVbixSCXoEmmX/jk0CuJw4+3SqroYO9VoUh+HcuJivvtJemA==}
-    engines: {node: '>=10'}
     hasBin: true
     dev: true
 
