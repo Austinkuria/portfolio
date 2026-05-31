@@ -8,21 +8,21 @@ import { MotionDiv } from '@/lib/motion';
 const featuredProjects = [
 	{
 		id: 1,
-		title: 'Clinique Beauty E-Commerce Website',
+		title: 'Silicon Savannah Technologies',
 		description:
-			'A full-stack e-commerce application built with the PERN stack (PostgreSQL, Express, React, Node.js) for a beauty shop, featuring M-Pesa integration for payments.',
-		image: '/images/clinique-beauty.png',
+			'A full-stack e-commerce platform for a Nairobi-based refurbished laptop retailer, featuring M-Pesa STK Push and Paystack payment integration, Cloudinary image management, guest checkout, and Cloudflare security hardening.',
+		image: '/images/silicon-savannah.png',
 		link: '/projects',
-		technologies: ['PostgreSQL', 'Express', 'React', 'Node.js', 'M-Pesa'],
+		technologies: ['Next.js', 'TypeScript', 'Node.js', 'Express', 'MySQL', 'M-Pesa Daraja', 'Paystack', 'Cloudinary', 'Cloudflare'],
 	},
 	{
 		id: 2,
-		title: 'QRollCall - Smart QR Code based Student Attendance System',
+		title: 'Overflow Technical College',
 		description:
-			'It is a progressive web app MERN stack attendance tracking application designed for educational institutions. It uses QR code technology for efficient attendance management, allowing lecturers to generate unique QR codes for each session that students can scan to mark their attendance.',
-		image: '/images/attendance-system.png',
+			'A professional institutional website for Overflow Technical College, showcasing courses, programs, and college information to prospective students and stakeholders.',
+		image: '/images/overflow-technical.png',
 		link: '/projects',
-		technologies: ['MongoDB', 'Express', 'React', 'Node.js', 'QR Code'],
+		technologies: ['Next.js', 'TypeScript', 'React', 'Tailwind CSS'],
 	},
 ];
 

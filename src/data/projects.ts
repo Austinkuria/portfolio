@@ -16,6 +16,30 @@ export type Project = {
 export const projects: Project[] = [
     {
         id: 1,
+        title: 'Silicon Savannah Technologies',
+        description: 'A full-stack e-commerce platform for a Nairobi-based refurbished laptop retailer, featuring M-Pesa STK Push and Paystack payment integration, Cloudinary image management, guest checkout, and Cloudflare security hardening.',
+        problem: 'The business needed a robust online storefront to sell refurbished laptops, handle mobile payments, and manage product inventory efficiently.',
+        solution: 'Built a Next.js/TypeScript frontend with a Node/Express backend and MySQL database. Integrated M-Pesa Daraja and Paystack for payments, Cloudinary for optimised image uploads, and implemented security measures including CSP headers, Cloudflare Turnstile CAPTCHA, and DMARC/SPF/DKIM DNS records.',
+        techStack: ['Next.js', 'TypeScript', 'Node.js', 'Express', 'MySQL', 'M-Pesa Daraja', 'Paystack', 'Cloudinary', 'Cloudflare'],
+        metrics: ['Payment gateway via M-Pesa', 'Optimised image delivery via Cloudinary', 'Security hardened with CSP, CAPTCHA, and email authentication records'],
+        image: '/images/silicon-savannah.png',
+        github: '',
+        demo: 'https://siliconsavannahtechnologies.com/'
+    },
+    {
+        id: 2,
+        title: 'Overflow Technical College',
+        description: 'A professional institutional website for Overflow Technical College, showcasing courses, programs, and college information to prospective students and stakeholders.',
+        problem: 'The college lacked a modern online presence to attract prospective students and communicate its programs, facilities, and admissions process effectively.',
+        solution: 'Designed and developed a fully responsive institutional website with course listings, program details, and a clean UI tailored to the college\'s brand identity.',
+        techStack: ['Next.js', 'TypeScript', 'React', 'Tailwind CSS'],
+        metrics: ['Fully responsive across all devices', 'Fast load times with Next.js SSR', 'Clean, professional UI for institutional credibility'],
+        image: '/images/overflow-technical.png',
+        github: '',
+        demo: 'https://overflowtechnicalcollege.vercel.app/'
+    },
+    {
+        id: 3,
         title: 'Clinique Beauty E-Commerce Website',
         description: 'A full-stack e-commerce application built with the PERN stack (PostgreSQL, Express, React, Node.js) for a beauty shop, featuring M-Pesa integration for payments.',
         problem: 'Customers needed an intuitive online shopping experience for cosmetics with detailed product information and efficient checkout',
@@ -27,7 +51,7 @@ export const projects: Project[] = [
         demo: projectUrls.clinique.demo
     },
     {
-        id: 2,
+        id: 4,
         title: 'QRollCall - Smart QR Code based Student Attendance System',
         description: 'A progressive web app MERN stack attendance tracking application designed for educational institutions. It uses QR code technology for efficient attendance management, allowing lecturers to generate unique QR codes for each session that students can scan to mark their attendance.',
         problem: 'Traditional attendance systems were slow and prone to error, causing delays and inaccurate data',
@@ -39,7 +63,7 @@ export const projects: Project[] = [
         demo: projectUrls.attendanceSystem.demo
     },
     {
-        id: 3,
+        id: 5,
         title: 'Personal Portfolio Website',
         description: 'A modern, responsive portfolio website built with Next.js and TypeScript to showcase my projects, skills, and professional experience.',
         problem: 'Needed a professional online presence to showcase my work, skills, and experience to potential employers and clients',
@@ -51,7 +75,7 @@ export const projects: Project[] = [
         demo: projectUrls.portfolio.demo
     },
     {
-        id: 4,
+        id: 6,
         title: 'E-Commerce Website',
         description: 'A fully functional e-commerce website built with Django (Python) for the backend and HTML, CSS, Bootstrap, and JavaScript for the frontend. Features include product listing, shopping cart, user authentication, and order management.',
         problem: 'Needed a robust, user-friendly platform for online shopping with secure authentication and efficient order processing.',
@@ -63,7 +87,7 @@ export const projects: Project[] = [
         demo: projectUrls.ecommerceDjango.demo
     },
     {
-        id: 5,
+        id: 7,
         title: 'Bijoux Jewelry Shop',
         description: 'A web-based platform for discovering and purchasing handcrafted jewelry, emphasizing luxury, craftsmanship, and sustainability.',
         problem: 'Needed an elegant, user-friendly online shop to showcase and sell artisan jewelry, with a focus on brand storytelling and customer engagement.',
@@ -75,7 +99,7 @@ export const projects: Project[] = [
         demo: projectUrls.bijouxJewelry.demo
     },
     {
-        id: 6,
+        id: 8,
         title: 'Veritas Travels',
         description: 'A responsive travel agency website offering curated travel experiences, destination guides, featured services, blog, testimonials, and newsletter subscription.',
         problem: 'Travelers needed a modern, user-friendly platform to explore destinations, book adventures, and access travel tips and services.',

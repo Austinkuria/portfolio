@@ -56,6 +56,32 @@ export default function RootLayout({
             </Script>
           </>
         )}
+
+        {/* Tawk.to live chat widget (only when enabled) */}
+        {siteConfig.enableLiveChat && (
+          <Script id="tawk-to-script" strategy="afterInteractive">
+            {`var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+  try{
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a1c8399e717081c2b47ec3e/1jpvm44n7';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s1.onload = function(){
+      console.debug('Tawk.to widget loaded');
+    };
+    s1.onerror = function(ev){
+      console.warn('Tawk.to failed to load (network or server error)', ev && ev.type ? ev.type : ev);
+      if (s1.parentNode) s1.parentNode.removeChild(s1);
+    };
+    s0.parentNode.insertBefore(s1,s0);
+  } catch (e) {
+    console.warn('Tawk.to embed failed to initialize', e);
+  }
+})();`}
+          </Script>
+        )}
         
         {/* Humans.txt link */}
         <link rel="author" href="/humans.txt" />
