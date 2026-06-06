@@ -8,21 +8,21 @@ import { MotionDiv } from '@/lib/motion';
 const featuredProjects = [
 	{
 		id: 1,
-		title: 'Clinique Beauty E-Commerce Website',
+		title: 'Silicon Savannah Technologies',
 		description:
-			'A full-stack e-commerce application built with the PERN stack (PostgreSQL, Express, React, Node.js) for a beauty shop, featuring M-Pesa integration for payments.',
-		image: '/images/clinique-beauty.png',
+			'A full-stack e-commerce platform for a Nairobi-based refurbished laptop retailer, featuring M-Pesa STK Push and Paystack payment integration, Cloudinary image management, guest checkout, and Cloudflare security hardening.',
+		image: '/images/silicon-savannah.png',
 		link: '/projects',
-		technologies: ['PostgreSQL', 'Express', 'React', 'Node.js', 'M-Pesa'],
+		technologies: ['Next.js', 'TypeScript', 'Node.js', 'Express', 'MySQL', 'M-Pesa Daraja', 'Paystack', 'Cloudinary', 'Cloudflare'],
 	},
 	{
 		id: 2,
-		title: 'QRollCall - Smart QR Code based Student Attendance System',
+		title: 'Overflow Technical College',
 		description:
-			'It is a progressive web app MERN stack attendance tracking application designed for educational institutions. It uses QR code technology for efficient attendance management, allowing lecturers to generate unique QR codes for each session that students can scan to mark their attendance.',
-		image: '/images/attendance-system.png',
+			'A professional institutional website for Overflow Technical College, showcasing courses, programs, and college information to prospective students and stakeholders.',
+		image: '/images/overflow-technical.png',
 		link: '/projects',
-		technologies: ['MongoDB', 'Express', 'React', 'Node.js', 'QR Code'],
+		technologies: ['Next.js', 'TypeScript', 'React', 'Tailwind CSS'],
 	},
 ];
 
@@ -38,11 +38,10 @@ export default function HomeProjectsSection() {
 					className="mb-12 text-center"
 				>
 					<h2 className="text-3xl md:text-4xl font-bold mb-4">
-						Featured Projects
+						Case Studies
 					</h2>
 					<p className="text-muted-foreground max-w-2xl mx-auto">
-						A selection of my recent work, showcasing my skills in web development
-						and design
+						A selection of recent builds, showing the problem, solution, and technical decisions behind each project.
 					</p>
 				</MotionDiv>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 max-w-4xl mx-auto">

@@ -68,7 +68,6 @@ function preloadCriticalRoutes() {
 function preloadAssets() {
     // Critical static assets (images, etc.)
     const criticalAssets = [
-        personalInfo.image,
     ];
 
     criticalAssets.forEach(asset => {

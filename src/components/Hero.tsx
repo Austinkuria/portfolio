@@ -1,232 +1,149 @@
 'use client';
 
-import { personalInfo, socialLinks } from '@/config';
-import { FaGithub, FaLinkedin, FaArrowDown } from 'react-icons/fa';
-import { HiDownload } from 'react-icons/hi';
 import CustomLink from '@/components/CustomLink';
-import { useRef } from 'react';
-import { TypeAnimation } from 'react-type-animation';
-import { MotionDiv, MotionH1, MotionP } from '@/lib/motion';
+import { contactConfig, personalInfo, socialLinks } from '@/config';
+import { MotionDiv } from '@/lib/motion';
+import { FaArrowRight, FaCheckCircle, FaClock, FaLocationArrow } from 'react-icons/fa';
 
-// Static circles data to avoid hydration mismatch
-const circles = [
-  { id: 0, width: 180, height: 200, left: 15, top: 20, scale: 0.7, x: 30, y: -20, duration: 12 },
-  { id: 1, width: 250, height: 220, left: 65, top: 10, scale: 0.9, x: -40, y: 35, duration: 15 },
-  { id: 2, width: 150, height: 170, left: 85, top: 60, scale: 0.6, x: 25, y: -30, duration: 13 },
-  { id: 3, width: 200, height: 190, left: 25, top: 75, scale: 0.8, x: -35, y: 20, duration: 14 },
-  { id: 4, width: 170, height: 180, left: 50, top: 45, scale: 0.75, x: 40, y: -25, duration: 11 },
-  { id: 5, width: 220, height: 210, left: 10, top: 50, scale: 0.85, x: -30, y: 40, duration: 16 },
-  { id: 6, width: 190, height: 195, left: 75, top: 30, scale: 0.7, x: 35, y: -15, duration: 13 },
-  { id: 7, width: 160, height: 175, left: 40, top: 15, scale: 0.65, x: -25, y: 30, duration: 12 },
-  { id: 8, width: 240, height: 230, left: 60, top: 80, scale: 0.9, x: 45, y: -35, duration: 15 },
-  { id: 9, width: 210, height: 205, left: 20, top: 40, scale: 0.8, x: -40, y: 25, duration: 14 },
+const offers = [
+  'Websites that feel credible on first glance',
+  'Landing pages that turn interest into calls',
+  'MVPs and internal tools shipped without bloat',
+  'Payments, fixes, and support when the site needs it',
+];
+
+const signals = [
+  { label: 'Response time', value: contactConfig.responseTime },
+  { label: 'Location', value: personalInfo.location },
+  { label: 'Availability', value: contactConfig.availability.statusMessage },
 ];
 
 export default function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-
   const scrollToNextSection = () => {
-    const homeProjectsSection = document.getElementById('home-projects');
-    if (homeProjectsSection) {
-      homeProjectsSection.scrollIntoView({ behavior: 'smooth' });
-    } else if (sectionRef.current) {
-      const nextSection = sectionRef.current.nextElementSibling;
-      if (nextSection) {
-        nextSection.scrollIntoView({ behavior: 'smooth' });
-      }
+    const homeAgencySection = document.getElementById('home-agency');
+    if (homeAgencySection) {
+      homeAgencySection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <section ref={sectionRef} className="w-full min-h-screen flex flex-col justify-center items-center relative overflow-hidden px-2 sm:px-4 pt-20 md:pt-24">
-      <div className="absolute inset-0 -z-10">
-        <MotionDiv 
-          className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-secondary/20"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        />
-        {/* Reduce number of animated circles for better performance */}
-        {circles.slice(0, 10).map((circle) => (
-          <MotionDiv
-            key={circle.id}
-            className="absolute rounded-full bg-primary/10 dark:bg-primary/5"
-            style={{
-              width: circle.width,
-              height: circle.height,
-              left: `${circle.left}%`,
-              top: `${circle.top}%`,
-              opacity: 0.8,
-            }}
-            initial={{ scale: 0, x: 0, y: 0 }}
-            animate={{
-              scale: circle.scale,
-              x: circle.x,
-              y: circle.y,
-            }}
-            transition={{
-              duration: circle.duration,
-              repeat: Infinity,
-              repeatType: 'reverse',
-            }}
-          />
-        ))}
-      </div>
-      
-      <div className="w-full max-w-6xl z-10 px-2 sm:px-4">
-        <div className="grid grid-cols-1 md:grid-cols-[1.2fr_0.8fr] items-start gap-16">
-          <div className="min-h-[540px] md:min-h-[460px] flex flex-col">
-            <MotionDiv
+    <section className="relative w-full overflow-hidden px-4 pb-20 pt-24 md:pb-28 md:pt-32">
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_hsl(var(--primary)/0.16),_transparent_30%),radial-gradient(circle_at_top_right,_hsl(var(--accent)/0.14),_transparent_24%),linear-gradient(to_bottom,_hsl(var(--background)),_hsl(var(--muted)/0.22))]" />
+      <div className="absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+
+      <div className="container mx-auto max-w-7xl">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
+          <div className="max-w-3xl">
+            {/* <MotionDiv
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8 }}
-              className="mb-6"
+              className="mb-6 inline-flex"
             >
-              <span className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-medium inline-block">{personalInfo.name.full} - {personalInfo.title}</span>
-            </MotionDiv>
-            <MotionH1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
-              style={{ minHeight: '220px' }}
-              initial={{ opacity: 0, y: 20 }}
+              <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-4 py-1.5 text-sm font-medium text-foreground shadow-sm backdrop-blur">
+                <span className="h-2 w-2 rounded-full bg-primary" />
+                Software E
+              </span>
+            </MotionDiv> */}
+
+            <MotionDiv
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.65, delay: 0.05 }}
+              className="space-y-6"
             >
-              Hi, I'm <span className="text-primary">{personalInfo.name.first}</span>
-              <br />
-              I transform ideas into{' '}
-              <span className="relative inline-block align-top" style={{ minWidth: '280px', display: 'inline-block' }}>
-                <span className="text-primary relative z-10 inline-block">
-                  <TypeAnimation
-                    sequence={[...personalInfo.hero.typingAnimation]}
-                    wrapper="span"
-                    speed={50}
-                    repeat={Infinity}
-                    cursor={true}
-                    style={{ display: 'inline-block', minWidth: '280px' }}
-                    preRenderFirstString={true}
-                  />
+              <h1 className="max-w-4xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl lg:text-6xl lg:leading-[1.03]">
+                Websites and web apps that make a business feel established before the first call.
+              </h1>
+              <p className="max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">
+                I help founders, solo operators, and small teams turn rough ideas, outdated sites, or half-finished builds into clear, credible experiences people trust enough to contact.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-3 pt-2">
+                <CustomLink
+                  href="/projects"
+                  className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-md transition-all hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  See selected work <FaArrowRight className="h-4 w-4" />
+                </CustomLink>
+                <CustomLink
+                  href={socialLinks.calendly}
+                  target="_blank"
+                  className="inline-flex items-center gap-2 rounded-xl border border-border bg-background px-5 py-3 text-sm font-semibold shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-md"
+                >
+                  Book a call
+                </CustomLink>
+              </div>
+            </MotionDiv>
+
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
+              {signals.map((signal) => (
+                <div key={signal.label} className="rounded-2xl border border-border/70 bg-card/80 p-4 shadow-sm backdrop-blur">
+                  <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{signal.label}</p>
+                  <p className="mt-2 text-sm font-medium text-foreground">{signal.value}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-2">
+              {offers.map((offer) => (
+                <span key={offer} className="rounded-full border border-border/70 bg-background/70 px-3 py-1 text-sm text-muted-foreground">
+                  {offer}
                 </span>
-                <span className="absolute bottom-0 left-0 w-full h-3 bg-primary/20 -z-0"></span>
-              </span>         
-            </MotionH1>
-            <MotionDiv 
-              className="flex flex-row flex-wrap items-center gap-3 justify-start"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
-              style={{ marginTop: 'auto' }}
-            >
-              <CustomLink 
-                href="/projects" 
-                className="bg-primary text-primary-foreground hover:bg-secondary hover:text-secondary-foreground px-5 py-2.5 rounded-xl font-medium transition-all duration-300 text-center shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-1 text-sm"
-              >
-                View Projects
-              </CustomLink>
-              <CustomLink 
-                href={socialLinks.resume} 
-                target="_blank"
-                className="bg-secondary/10 text-foreground hover:bg-secondary/30 border border-border px-5 py-2.5 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1 text-sm"
-              >
-                <HiDownload className="h-4 w-4" />
-                Resume
-              </CustomLink>
-              <CustomLink 
-                href="/contact"
-                className="bg-secondary/10 text-foreground hover:bg-secondary/30 border border-border px-5 py-2.5 rounded-xl font-medium transition-all duration-300 flex items-center justify-center gap-2 hover:-translate-y-1 text-sm"
-              >
-                Get in Touch
-              </CustomLink>
-              <div className="hidden sm:block w-px h-8 bg-border mx-1"></div>
-              <a 
-                href={socialLinks.github}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-foreground hover:text-white hover:bg-[#24292e] transition-all p-2.5 rounded-full border border-border hover:border-[#24292e]"
-                aria-label="GitHub"
-              >
-                <FaGithub className="h-4 w-4" />
-              </a>
-              <a 
-                href={socialLinks.linkedin}
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-foreground hover:text-white hover:bg-[#0a66c2] transition-all p-2.5 rounded-full border border-border hover:border-[#0a66c2]"
-                aria-label="LinkedIn"
-              >
-                <FaLinkedin className="h-4 w-4" />
-              </a>
-            </MotionDiv>
+              ))}
+            </div>
           </div>
-          <MotionDiv 
-            className="order-1 md:order-2 flex justify-center"
+
+          <MotionDiv
+            className="relative"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.65, delay: 0.15 }}
           >
-            <div className="relative w-80 h-64 md:w-[400px] md:h-80 lg:w-[440px] lg:h-[360px]">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-xl"></div>
-              <div className="absolute inset-4 rounded-xl border border-primary/20 backdrop-blur-sm bg-background/50 overflow-y-auto overflow-x-hidden">                
-                <MotionDiv
-                  className="p-4 font-mono text-xs md:text-sm text-foreground/70 h-full"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                >
-                  <div className="flex items-center gap-2 mb-3 border-b border-border pb-2">
-                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                    <span className="ml-2 text-xs text-foreground/60">DevPortfolio.tsx</span>
-                  </div>                  
-                  <TypeAnimation
-                    sequence={[
-                      `import { useState, useEffect } from 'react';\n\n`, 200,
-                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n`, 180,
-                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n`, 160,
-                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n    'React', 'Next.js',\n    'TypeScript',\n    'Node.js', 'Python'\n  ]);\n\n`, 150,
-                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n    'React', 'Next.js',\n    'TypeScript',\n    'Node.js', 'Python'\n  ]);\n\n  useEffect(() => {\n    console.log('Ready to build!');\n  }, []);\n\n`, 140,
-                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n    'React', 'Next.js',\n    'TypeScript',\n    'Node.js', 'Python'\n  ]);\n\n  useEffect(() => {\n    console.log('Ready to build!');\n  }, []);\n\n  const build = (idea) => {\n    return idea\n      .design()\n      .develop()\n      .test()\n      .deploy();\n  };\n\n`, 130,
-                      `import { useState, useEffect } from 'react';\n\nconst Developer = () => {\n  const [skills, setSkills] = useState([\n    'React', 'Next.js',\n    'TypeScript',\n    'Node.js', 'Python'\n  ]);\n\n  useEffect(() => {\n    console.log('Ready to build!');\n  }, []);\n\n  const build = (idea) => {\n    return idea\n      .design()\n      .develop()\n      .test()\n      .deploy();\n  };\n\n  return (\n    <Portfolio\n      skills={skills}\n      passion="high"\n    />\n  );\n};\n\nexport default Developer;`, 4000,
-                    ]}
-                    wrapper="div"
-                    cursor={true}
-                    repeat={Infinity}
-                    className="text-primary/80 whitespace-pre leading-relaxed"
-                    style={{
-                      display: 'block',
-                      minHeight: '280px',
-                      fontSize: '0.65rem',
-                      lineHeight: '1.5'
-                    }}
-                    preRenderFirstString={true}
-                  />
-                </MotionDiv>
+            <div className="rounded-[2rem] border border-border/70 bg-card/90 p-6 shadow-[0_24px_80px_-40px_hsl(var(--primary)/0.55)] backdrop-blur">
+              <div className="flex items-center justify-between border-b border-border/70 pb-4">
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">What I build</p>
+                  <h2 className="mt-1 text-xl font-semibold text-foreground">A short list, done properly</h2>
+                </div>
+                <div className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">Nairobi</div>
               </div>
-              
-              <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-primary/10"></div>
-              <div className="absolute -bottom-4 -left-4 w-12 h-12 rounded-full bg-secondary/10"></div>
+
+              <div className="mt-5 space-y-4">
+                {offers.map((offer, index) => (
+                  <div key={offer} className="flex items-start gap-3 rounded-2xl border border-border/60 bg-background/70 p-4">
+                    <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                      {index + 1}
+                    </div>
+                    <p className="text-sm leading-6 text-foreground">{offer}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-5 rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-4">
+                <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5"><FaClock className="h-3.5 w-3.5 text-primary" /> {contactConfig.responseTime}</span>
+                  <span className="inline-flex items-center gap-1.5"><FaLocationArrow className="h-3.5 w-3.5 text-primary" /> {personalInfo.location}</span>
+                  <span className="inline-flex items-center gap-1.5"><FaCheckCircle className="h-3.5 w-3.5 text-primary" /> {contactConfig.availability.statusMessage}</span>
+                </div>
+              </div>
             </div>
           </MotionDiv>
         </div>
       </div>
-      <MotionDiv 
-        className="absolute bottom-10 left-1/2 -translate-x-1/2"
+
+      <MotionDiv
+        className="mt-10 flex justify-center"
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.8 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
       >
-        <button 
+        <button
           onClick={scrollToNextSection}
-          className="flex flex-col items-center text-muted-foreground hover:text-primary transition-colors"
-          aria-label="Scroll down"
+          className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-background/80 px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm transition-colors hover:text-foreground"
+          aria-label="Scroll to services"
         >
-          <span className="text-sm mb-2">Scroll Down</span>
-          <MotionDiv
-            animate={{ y: [0, 5, 0] }}
-            transition={{ repeat: Infinity, duration: 1.2, ease: 'easeInOut' }}
-          >
-            <FaArrowDown className="h-4 w-4" />
-          </MotionDiv>
+          Scroll to services <FaArrowRight className="h-3.5 w-3.5 rotate-90" />
         </button>
       </MotionDiv>
     </section>

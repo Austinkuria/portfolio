@@ -34,7 +34,7 @@ export default function BackToTopLink() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-5 right-5 p-3 bg-primary text-primary-foreground rounded-full shadow-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-opacity duration-300"
+          className="fixed bottom-20 right-5 p-3 bg-primary text-primary-foreground rounded-full shadow-lg hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-opacity duration-300"
           aria-label="Back to top"
         >
           <FaArrowUp size={20} />

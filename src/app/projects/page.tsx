@@ -47,9 +47,10 @@ export default function Projects() {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Featured Projects</h2>
+              <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-primary">Selected work</p>
+              <h2 className="text-3xl md:text-4xl font-semibold mb-4">Case studies and builds that show how I work.</h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              A selection of my recent work, showcasing my skills in web development and design
+                These are the projects I use to show clients and hiring managers the kind of problems I solve, not just the stack I use.
             </p>
           </MotionDiv>
 
@@ -150,7 +151,7 @@ export default function Projects() {
               rel="noopener noreferrer"
               className="inline-block bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-lg font-medium transition-all duration-200"
             >
-              View More Projects on GitHub
+              View more proof on GitHub
             </a>
           </div>
         </div>

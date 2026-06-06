@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { Providers } from './providers';
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
+import { IBM_Plex_Mono, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import Script from 'next/script';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -12,6 +11,17 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import StructuredData from '@/components/StructuredData';
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-mono',
+});
 
 export default function RootLayout({
   children,
@@ -56,6 +66,32 @@ export default function RootLayout({
             </Script>
           </>
         )}
+
+        {/* Tawk.to live chat widget (only when enabled) */}
+        {siteConfig.enableLiveChat && (
+          <Script id="tawk-to-script" strategy="afterInteractive">
+            {`var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+  try{
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6a1c8399e717081c2b47ec3e/1jpvm44n7';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s1.onload = function(){
+      console.debug('Tawk.to widget loaded');
+    };
+    s1.onerror = function(ev){
+      console.warn('Tawk.to failed to load (network or server error)', ev && ev.type ? ev.type : ev);
+      if (s1.parentNode) s1.parentNode.removeChild(s1);
+    };
+    s0.parentNode.insertBefore(s1,s0);
+  } catch (e) {
+    console.warn('Tawk.to embed failed to initialize', e);
+  }
+})();`}
+          </Script>
+        )}
         
         {/* Humans.txt link */}
         <link rel="author" href="/humans.txt" />
@@ -76,7 +112,7 @@ export default function RootLayout({
         <link rel="icon" href="/images/am-logo.jpg" type="image/jpeg" />
         <StructuredData />
       </head>
-      <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 

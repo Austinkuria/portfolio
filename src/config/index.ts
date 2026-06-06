@@ -40,6 +40,11 @@ export const siteConfig = {
     domain: 'austinmaina.vercel.app',
     googleSiteVerification: '771005efe7b937ff',
     googleAnalyticsId: 'G-S0LJ0MV7MY', // GA4 Measurement ID
+    // Enable live chat widget (Tawk). Can be controlled via env var NEXT_PUBLIC_ENABLE_LIVE_CHAT
+    // If not set, defaults to true in production only.
+    enableLiveChat: process.env.NEXT_PUBLIC_ENABLE_LIVE_CHAT
+        ? process.env.NEXT_PUBLIC_ENABLE_LIVE_CHAT === 'true'
+        : process.env.NODE_ENV === 'production',
     defaultMetaImage: '/images/am-logo.jpg',
     favicon: '/images/am-logo.jpg',
     themeColor: '#ffffff',
@@ -95,7 +100,7 @@ export const navigation = {
         { name: 'Home', href: '/' },
         { name: 'About', href: '/about' },
         { name: 'Projects', href: '/projects' },
-        { name: 'Skills', href: '/skills' },
+        { name: 'Capabilities', href: '/skills' },
         { name: 'Contact', href: '/contact' },
     ],
     prefetchPages: ['/about', '/projects', '/skills', '/contact'],
