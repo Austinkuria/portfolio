@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
 import { Providers } from './providers';
-import { GeistSans } from 'geist/font/sans';
-import { GeistMono } from 'geist/font/mono';
+import { IBM_Plex_Mono, Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import Script from 'next/script';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -12,6 +11,17 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import StructuredData from '@/components/StructuredData';
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-sans',
+});
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-mono',
+});
 
 export default function RootLayout({
   children,
@@ -102,7 +112,7 @@ export default function RootLayout({
         <link rel="icon" href="/images/am-logo.jpg" type="image/jpeg" />
         <StructuredData />
       </head>
-      <body className={`${GeistSans.variable} ${GeistMono.variable}`}>
+      <body className={`${spaceGrotesk.variable} ${ibmPlexMono.variable}`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 

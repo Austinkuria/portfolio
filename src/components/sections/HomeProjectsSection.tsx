@@ -38,11 +38,10 @@ export default function HomeProjectsSection() {
 					className="mb-12 text-center"
 				>
 					<h2 className="text-3xl md:text-4xl font-bold mb-4">
-						Featured Projects
+						Case Studies
 					</h2>
 					<p className="text-muted-foreground max-w-2xl mx-auto">
-						A selection of my recent work, showcasing my skills in web development
-						and design
+						A selection of recent builds, showing the problem, solution, and technical decisions behind each project.
 					</p>
 				</MotionDiv>
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10 max-w-4xl mx-auto">

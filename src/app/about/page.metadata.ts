@@ -1,8 +1,8 @@
 import { siteConfig } from '@/config';
 
 export const metadata = {
-    title: `About Austin Maina | Full Stack Developer Portfolio`,
-    description: `Learn more about Austin Maina, a professional Full Stack Developer & Software Engineer based in Nairobi, Kenya. Discover my journey, skills in React, Next.js, Node.js, TypeScript, Python, and Django.`,
+    title: `About Austin Maina | Web Studio Portfolio`,
+    description: `Learn more about Austin Maina, a developer based in Nairobi, Kenya who builds client-ready websites, landing pages, and lightweight web apps.`,
     keywords: [
         'Austin Maina',
         'Austin Maina about',
@@ -15,8 +15,8 @@ export const metadata = {
         canonical: `${siteConfig.url}/about`,
     },
     openGraph: {
-        title: 'About Austin Maina | Full Stack Developer',
-        description: 'Learn more about Austin Maina, a professional Full Stack Developer & Software Engineer based in Nairobi, Kenya.',
+        title: 'About Austin Maina | Web Studio Portfolio',
+        description: 'Learn more about Austin Maina, a developer based in Nairobi, Kenya who builds client-ready websites, landing pages, and lightweight web apps.',
         url: `${siteConfig.url}/about`,
         type: 'profile',
     },

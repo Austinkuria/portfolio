@@ -65,7 +65,7 @@
 
 body {
   @apply bg-background text-foreground transition-colors duration-300;
-  font-family: var(--font-sans, 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
+  font-family: var(--font-sans, 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, sans-serif);
   font-display: swap;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -73,6 +73,10 @@ body {
   line-height: 1.5;
   overflow-x: hidden;
   overflow-y: scroll;
+  background-image:
+    radial-gradient(circle at top left, hsl(var(--primary) / 0.08), transparent 28%),
+    radial-gradient(circle at top right, hsl(var(--accent) / 0.06), transparent 24%);
+  background-attachment: fixed;
   /* Prevent layout shift from scrollbar */
 }
 

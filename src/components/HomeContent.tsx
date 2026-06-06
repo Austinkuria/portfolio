@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import HomeAgencySection from '@/components/sections/HomeAgencySection';
 import HomeProjectsSection from '@/components/sections/HomeProjectsSection';
 import HomeSkillsSection from '@/components/sections/HomeSkillsSection';
 import HomeAboutSection from '@/components/sections/HomeAboutSection';
@@ -27,7 +28,6 @@ export default function HomeContent() {
     const imagesToPreload = [
       '/images/clinique-beauty.png',
       '/images/attendance-system.png',
-      personalInfo.image,
     ];
 
     imagesToPreload.forEach((src) => {
@@ -73,7 +73,8 @@ export default function HomeContent() {
   const renderKey = `home-content-${renderAttempts}-${forcedRender ? 'forced' : 'normal'}`;
 
   return (
-    <div key={renderKey} className="w-full">
+    <div key={renderKey} className="w-full max-w-7xl mx-auto px-4">
+      <HomeAgencySection />
       <HomeProjectsSection />
       <HomeSkillsSection />
       <HomeAboutSection />

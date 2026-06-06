@@ -9,8 +9,29 @@ import {
 } from './emailTemplates';
 import { validateContactForm, hasValidationErrors, VALIDATION_RULES } from '@/lib/validation';
 
-// Initialize Resend for notification emails
-const resend = new Resend(emailConfig.apiKey);
+let resendClient: Resend | null = null;
+
+function getResendClient() {
+  if (!emailConfig.apiKey) {
+    return null;
+  }
+
+  if (!resendClient) {
+    resendClient = new Resend(emailConfig.apiKey);
+  }
+
+  return resendClient;
+}
+
+async function sendResendEmail(payload: Parameters<Resend['emails']['send']>[0]) {
+  const client = getResendClient();
+  if (!client) {
+    console.warn('Resend API key missing; skipping Resend email send.');
+    return null;
+  }
+
+  return client.emails.send(payload);
+}
 
 // Initialize Gmail SMTP transporter for auto-reply emails
 const gmailTransporter = nodemailer.createTransport({
@@ -356,7 +377,7 @@ Reference ID: ${referenceId}`;
 
     // Send 2 emails and wait for them to complete
     await Promise.allSettled([
-      resend.emails.send(devhubNotificationEmail),    // To devhubmailer (new lead notification)
+      sendResendEmail(devhubNotificationEmail),    // To devhubmailer (new lead notification)
       gmailTransporter.sendMail(autoReplyEmailGmail).catch(async (gmailError) => {
         // Gmail failed, immediately try Resend fallback
         console.error('⚠️ Gmail SMTP failed, using Resend fallback:', gmailError.message);
@@ -369,7 +390,7 @@ Reference ID: ${referenceId}`;
           html: autoReplyEmailGmail.html,
         };
 
-        return await resend.emails.send(autoReplyViaResend);
+        return await sendResendEmail(autoReplyViaResend);
       }),
     ]).then(async ([devhubResult, autoReplyResult]) => {
       // Log results for monitoring

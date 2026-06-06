@@ -411,7 +411,7 @@ export function generateAutoReplyEmail(params: AutoReplyEmailParams) {
                 </a>
                 <a href="${siteConfig.url}/about" style="display: block; margin-bottom: 12px; padding: 20px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 10px; text-decoration: none; text-align: center; border: 2px solid ${emailTheme.border}; transition: all 0.3s;">
                   <div style="font-size: 24px; margin-bottom: 8px;"></div>
-                  <div style="font-size: 13px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">About Me</div>
+                  <div style="font-size: 13px; font-weight: 700; color: ${emailTheme.textPrimary}; margin-bottom: 4px;">Project notes</div>
                   <div style="font-size: 11px; color: ${emailTheme.textMuted};">Get to know me</div>
                 </a>
                 <a href="${socialLinks.linkedin}" target="_blank" style="display: block; margin-bottom: 12px; padding: 20px 16px; background: ${emailTheme.backgroundAlt}; border-radius: 10px; text-decoration: none; text-align: center; border: 2px solid ${emailTheme.border}; transition: all 0.3s;">

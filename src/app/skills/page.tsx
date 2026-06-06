@@ -46,7 +46,7 @@ export default function Skills() {
   // const [hoveredSkill, setHoveredSkill] = useState<string | null>(null);
 
   const categories: { value: SkillCategory | 'all'; label: string }[] = [
-    { value: 'all', label: 'All Skills' },
+    { value: 'all', label: 'All' },
     { value: 'frontend', label: 'Frontend' },
     { value: 'backend', label: 'Backend' },
     { value: 'database', label: 'Database' },
@@ -67,9 +67,9 @@ export default function Skills() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Skills & Expertise</h2>
+          <h2 className="text-3xl md:text-4xl font-semibold mb-4">Capabilities</h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            My technical skills and tools that I use to bring projects to life
+            A compact view of the tools I reach for when the job needs them.
           </p>
         </MotionDiv>
 
