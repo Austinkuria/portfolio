@@ -46,7 +46,7 @@
     "next": "15.5.18",
     "next-recaptcha-v3": "^1.5.2",
     "next-themes": "^0.2.1",
-    "nodemailer": "^8.0.5",
+    "nodemailer": "^10.1.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-globe.gl": "^2.38.0",
