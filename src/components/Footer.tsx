@@ -3,6 +3,7 @@ import { FaGithub, FaLinkedin, FaEnvelope, FaPaperPlane } from 'react-icons/fa6'
 import BackToTopLink from './BackToTopLink';
 import { socialLinks, SocialPlatform } from '@/data/socialLinks';
 import { personalInfo } from '@/config';
+import ObfuscatedEmail from '@/components/common/ObfuscatedEmail';
 
 const SocialIcon = ({ platform }: { platform: SocialPlatform }) => {
   const icons = {
@@ -65,6 +66,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/process" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center group text-sm sm:text-base">
+                  <span className="w-0 h-0.5 bg-primary mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300"></span>
+                  The Blueprint
+                </Link>
+              </li>
+              <li>
                 <Link href="/skills" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center group text-sm sm:text-base">
                   <span className="w-0 h-0.5 bg-primary mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300"></span>
                   Skills
@@ -103,16 +110,13 @@ export default function Footer() {
                 <span className="text-sm sm:text-base">Send me a message</span>
               </Link>
               
-              {/* Email contact */}
-              <a 
-                href={socialLinks.email}
-                className="flex items-center text-muted-foreground hover:text-primary transition-colors group"
-              >
+              {/* Email contact (Obfuscated) */}
+              <div className="flex items-center text-muted-foreground hover:text-primary transition-colors group">
                 <div className="bg-primary/10 p-2 rounded-lg text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 mr-3 flex-shrink-0">
                   <FaEnvelope size={16} />
                 </div>
-                <span className="text-sm sm:text-base">Send me an email</span>
-              </a>
+                <ObfuscatedEmail showIcon={false} className="text-sm sm:text-base text-muted-foreground hover:text-primary" />
+              </div>
               
               {/* GitHub */}
               <a 

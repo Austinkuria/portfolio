@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, memo } from 'react';
+import LogoSpinner from '@/components/common/LogoSpinner';
 
 const LoadingIndicator = memo(function LoadingIndicator() {
   // Only show the indicator after a short delay to prevent flashing for fast navigations
@@ -88,8 +89,8 @@ const LoadingIndicator = memo(function LoadingIndicator() {
       {/* Simplified loading card - reduced animations */}
       <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50">
         <div className="bg-background/95 backdrop-blur-sm shadow-xl px-6 py-4 rounded-xl flex items-center gap-4 border border-border/50">
-          {/* Simplified spinner with fewer animations */}
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-solid border-primary/20 border-t-primary"></div>
+          {/* Animated AM LABS LogoSpinner */}
+          <LogoSpinner size={34} />
 
           {/* Loading text with simpler animation */}
           <div className="flex flex-col">

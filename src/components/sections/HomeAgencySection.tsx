@@ -140,6 +140,11 @@ export default function HomeAgencySection() {
                 </div>
               ))}
             </div>
+            <div className="mt-6 pt-4 border-t border-border/60">
+              <CustomLink href="/process" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline">
+                Explore the full  engineering blueprint <FaArrowRight className="text-xs" />
+              </CustomLink>
+            </div>
           </MotionDiv>
 
           <MotionDiv

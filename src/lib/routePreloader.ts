@@ -37,8 +37,10 @@ function schedulePreload() {
 function preloadCriticalRoutes() {
     // Define critical routes that should be preloaded
     const criticalRoutes = [
-        '/about',
+        '/services',
         '/projects',
+        '/process',
+        '/about',
         '/skills',
         '/contact',
     ];
@@ -67,7 +69,8 @@ function preloadCriticalRoutes() {
 
 function preloadAssets() {
     // Critical static assets (images, etc.)
-    const criticalAssets = [
+    const criticalAssets: string[] = [
+        '/images/am-softwares-logo.png',
     ];
 
     criticalAssets.forEach(asset => {

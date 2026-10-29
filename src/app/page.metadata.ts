@@ -2,33 +2,24 @@ import { siteConfig, seoConfig } from '@/config';
 
 // Page-specific metadata for the homepage
 export const homeMetadata = {
-  title: 'Austin Maina - Software Engineer & Full Stack Developer | MERN & PERN Stack Expert',
-  description: 'Austin Maina - Software Engineer & Full Stack Developer in Nairobi, Kenya. Expert in MERN Stack (MongoDB, Express, React, Node.js) and PERN Stack (PostgreSQL, Express, React, Node.js). Specializing in React, Next.js, TypeScript, Python & Django.',
+  title: 'AM LABS | Digital Systems & Software Engineering',
+  description: 'Enterprise digital systems, full-stack web applications, AI automation, and payment infrastructure engineered by AM LABS.',
   alternates: {
     canonical: siteConfig.url
   },
   keywords: [
+    'AM LABS',
     'Austin Maina',
-    'Austin Maina Software Engineer',
-    'Austin Maina Full Stack Developer',
-    'Austin Maina MERN Stack',
-    'Austin Maina PERN Stack',
-    'Austin Maina MERN',
-    'Austin Maina PERN',
-    'Austin Maina Portfolio',
-    'Austin Maina Developer',
-    'MERN Stack Developer Kenya',
-    'PERN Stack Developer Kenya',
-    'Software Engineer Kenya',
-    'Software Engineer Nairobi',
-    'Full Stack Developer Kenya',
-    'React Developer Kenya',
+    'Enterprise Software Engineering',
+    'Full Stack Web Applications',
+    'M-Pesa API Integration',
+    'AI Workflow Automation',
     'Next.js Developer',
-    'Web Developer Kenya',
+    'Scalable Cloud Architecture',
   ],
   openGraph: {
-    title: 'Austin Maina - Software Engineer & Full Stack Developer | MERN & PERN Stack',
-    description: 'Austin Maina - Software Engineer & Full Stack Developer in Nairobi, Kenya. Expert in MERN Stack and PERN Stack. Specializing in React, Next.js, Node.js, TypeScript, Python & Django.',
+    title: 'AM LABS | Digital Systems & Software Engineering',
+    description: 'Enterprise-grade digital systems, custom web applications, AI automation, and resilient payment infrastructure.',
     type: 'website',
     url: siteConfig.url,
     images: [
@@ -36,14 +27,14 @@ export const homeMetadata = {
         url: seoConfig.openGraph.images.url,
         width: seoConfig.openGraph.images.width,
         height: seoConfig.openGraph.images.height,
-        alt: 'Austin Maina - Full Stack Developer',
+        alt: 'AM LABS - Enterprise Digital Systems',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Austin Maina - Software Engineer & Full Stack Developer | MERN & PERN Stack',
-    description: 'Software Engineer & Full Stack Developer in Nairobi, Kenya. MERN & PERN Stack Expert',
+    title: 'AM LABS | Digital Systems & Software Engineering',
+    description: 'Enterprise-grade digital systems, AI automation, and payment infrastructure.',
   },
   other: {
     'application-name': siteConfig.applicationName,

@@ -19,11 +19,6 @@ export default function StructuredData() {
       socialLinks.linkedin,
       socialLinks.github,
     ],
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Nairobi',
-      addressCountry: 'Kenya',
-    },
     email: personalInfo.email,
     knowsAbout: [
       'Full Stack Development',
@@ -69,26 +64,10 @@ export default function StructuredData() {
     url: siteConfig.url,
     telephone: personalInfo.phone,
     email: personalInfo.email,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Nairobi',
-      addressCountry: 'Kenya',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: -1.286389,
-      longitude: 36.817223,
-    },
-    openingHoursSpecification: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-      opens: '09:00',
-      closes: '18:00',
-    },
     priceRange: '$$',
     areaServed: {
-      '@type': 'Country',
-      name: 'Kenya',
+      '@type': 'AdministrativeArea',
+      name: 'Worldwide',
     },
   };
 

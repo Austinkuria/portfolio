@@ -14,7 +14,24 @@ module.exports = {
                 "2xl": "1400px",
             },
         },
+        screens: {
+            '2xs': '320px',
+            'xs': '475px',
+            'sm': '640px',
+            'md': '768px',
+            'md-sm': '850px',
+            'lg': '1024px',
+            'xl': '1280px',
+            'xl-lg': '1440px',
+            '2xl': '1536px',
+            '2xl-md': '1680px',
+            '2xl-lg': '1920px',
+            '3xl': '2560px',
+        },
         extend: {
+            backgroundSize: {
+                '300%': '300%',
+            },
             colors: {
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
@@ -48,11 +65,32 @@ module.exports = {
                 sm: "calc(var(--radius) - 4px)",
             },
             fontFamily: {
-                sans: ["var(--font-sans)"],
-                mono: ["var(--font-mono)"],
+                sans: [
+                    'var(--font-manrope)',
+                    'Manrope',
+                    'system-ui',
+                    '-apple-system',
+                    'BlinkMacSystemFont',
+                    '"Segoe UI"',
+                    'Roboto',
+                    'sans-serif'
+                ],
+                mono: [
+                    'var(--font-jetbrains-mono)',
+                    'JetBrains Mono',
+                    'monospace'
+                ]
+            },
+            keyframes: {
+                gradient: {
+                    '0%': { backgroundPosition: '0% 50%' },
+                    '50%': { backgroundPosition: '100% 50%' },
+                    '100%': { backgroundPosition: '0% 50%' },
+                },
             },
             animation: {
                 'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                'gradient': 'gradient 8s linear infinite',
             },
             backgroundImage: {
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

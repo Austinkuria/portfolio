@@ -17,7 +17,7 @@ export const projects: Project[] = [
     {
         id: 1,
         title: 'Silicon Savannah Technologies',
-        description: 'A full-stack e-commerce platform for a Nairobi-based refurbished laptop retailer, featuring M-Pesa STK Push and Paystack payment integration, Cloudinary image management, guest checkout, and Cloudflare security hardening.',
+        description: 'A full-stack e-commerce platform for a refurbished electronics retailer, featuring M-Pesa STK Push and Paystack payment integration, Cloudinary image management, guest checkout, and Cloudflare security hardening.',
         problem: 'The business needed a robust online storefront to sell refurbished laptops, handle mobile payments, and manage product inventory efficiently.',
         solution: 'Built a Next.js/TypeScript frontend with a Node/Express backend and MySQL database. Integrated M-Pesa Daraja and Paystack for payments, Cloudinary for optimised image uploads, and implemented security measures including CSP headers, Cloudflare Turnstile CAPTCHA, and DMARC/SPF/DKIM DNS records.',
         techStack: ['Next.js', 'TypeScript', 'Node.js', 'Express', 'MySQL', 'M-Pesa Daraja', 'Paystack', 'Cloudinary', 'Cloudflare'],
