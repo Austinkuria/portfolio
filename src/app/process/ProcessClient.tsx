@@ -183,11 +183,11 @@ export default function ProcessClient() {
       : steps.filter((s) => s.phase === activePhase);
 
   return (
-    <main className="min-h-screen pt-28 md:pt-36 pb-24 bg-[#faf8f5] dark:bg-background transition-colors duration-300">
+    <main className="min-h-screen pt-24 md:pt-28 pb-12 sm:pb-16 bg-[#faf8f5] dark:bg-background transition-colors duration-300">
       <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Header Section */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
 
 
           <m.h1

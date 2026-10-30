@@ -423,7 +423,7 @@ function PracticeBlock({ practice }: { practice: EngineeringPractice }) {
     <section
       id={practice.id}
       ref={sectionRef}
-      className="w-full py-16 sm:py-24 border-b border-border/50 overflow-hidden bg-background transition-colors duration-300"
+      className="w-full py-10 sm:py-14 border-b border-border/50 overflow-hidden bg-background transition-colors duration-300"
     >
       <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -468,11 +468,11 @@ export default function ServicesClient() {
       {/* Services Header */}
       <section
         ref={headerRef}
-        className="w-full pt-28 pb-16 sm:pt-36 sm:pb-20 border-b border-border/60 bg-gradient-to-b from-primary/5 via-background to-background overflow-hidden"
+        className="w-full pt-24 pb-8 sm:pt-28 sm:pb-10 border-b border-border/60 bg-gradient-to-b from-primary/5 via-background to-background overflow-hidden"
       >
         <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 text-center">
-          <p className="reveal-up text-xs font-mono font-medium tracking-widest uppercase text-primary mb-3">
-            AM LABS Practice
+          <p className="reveal-up text-xs font-mono font-medium tracking-widest uppercase text-primary mb-2">
+            AMLABS Practice
           </p>
 
           <h1 className="reveal-up stagger-1 text-4xl sm:text-5xl md:text-6xl font-extrabold text-foreground tracking-tight mb-5 max-w-4xl mx-auto leading-tight">
@@ -565,7 +565,7 @@ export default function ServicesClient() {
       <section
         id="security-compliance"
         ref={securityRef}
-        className="w-full py-16 sm:py-24 border-b border-border/50 bg-background overflow-hidden"
+        className="w-full py-10 sm:py-14 border-b border-border/50 bg-background overflow-hidden"
       >
         <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
@@ -631,7 +631,7 @@ export default function ServicesClient() {
       </section>
 
       {/* Bottom Consultation CTA */}
-      <section className="w-full py-16 sm:py-24 bg-background overflow-hidden">
+      <section className="w-full py-10 sm:py-14 bg-background overflow-hidden">
         <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
           <div className="rounded-2xl bg-card border border-border/80 shadow-md p-8 sm:p-14 lg:p-18 text-center max-w-5xl mx-auto relative overflow-hidden">
             <p className="text-xs font-mono font-medium uppercase tracking-widest text-muted-foreground mb-4">

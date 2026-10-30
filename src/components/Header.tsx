@@ -28,6 +28,7 @@ interface NavLink {
 const navLinks: NavLink[] = [
   { name: 'Home', href: '/' },
   { name: 'Services', href: '/services' },
+  { name: 'Skills', href: '/skills' },
   { name: 'Portfolio', href: '/projects' },
   { name: 'The Blueprint', href: '/process' },
   { name: 'About', href: '/about' },
@@ -55,7 +56,7 @@ export default function Header() {
         <div className="container mx-auto max-w-7xl flex items-center justify-between">
           {/* Left: Clean Brand Indicator */}
           <div className="flex items-center space-x-3 text-xs font-mono text-muted-foreground">
-            <span className="font-semibold text-foreground">AM LABS</span>
+            <span className="font-bold text-foreground">AMLABS</span>
             <span className="text-border">/</span>
             <span>Software Engineering & Technology</span>
           </div>

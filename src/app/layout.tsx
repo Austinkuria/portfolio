@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Providers } from './providers';
-import { Manrope, JetBrains_Mono } from 'next/font/google';
+import { Poppins, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import Script from 'next/script';
 import { SpeedInsights } from '@vercel/speed-insights/next';
@@ -13,10 +13,10 @@ import ClientLayoutWrapper from '@/components/ClientLayoutWrapper';
 import StructuredData from '@/components/StructuredData';
 import CustomCursor from '@/components/effects/CustomCursor';
 
-const manrope = Manrope({
+const poppins = Poppins({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700', '800'],
-  variable: '--font-manrope',
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-poppins',
   display: 'swap',
 });
 
@@ -116,7 +116,7 @@ export default function RootLayout({
         <link rel="icon" href="/images/am-softwares-logo.png" type="image/png" />
         <StructuredData />
       </head>
-      <body className={`${manrope.variable} ${jetbrainsMono.variable} font-sans`}>
+      <body className={`${poppins.variable} ${jetbrainsMono.variable} font-sans`}>
         {/* Google Tag Manager (noscript) */}
         <noscript>
           <iframe 

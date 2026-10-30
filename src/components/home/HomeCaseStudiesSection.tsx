@@ -23,12 +23,12 @@ export default function HomeCaseStudiesSection() {
   return (
     <section
       ref={sectionRef}
-      className="w-full py-16 sm:py-24 bg-background transition-colors duration-300 overflow-hidden"
+      className="w-full py-10 sm:py-14 bg-background transition-colors duration-300 overflow-hidden"
     >
       <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 sm:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-10">
           <div className="max-w-2xl reveal-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-wider uppercase mb-4">
               Case Studies

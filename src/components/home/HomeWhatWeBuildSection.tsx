@@ -41,12 +41,12 @@ export default function HomeWhatWeBuildSection() {
   return (
     <section
       ref={sectionRef}
-      className="w-full py-16 sm:py-24 bg-[#faf8f5] dark:bg-card/40 transition-colors duration-300 overflow-hidden"
+      className="w-full py-10 sm:py-14 bg-[#faf8f5] dark:bg-card/40 transition-colors duration-300 overflow-hidden"
     >
       <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-18 reveal-up">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10 reveal-up">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold tracking-wider uppercase mb-4">
             Engineering Practice
           </div>

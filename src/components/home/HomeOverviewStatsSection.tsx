@@ -49,22 +49,22 @@ export default function HomeOverviewStatsSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative z-20 w-full py-16 sm:py-24 bg-background transition-colors duration-300 overflow-hidden"
+      className="relative z-20 w-full py-8 sm:py-12 bg-background transition-colors duration-300 overflow-hidden"
     >
       <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         
         {/* Overview Box directly below Hero - slides in from left on scroll */}
-        <div className="reveal-left rounded-[2.5rem] bg-card border border-border/80 shadow-lg p-8 sm:p-12 lg:p-16 mb-12 sm:mb-16 relative overflow-hidden">
+        <div className="reveal-left rounded-[2.5rem] bg-card border border-border/80 shadow-lg p-6 sm:p-10 lg:p-12 mb-8 sm:mb-10 relative overflow-hidden">
           {/* Subtle ambient light gradient */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="max-w-4xl">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-5 leading-tight">
-              AM Softwares <span className="text-primary">Ke</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-4 leading-tight">
+              AM<span className="text-primary">LABS</span>
             </h2>
 
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              <strong className="text-foreground font-semibold">AM Softwares Ke</strong> is a technology engineering studio focused on delivering enterprise-grade digital systems for modern organizations. We design, build, and scale secure, high-impact software solutions that help businesses, startups, and institutions optimize operations, improve decision-making, and drive measurable value. Our strength lies in translating complex business requirements into reliable, scalable, and future-ready systems powered by modern technologies.
+              <strong className="text-foreground font-semibold">AMLABS</strong> is a software engineering studio focused on delivering dependable digital systems and payment integrations for modern organizations and businesses. We design, build, and scale secure software solutions that optimize operations, improve decision-making, and drive measurable value.
             </p>
           </div>
         </div>

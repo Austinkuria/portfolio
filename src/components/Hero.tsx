@@ -9,7 +9,7 @@ import { socialLinks } from '@/config';
 
 export default function Hero() {
   return (
-    <section className="relative w-full min-h-screen flex items-center overflow-hidden bg-background pt-28 md:pt-36 lg:pt-32 pb-16 transition-colors duration-300">
+    <section className="relative w-full min-h-screen flex items-center overflow-hidden bg-background pt-24 md:pt-28 lg:pt-28 pb-8 sm:pb-10 transition-colors duration-300">
       
       {/* 3D Global Node Background - Prominently showcased on right half, positioned below header */}
       <div className="absolute top-20 md:top-24 lg:top-28 inset-x-0 bottom-0 z-0 overflow-hidden pointer-events-none">

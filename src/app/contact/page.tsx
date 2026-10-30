@@ -457,7 +457,7 @@ export default function Contact() {
   return (
     <>
       <RouteOptimizer pageName="contact" />
-      <main id="contact" className="py-20 w-full">
+      <main id="contact" className="pt-24 pb-12 w-full">
       <div className="container mx-auto px-4">
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}

@@ -15,10 +15,10 @@ export default function HomeCtaBanner() {
   return (
     <section
       ref={sectionRef}
-      className="w-full py-16 sm:py-24 bg-background transition-colors duration-300 overflow-hidden"
+      className="w-full py-10 sm:py-14 bg-background transition-colors duration-300 overflow-hidden"
     >
       <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
-        <div className="reveal-up rounded-[2.5rem] bg-card border border-border/80 shadow-xl p-8 sm:p-14 lg:p-18 text-center max-w-5xl mx-auto relative overflow-hidden">
+        <div className="reveal-up rounded-[2.5rem] bg-card border border-border/80 shadow-xl p-6 sm:p-10 lg:p-12 text-center max-w-5xl mx-auto relative overflow-hidden">
           {/* Subtle gradient glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-32 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none rounded-t-[2.5rem]" />
 

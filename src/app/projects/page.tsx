@@ -38,14 +38,14 @@ export default function Projects() {
         <ProjectSchema key={`schema-${project.id}`} project={project} />
       ))}
       <CanonicalURL />
-      <main id="projects" className="py-20 w-full">
+      <main id="projects" className="pt-24 pb-12 w-full">
         <div className="container mx-auto px-4">
           <MotionDiv
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-10"
           >
               <p className="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-primary">Selected work</p>
               <h2 className="text-3xl md:text-4xl font-semibold mb-4">Case studies and builds that show how I work.</h2>

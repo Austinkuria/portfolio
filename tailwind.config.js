@@ -58,6 +58,13 @@ module.exports = {
                     DEFAULT: "hsl(var(--card))",
                     foreground: "hsl(var(--card-foreground))",
                 },
+                // AMLABS Brand Colors
+                brand: {
+                    blue: "#2563EB",
+                    navy: "#0F172A",
+                    sky: "#60A5FA",
+                    mist: "#BFDBFE",
+                },
             },
             borderRadius: {
                 lg: "var(--radius)",
@@ -66,13 +73,16 @@ module.exports = {
             },
             fontFamily: {
                 sans: [
-                    'var(--font-manrope)',
-                    'Manrope',
-                    'system-ui',
-                    '-apple-system',
-                    'BlinkMacSystemFont',
-                    '"Segoe UI"',
-                    'Roboto',
+                    'var(--font-poppins)',
+                    'Poppins',
+                    'Arial',
+                    'sans-serif'
+                ],
+                heading: [
+                    'var(--font-poppins)',
+                    'Poppins',
+                    'Arial Bold',
+                    'Arial',
                     'sans-serif'
                 ],
                 mono: [
