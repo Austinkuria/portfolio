@@ -13,28 +13,27 @@ interface StatItem {
 
 const stats: StatItem[] = [
   {
-    numericValue: 50,
+    numericValue: 6,
     suffix: '+',
-    label: 'Enterprise Systems Delivered',
-    subtext: 'Robust production web platforms, automated backends, and cloud architectures.',
+    label: 'Systems Delivered',
+    subtext: 'Production web platforms, automated backends, and cloud architectures.',
   },
   {
-    numericValue: 90,
+    numericValue: 10,
     suffix: '+',
-    label: 'Deployments & Builds Shipped',
-    subtext: 'High-availability services, web apps, and data systems deployed at scale.',
+    label: 'Deployments Shipped',
+    subtext: 'High-availability services, web apps, and data systems deployed to production.',
   },
   {
-    numericValue: 99.9,
+    numericValue: 99,
     suffix: '%',
-    decimals: 1,
-    label: 'Production Uptime & Reliability',
-    subtext: 'Engineered for resilience, fault-tolerant failovers, and low latency.',
+    label: 'Production Uptime',
+    subtext: 'Engineered for resilience, fault-tolerant failovers, and continuous monitoring.',
   },
   {
     numericValue: 4,
     suffix: '+',
-    label: 'Years Delivering at Scale',
+    label: 'Years Engineering Experience',
     subtext: 'Translating complex organizational logic into reliable software systems.',
   },
 ];
@@ -53,7 +52,7 @@ export default function HomeOverviewStatsSection() {
     >
       <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         
-        {/* Overview Box directly below Hero - slides in from left on scroll */}
+        {/* Overview Box directly below Hero */}
         <div className="reveal-left rounded-[2.5rem] bg-card border border-border/80 shadow-lg p-6 sm:p-10 lg:p-12 mb-8 sm:mb-10 relative overflow-hidden">
           {/* Subtle ambient light gradient */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
@@ -69,12 +68,10 @@ export default function HomeOverviewStatsSection() {
           </div>
         </div>
 
-        {/* 4 Big Enterprise Stats with Animated Numbers & Scroll Slides */}
+        {/* 4 Grounded Stats with Animated Numbers & Scroll Slides */}
         <div className="rounded-[2.5rem] bg-card/95 backdrop-blur-md border border-border/80 shadow-md p-7 sm:p-10 lg:p-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x divide-border/60">
             {stats.map((stat, idx) => {
-              // Directional entrances modeled after Overflow-college:
-              // 0 from left, 1 & 2 from below, 3 from right, with staggered delays
               const revealClass =
                 idx === 0
                   ? 'reveal-left stagger-1'

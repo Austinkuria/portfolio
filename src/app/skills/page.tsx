@@ -5,18 +5,18 @@ import { siteConfig, socialLinks } from '@/config';
 import CustomLink from '@/components/CustomLink';
 
 export const metadata: Metadata = {
-  title: 'Technical Capabilities & Engineering Stack | AM LABS',
+  title: 'Technical Capabilities & Engineering Stack | AMLABS',
   description:
-    'Explore the production-hardened technologies, frameworks, and third-party integrations engineered by Austin Maina and AM LABS: M-Pesa, Paystack, Dynamics 365, Python, Node.js, Next.js, and PostgreSQL.',
+    'Explore the production-hardened technologies, frameworks, and third-party integrations engineered by Austin Maina and AMLABS: M-Pesa, Paystack, Dynamics 365, Python, Node.js, Next.js, and PostgreSQL.',
   alternates: {
     canonical: `${siteConfig.url}/skills`,
   },
   openGraph: {
-    title: 'Technical Capabilities & Engineering Stack | AM LABS',
+    title: 'Technical Capabilities & Engineering Stack | AMLABS',
     description:
       'Production-hardened engineering stack and integrations: Paystack, M-Pesa Daraja, Microsoft Dynamics 365, Python, PostgreSQL, Next.js, and Docker.',
     url: `${siteConfig.url}/skills`,
-    siteName: 'AM LABS',
+    siteName: 'AMLABS',
     locale: 'en_US',
     type: 'website',
   },
@@ -24,7 +24,6 @@ export const metadata: Metadata = {
 
 interface TechDomain {
   category: string;
-  badge: string;
   description: string;
   technologies: string[];
 }
@@ -32,7 +31,6 @@ interface TechDomain {
 const technicalDomains: TechDomain[] = [
   {
     category: 'Integrations & Payment APIs',
-    badge: 'Financial & External Services',
     description:
       'Connecting reliable payment gateways, ERP systems, and cloud communication APIs.',
     technologies: [
@@ -47,7 +45,6 @@ const technicalDomains: TechDomain[] = [
   },
   {
     category: 'Backend & Systems Architecture',
-    badge: 'API & Service Layer',
     description:
       'Scalable, secure server-side architectures engineered for performance and data integrity.',
     technologies: [
@@ -61,7 +58,6 @@ const technicalDomains: TechDomain[] = [
   },
   {
     category: 'Databases & In-Memory Caching',
-    badge: 'Data Persistence',
     description:
       'Relational and document storage configured for ACID transactions and sub-millisecond retrieval.',
     technologies: [
@@ -74,7 +70,6 @@ const technicalDomains: TechDomain[] = [
   },
   {
     category: 'Data Analytics & Dashboards',
-    badge: 'Reporting & Insights',
     description:
       'Data extraction, statistical processing, and dynamic visual dashboards for operational insights.',
     technologies: [
@@ -87,7 +82,6 @@ const technicalDomains: TechDomain[] = [
   },
   {
     category: 'Frontend & Technical SEO',
-    badge: 'User Interface & Discovery',
     description:
       'Fast, accessible, mobile-first web applications built for conversion and search rankings.',
     technologies: [
@@ -102,11 +96,11 @@ const technicalDomains: TechDomain[] = [
   },
   {
     category: 'DevOps & Deployment',
-    badge: 'Infrastructure & Delivery',
     description:
       'Continuous deployment, edge network caching, and automated server configuration.',
     technologies: [
       'Docker Containerization',
+      'UptimeRobot Monitoring & Health Checks',
       'Cloudflare CDN, DNS & Security',
       'Vercel Cloud Deployment',
       'Git & GitHub Team Workflows',
@@ -118,11 +112,11 @@ const technicalDomains: TechDomain[] = [
 
 export default function SkillsPage() {
   return (
-    <main className="min-h-screen pt-24 md:pt-28 pb-12 sm:pb-14 bg-background transition-colors duration-300">
-      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen pt-20 md:pt-24 pb-8 sm:pb-12 bg-background transition-colors duration-300">
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-12">
+        <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-10">
           <p className="text-xs font-mono font-medium tracking-widest uppercase text-primary mb-2">
             AMLABS Capabilities
           </p>
@@ -136,32 +130,23 @@ export default function SkillsPage() {
           </p>
         </div>
 
-        {/* 6 Clean Technical Domain Cards (No Unnecessary Icons) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 mb-10 sm:mb-12">
+        {/* 6 Clean Technical Domain Cards (No Unnecessary Badges) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10 sm:mb-12">
           {technicalDomains.map((domain, idx) => (
             <div
               key={idx}
               className="rounded-2xl border border-border/80 bg-card p-6 sm:p-7 shadow-sm hover:border-primary/50 transition-colors duration-200 flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between gap-2 mb-3 pb-3 border-b border-border/60">
-                  <span className="text-xs font-mono font-semibold text-primary">
-                    0{idx + 1}.
-                  </span>
-                  <span className="text-[11px] font-mono text-muted-foreground">
-                    {domain.badge}
-                  </span>
-                </div>
-
                 <h2 className="text-lg font-bold text-foreground tracking-tight mb-2">
                   {domain.category}
                 </h2>
 
-                <p className="text-xs text-muted-foreground leading-relaxed mb-5">
+                <p className="text-xs text-muted-foreground leading-relaxed mb-4">
                   {domain.description}
                 </p>
 
-                <ul className="space-y-2 pt-2 border-t border-border/40 text-xs">
+                <ul className="space-y-2 pt-3 border-t border-border/40 text-xs">
                   {domain.technologies.map((tech, tIdx) => (
                     <li key={tIdx} className="flex items-baseline gap-2 text-foreground/90">
                       <span className="text-primary font-bold text-[10px]">•</span>
@@ -174,19 +159,21 @@ export default function SkillsPage() {
           ))}
         </div>
 
-        {/* Bottom Navigation & CTA */}
-        <div className="max-w-3xl mx-auto rounded-2xl border border-border/80 bg-card p-8 sm:p-10 text-center shadow-sm">
-          <h2 className="text-2xl font-bold text-foreground mb-3">
+        {/* Bottom Navigation & Full-Width CTA */}
+        <div className="w-full rounded-[2.5rem] border border-border/80 bg-card p-8 sm:p-12 text-center shadow-md relative overflow-hidden">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none rounded-t-[2.5rem]" />
+
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-foreground mb-3">
             Looking for end-to-end service delivery?
           </h2>
-          <p className="text-sm text-muted-foreground mb-6 max-w-xl mx-auto leading-relaxed">
+          <p className="text-sm sm:text-base text-muted-foreground mb-7 max-w-xl mx-auto leading-relaxed">
             See how these technologies are applied across our client practices or schedule a direct architectural discussion.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <CustomLink
               href="/services"
-              className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs sm:text-sm font-semibold shadow-sm transition-all duration-200"
+              className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-7 py-3 text-sm font-semibold shadow-sm transition-all duration-200 hover:scale-105"
             >
               <span>Explore Services Offered</span>
               <FaArrowRight className="text-xs" />
@@ -195,7 +182,7 @@ export default function SkillsPage() {
             <CustomLink
               href={socialLinks.calendly || '/contact'}
               target="_blank"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-background hover:bg-muted/40 px-6 py-2.5 text-xs sm:text-sm font-semibold text-foreground transition-all duration-200"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-background hover:bg-muted/40 px-7 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:scale-105"
             >
               <FaCalendarAlt className="text-xs" />
               <span>Schedule a Call</span>

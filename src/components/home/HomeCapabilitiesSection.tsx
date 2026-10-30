@@ -6,7 +6,6 @@ import useRevealOnScroll from '@/hooks/useRevealOnScroll';
 
 interface StackDomain {
   domain: string;
-  badge: string;
   description: string;
   coreTech: string[];
   keyHighlights: string[];
@@ -15,7 +14,6 @@ interface StackDomain {
 const stackDomains: StackDomain[] = [
   {
     domain: 'Web Architecture & Technical SEO',
-    badge: '01 / Frontend & SEO',
     description:
       'Fast, mobile-first web platforms built for user conversion and durable organic search ranking.',
     coreTech: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Schema.org'],
@@ -27,7 +25,6 @@ const stackDomains: StackDomain[] = [
   },
   {
     domain: 'Backend Systems & Payment APIs',
-    badge: '02 / Services & Fintech',
     description:
       'Reliable server-side architectures, event queues, and automated payment gateways.',
     coreTech: ['Node.js', 'Python (Django)', 'M-Pesa Daraja', 'Paystack', 'Redis'],
@@ -39,7 +36,6 @@ const stackDomains: StackDomain[] = [
   },
   {
     domain: 'Enterprise Platforms & Data Analytics',
-    badge: '03 / Core Platforms & Data',
     description:
       'Custom management information systems (MIS), ERP connectors, and KPI dashboards.',
     coreTech: ['PostgreSQL', 'Python (Pandas)', 'Dynamics 365', 'Docker', 'Recharts'],
@@ -61,12 +57,12 @@ export default function HomeCapabilitiesSection() {
   return (
     <section
       ref={sectionRef}
-      className="w-full py-10 sm:py-14 bg-background transition-colors duration-300 overflow-hidden"
+      className="w-full py-8 sm:py-12 bg-background transition-colors duration-300 overflow-hidden"
     >
       <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8">
           <div className="max-w-2xl reveal-left">
             <p className="text-xs font-mono font-medium tracking-widest uppercase text-primary mb-2">
               Technology & Architecture
@@ -92,7 +88,7 @@ export default function HomeCapabilitiesSection() {
           </div>
         </div>
 
-        {/* 3 Core Capability Domain Panels (Clean, No Unnecessary Icons) */}
+        {/* 3 Core Capability Domain Panels (Clean, No unnecessary badges or decorative icons) */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {stackDomains.map((domain, idx) => {
             const revealClass =
@@ -108,16 +104,6 @@ export default function HomeCapabilitiesSection() {
                 className={`${revealClass} rounded-2xl bg-card border border-border/80 p-6 sm:p-7 shadow-sm hover:border-primary/50 transition-all duration-200 flex flex-col justify-between`}
               >
                 <div>
-                  {/* Top Badge */}
-                  <div className="flex items-center justify-between gap-2 mb-4 pb-3 border-b border-border/60">
-                    <span className="text-xs font-mono font-semibold text-primary">
-                      {domain.badge}
-                    </span>
-                    <span className="text-[11px] font-mono text-muted-foreground">
-                      Production Stack
-                    </span>
-                  </div>
-
                   <h3 className="text-lg font-bold text-foreground mb-2 tracking-tight">
                     {domain.domain}
                   </h3>

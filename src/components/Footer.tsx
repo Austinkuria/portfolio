@@ -60,6 +60,12 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               <li>
+                <Link href="/services" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center group text-sm sm:text-base">
+                  <span className="w-0 h-0.5 bg-primary mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300"></span>
+                  Services
+                </Link>
+              </li>
+              <li>
                 <Link href="/projects" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center group text-sm sm:text-base">
                   <span className="w-0 h-0.5 bg-primary mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300"></span>
                   Projects
@@ -68,7 +74,7 @@ export default function Footer() {
               <li>
                 <Link href="/process" className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center group text-sm sm:text-base">
                   <span className="w-0 h-0.5 bg-primary mr-0 group-hover:w-3 group-hover:mr-2 transition-all duration-300"></span>
-                  The Blueprint
+                  Delivery Plan
                 </Link>
               </li>
               <li>

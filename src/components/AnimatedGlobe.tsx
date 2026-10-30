@@ -27,7 +27,7 @@ interface TechHub {
 // Primary Core Hub
 const primaryHub: TechHub = { lat: -1.2921, lng: 36.8219, name: 'Core HQ', isHub: true };
 
-// Major global technology & financial hubs connected to AM Softwares Ke
+// Major global technology & financial hubs connected to AMLABS
 const techHubs: TechHub[] = [
   primaryHub,
   { lat: 51.5074, lng: -0.1278, name: 'London' },

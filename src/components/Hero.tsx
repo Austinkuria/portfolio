@@ -9,7 +9,7 @@ import { socialLinks } from '@/config';
 
 export default function Hero() {
   return (
-    <section className="relative w-full min-h-screen flex items-center overflow-hidden bg-background pt-24 md:pt-28 lg:pt-28 pb-8 sm:pb-10 transition-colors duration-300">
+    <section className="relative w-full min-h-screen flex items-center overflow-hidden bg-background pt-20 md:pt-24 lg:pt-24 pb-6 sm:pb-8 transition-colors duration-300">
       
       {/* 3D Global Node Background - Prominently showcased on right half, positioned below header */}
       <div className="absolute top-20 md:top-24 lg:top-28 inset-x-0 bottom-0 z-0 overflow-hidden pointer-events-none">
@@ -91,10 +91,10 @@ export default function Hero() {
           <div className="w-20 h-20 sm:w-28 sm:h-28 bg-gradient-to-tr from-primary to-accent rounded-tr-full shadow-lg opacity-75" />
           
           <a
-            href="https://wa.me/?text=Hi%20AM%20LABS,%20we%20have%20a%20project%20inquiry"
+            href="https://wa.me/254797834903?text=Hi%20AMLABS,%20I%20have%20a%20project%20inquiry"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Chat with AM LABS on WhatsApp"
+            aria-label="Chat with AMLABS on WhatsApp"
             className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all duration-300"
           >
             <FaWhatsapp className="w-6 h-6 sm:w-7 sm:h-7" />
@@ -106,12 +106,12 @@ export default function Hero() {
       <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end pointer-events-auto">
         <div className="relative group cursor-pointer">
           <div className="mb-1 text-xs font-bold text-primary flex items-center gap-1 bg-card/95 backdrop-blur-md px-3 py-1 rounded-full shadow-md border border-border">
-            <span>AM LABS</span>
+            <span>AMLABS</span>
             <span className="text-sm">👋</span>
           </div>
           <a
             href="/contact"
-            aria-label="Contact AM LABS"
+            aria-label="Contact AMLABS"
             className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground flex items-center justify-center shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-background ml-auto"
           >
             <FaComments className="w-6 h-6" />

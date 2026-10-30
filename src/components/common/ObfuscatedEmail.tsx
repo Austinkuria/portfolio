@@ -21,7 +21,7 @@ export default function ObfuscatedEmail({
   domain = DEFAULT_DOMAIN,
   className = '',
   showIcon = true,
-  subject = 'Inquiry - AM Softwares Ke',
+  subject = 'Inquiry - AMLABS',
   asButton = false,
 }: ObfuscatedEmailProps) {
   const [mounted, setMounted] = useState(false);

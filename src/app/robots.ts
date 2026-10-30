@@ -1,4 +1,4 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from 'next';
 import { siteConfig } from '@/config';
 
 export default function robots(): MetadataRoute.Robots {
@@ -8,27 +8,24 @@ export default function robots(): MetadataRoute.Robots {
                 userAgent: '*',
                 allow: [
                     '/',
-                    '/about',
-                    '/projects',
+                    '/services',
                     '/skills',
+                    '/projects',
+                    '/process',
+                    '/about',
                     '/contact',
-                    '/images/'
+                    '/images/',
                 ],
                 disallow: [
                     '/api/',
-                    '/_next/',
-                    '/static/',
-                    '/*.json$',
-                    '/*.js$',
-                    '/*.css$'
                 ],
             },
             {
                 userAgent: 'Googlebot',
                 allow: '/',
-                disallow: ['/api/', '/_next/'],
-            }
+                disallow: ['/api/'],
+            },
         ],
         sitemap: `${siteConfig.url}/sitemap.xml`,
-    }
+    };
 }

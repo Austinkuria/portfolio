@@ -64,9 +64,9 @@ export default function AboutClient() {
       {/* 1. Header */}
       <section
         ref={introRef}
-        className="w-full pt-24 pb-8 sm:pt-28 sm:pb-10 border-b border-border/60 bg-gradient-to-b from-primary/5 via-background to-background"
+        className="w-full pt-20 pb-6 sm:pt-24 sm:pb-8 border-b border-border/60 bg-gradient-to-b from-primary/5 via-background to-background"
       >
-        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 text-center">
           <p className="reveal-up text-xs font-mono font-medium tracking-widest uppercase text-primary mb-2">
             About AMLABS
           </p>
@@ -86,14 +86,14 @@ export default function AboutClient() {
       <section
         id="founder"
         ref={founderRef}
-        className="w-full py-10 sm:py-12 border-b border-border/50 bg-background"
+        className="w-full py-8 sm:py-12 border-b border-border/50 bg-background"
       >
-        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
             
             {/* Left: Founder Card */}
             <div className="reveal-left md:col-span-5 flex flex-col items-center">
-              <div className="w-full max-w-xs rounded-2xl border border-border/80 bg-card p-6 shadow-sm text-center">
+              <div className="w-full max-w-sm rounded-2xl border border-border/80 bg-card p-6 shadow-sm text-center">
                 <div className="relative w-44 h-44 mx-auto mb-4 rounded-xl overflow-hidden border border-border/60">
                   <Image
                     src={personalInfo.image}
@@ -158,7 +158,7 @@ export default function AboutClient() {
               <div className="space-y-3.5 text-sm sm:text-base text-muted-foreground leading-relaxed">
                 <p>
                   I build software for organizations and individuals who need reliable, maintainable technology without agency overhead.
-                  When you partner with AM LABS, you work directly with the engineer who architects the data models, writes the backend logic, connects third-party services, and deploys to production.
+                  When you partner with AMLABS, you work directly with the engineer who architects the data models, writes the backend logic, connects third-party services, and deploys to production.
                 </p>
                 <p>
                   My engineering background covers high-concurrency payment integrations (including Kenya’s M-Pesa Daraja STK Push and Paystack), custom enterprise management systems, Python data analytics dashboards, and search-optimized web applications.
@@ -187,14 +187,14 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* 3. How We Work (Working Standards - Clean, No Unnecessary Icons) */}
+      {/* 3. How We Work (Working Standards) */}
       <section
         id="standards"
         ref={standardsRef}
-        className="w-full py-10 sm:py-12 border-b border-border/50 bg-muted/20"
+        className="w-full py-8 sm:py-12 border-b border-border/50 bg-muted/20"
       >
-        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mb-10">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
+          <div className="max-w-2xl mb-8">
             <p className="reveal-up text-xs font-mono font-medium tracking-wider text-muted-foreground uppercase mb-2">
               Working Standards
             </p>
@@ -230,10 +230,10 @@ export default function AboutClient() {
       <section
         id="clients"
         ref={clientsRef}
-        className="w-full py-10 sm:py-12 border-b border-border/50 bg-background"
+        className="w-full py-8 sm:py-12 border-b border-border/50 bg-background"
       >
-        <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl mb-10">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
+          <div className="max-w-2xl mb-8">
             <p className="reveal-up text-xs font-mono font-medium tracking-wider text-muted-foreground uppercase mb-2">
               Partnerships
             </p>
@@ -265,18 +265,20 @@ export default function AboutClient() {
         </div>
       </section>
 
-      {/* 5. Simple CTA */}
+      {/* 5. Full-Width CTA */}
       <section
         id="cta"
         ref={ctaRef}
-        className="w-full py-10 sm:py-12 bg-muted/20"
+        className="w-full py-8 sm:py-12 bg-muted/20"
       >
-        <div className="w-full max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="reveal-up rounded-2xl border border-border/80 bg-card p-8 sm:p-10 shadow-sm">
-            <h2 className="text-2xl sm:text-3xl font-bold text-foreground tracking-tight mb-3">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 text-center">
+          <div className="reveal-up rounded-[2.5rem] border border-border/80 bg-card p-8 sm:p-12 shadow-sm w-full relative overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-24 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none rounded-t-[2.5rem]" />
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight mb-3">
               Have a project in mind?
             </h2>
-            <p className="text-sm text-muted-foreground leading-relaxed mb-6 max-w-xl mx-auto">
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed mb-6 max-w-xl mx-auto">
               Schedule a direct consultation to discuss your system architecture, payment integrations, or data workflows.
             </p>
 
@@ -284,7 +286,7 @@ export default function AboutClient() {
               <CustomLink
                 href={socialLinks.calendly || '/contact'}
                 target="_blank"
-                className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-xs sm:text-sm font-semibold shadow-sm transition-all duration-200"
+                className="inline-flex items-center gap-2 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground px-7 py-3 text-sm font-semibold shadow-sm transition-all duration-200 hover:scale-105"
               >
                 <FaCalendarAlt className="text-xs" />
                 <span>Schedule a Call</span>
@@ -292,10 +294,10 @@ export default function AboutClient() {
 
               <CustomLink
                 href="/contact"
-                className="inline-flex items-center gap-2 rounded-full border border-border bg-background hover:bg-muted/40 px-6 py-2.5 text-xs sm:text-sm font-semibold text-foreground transition-all duration-200"
+                className="inline-flex items-center gap-2 rounded-full border border-border bg-background hover:bg-muted/40 px-7 py-3 text-sm font-semibold text-foreground transition-all duration-200 hover:scale-105"
               >
                 <span>Send a Message</span>
-                <FaArrowRight className="text-xs" />
+                <FaArrowRight className="text-xs text-primary" />
               </CustomLink>
             </div>
           </div>

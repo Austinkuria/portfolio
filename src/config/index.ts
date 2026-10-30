@@ -13,7 +13,7 @@ export const personalInfo = {
     },
     title: 'Software Engineer & Studio Founder',
     tagline: 'Transforming ideas into powerful web applications',
-    description: 'Austin Maina - Software Engineer & Studio Founder at AM LABS. Architecting enterprise digital systems, web applications, AI automation, and payment infrastructure.',
+    description: 'Austin Maina - Software Engineer & Studio Founder at AMLABS. Architecting enterprise digital systems, web applications, AI automation, and payment infrastructure.',
     location: 'Global & Remote',
     email: process.env.NEXT_PUBLIC_EMAIL || '',
     phone: process.env.NEXT_PUBLIC_PHONE || '',
@@ -98,12 +98,14 @@ export const projectUrls = {
 export const navigation = {
     mainMenu: [
         { name: 'Home', href: '/' },
+        { name: 'Services', href: '/services' },
+        { name: 'Portfolio', href: '/projects' },
+        { name: 'Delivery Plan', href: '/process' },
         { name: 'About', href: '/about' },
-        { name: 'Projects', href: '/projects' },
         { name: 'Skills', href: '/skills' },
-        { name: 'Contact', href: '/contact' },
+        { name: 'Contact Us', href: '/contact' },
     ],
-    prefetchPages: ['/about', '/projects', '/skills', '/contact'],
+    prefetchPages: ['/services', '/skills', '/projects', '/process', '/about', '/contact'],
 } as const;
 
 // SEO Configuration

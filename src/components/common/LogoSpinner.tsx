@@ -104,7 +104,7 @@ const LogoSpinner: React.FC<LogoSpinnerProps> = ({
 
         {externalProgress === undefined ? (
           <>
-            {/* 2a. Fast clockwise primary arc - AM Softwares Ke Cyan (#00AEEA / #38bdf8) */}
+            {/* 2a. Fast clockwise primary arc - AMLABS Brand Blue (#2563EB) */}
             <svg
               viewBox="0 0 100 100"
               className={styles.svgLayer}
@@ -121,7 +121,7 @@ const LogoSpinner: React.FC<LogoSpinnerProps> = ({
               />
             </svg>
 
-            {/* 2b. Slow counter-clockwise accent arc - AM Softwares Ke Deep Brand Navy (#43498B) */}
+            {/* 2b. Slow counter-clockwise accent arc - AMLABS Brand Navy (#0F172A) */}
             <svg
               viewBox="0 0 100 100"
               className={styles.svgLayer}
@@ -168,7 +168,7 @@ const LogoSpinner: React.FC<LogoSpinnerProps> = ({
         <div className={styles.logoCenter}>
           <Image
             src="/images/am-softwares-logo.png"
-            alt="AM Softwares Ke"
+            alt="AMLABS"
             width={128}
             height={128}
             className={styles.logoBreathe}

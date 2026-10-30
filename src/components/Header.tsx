@@ -6,10 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import {
   FaBars,
   FaTimes,
-  FaGithub,
-  FaLinkedinIn,
   FaChevronDown,
-  FaCalendarAlt,
 } from 'react-icons/fa';
 import Link from 'next/link';
 import CustomLink from './CustomLink';
@@ -30,7 +27,7 @@ const navLinks: NavLink[] = [
   { name: 'Services', href: '/services' },
   { name: 'Skills', href: '/skills' },
   { name: 'Portfolio', href: '/projects' },
-  { name: 'The Blueprint', href: '/process' },
+  { name: 'Delivery Plan', href: '/process' },
   { name: 'About', href: '/about' },
   { name: 'Contact Us', href: '/contact' },
 ];
@@ -51,52 +48,6 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex flex-col transition-all duration-300">
-      {/* Top Bar: Clean Minimal AM LABS Identifier + Social Connections */}
-      <div className="hidden lg:block w-full bg-card/90 dark:bg-card/80 backdrop-blur-md border-b border-border text-[12px] text-muted-foreground py-1.5 px-4 transition-colors">
-        <div className="container mx-auto max-w-7xl flex items-center justify-between">
-          {/* Left: Clean Brand Indicator */}
-          <div className="flex items-center space-x-3 text-xs font-mono text-muted-foreground">
-            <span className="font-bold text-foreground">AMLABS</span>
-            <span className="text-border">/</span>
-            <span>Software Engineering & Technology</span>
-          </div>
-
-          {/* Right: Email & Social Links */}
-          <div className="flex items-center space-x-5">
-            <ObfuscatedEmail />
-            <div className="flex items-center space-x-3 pl-3 border-l border-border text-foreground">
-              <a
-                href={socialLinks.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="GitHub Profile"
-                className="hover:text-primary transition-colors"
-              >
-                <FaGithub className="text-xs" />
-              </a>
-              <a
-                href={socialLinks.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="LinkedIn Profile"
-                className="hover:text-primary transition-colors"
-              >
-                <FaLinkedinIn className="text-xs" />
-              </a>
-              <a
-                href={socialLinks.calendly}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Book a Call"
-                className="hover:text-primary transition-colors"
-              >
-                <FaCalendarAlt className="text-xs" />
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Navbar */}
       <div
         className={`w-full transition-all duration-300 ${
@@ -204,7 +155,7 @@ export default function Header() {
                   </CustomLink>
                   <div className="text-xs text-muted-foreground text-center pt-2">
                     <p className="flex items-center justify-center gap-1.5 flex-wrap">
-                      <span>AM LABS ·</span>
+                      <span>AMLABS ·</span>
                       <ObfuscatedEmail showIcon={false} />
                     </p>
                   </div>
