@@ -39,7 +39,7 @@ export default function Footer() {
       <div className="absolute top-0 left-1/4 w-40 h-40 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
       <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-primary/5 rounded-full translate-x-1/2 translate-y-1/2 blur-2xl"></div>
       
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
           {/* Column 1: Personal Info */}
           <div>

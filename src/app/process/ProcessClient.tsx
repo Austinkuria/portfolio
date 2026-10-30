@@ -187,7 +187,7 @@ export default function ProcessClient() {
       <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         
         {/* Header Section */}
-        <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8">
+        <div className="text-center max-w-4xl mx-auto mb-6 sm:mb-8">
           <p className="text-xs font-mono font-medium tracking-widest uppercase text-primary mb-2">
             Delivery Plan
           </p>

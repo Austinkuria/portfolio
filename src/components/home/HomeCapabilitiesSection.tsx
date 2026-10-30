@@ -59,7 +59,7 @@ export default function HomeCapabilitiesSection() {
       ref={sectionRef}
       className="w-full py-8 sm:py-12 bg-background transition-colors duration-300 overflow-hidden"
     >
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8">

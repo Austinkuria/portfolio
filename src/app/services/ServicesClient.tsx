@@ -354,7 +354,7 @@ function PracticeBlock({ practice }: { practice: EngineeringPractice }) {
 
   const contentColumn = (
     <div className={`relative ${practice.reverseLayout ? 'reveal-left' : 'reveal-right'}`}>
-      <div className="max-w-xl">
+      <div className="w-full">
         <p className="text-xs font-mono font-medium tracking-wider text-muted-foreground uppercase mb-3">
           {practice.label}
         </p>
@@ -425,7 +425,7 @@ function PracticeBlock({ practice }: { practice: EngineeringPractice }) {
       ref={sectionRef}
       className="w-full py-8 sm:py-12 border-b border-border/50 overflow-hidden bg-background transition-colors duration-300"
     >
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           {practice.reverseLayout ? (
             <>
@@ -470,7 +470,7 @@ export default function ServicesClient() {
         ref={headerRef}
         className="w-full pt-20 pb-6 sm:pt-24 sm:pb-8 border-b border-border/60 bg-gradient-to-b from-primary/5 via-background to-background overflow-hidden"
       >
-        <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 text-center">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 text-center">
           <p className="reveal-up text-xs font-mono font-medium tracking-widest uppercase text-primary mb-2">
             AMLABS Practice
           </p>
@@ -479,7 +479,7 @@ export default function ServicesClient() {
             Services <span className="text-primary">Offered</span>
           </h1>
 
-          <p className="reveal-up stagger-2 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-3xl mx-auto mb-10">
+          <p className="reveal-up stagger-2 text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-4xl mx-auto mb-10">
             High-performance web applications, enterprise management platforms, API integrations, and applied AI automation — engineered for reliability, security, and outright ownership.
           </p>
 
@@ -523,9 +523,9 @@ export default function ServicesClient() {
       <section
         id="seo-standards"
         ref={seoRef}
-        className="w-full py-16 sm:py-24 border-b border-border/50 bg-muted/20 overflow-hidden"
+        className="w-full py-8 sm:py-12 border-b border-border/50 bg-muted/20 overflow-hidden"
       >
-        <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="max-w-3xl mb-12 reveal-up">
             <p className="text-xs font-mono font-medium tracking-wider text-muted-foreground uppercase mb-3">
               Search Visibility & Growth
@@ -567,7 +567,7 @@ export default function ServicesClient() {
         ref={securityRef}
         className="w-full py-10 sm:py-14 border-b border-border/50 bg-background overflow-hidden"
       >
-        <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
             {/* Left Column: Security Commitment */}
             <div className="lg:col-span-5 reveal-left">
@@ -632,7 +632,7 @@ export default function ServicesClient() {
 
       {/* Bottom Consultation CTA */}
       <section className="w-full py-8 sm:py-12 bg-background overflow-hidden">
-        <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+        <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
           <div className="rounded-2xl bg-card border border-border/80 shadow-md p-8 sm:p-14 lg:p-18 text-center w-full mx-auto relative overflow-hidden">
             <p className="text-xs font-mono font-medium uppercase tracking-widest text-muted-foreground mb-4">
               Direct Engineering Partnership

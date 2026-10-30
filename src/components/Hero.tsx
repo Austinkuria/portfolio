@@ -18,10 +18,10 @@ export default function Hero() {
         </div>
         {/* Soft directional gradient restricted to left text column so the globe is 100% clear and vibrant */}
         <div className="hidden lg:block absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-background via-background/90 to-transparent pointer-events-none" />
-        <div className="lg:hidden absolute inset-0 bg-background/60 pointer-events-none" />
+        <div className="lg:hidden absolute inset-0 bg-background/20 pointer-events-none" />
       </div>
 
-      <div className="w-full max-w-[1536px] 2xl:max-w-[1720px] 3xl:max-w-[2200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 relative z-10 select-text">
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20 relative z-10 select-text">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Left Column: Original Agency Typography & CTAs */}

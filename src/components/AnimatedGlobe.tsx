@@ -24,8 +24,8 @@ interface TechHub {
   isHub?: boolean;
 }
 
-// Primary Core Hub
-const primaryHub: TechHub = { lat: -1.2921, lng: 36.8219, name: 'Core HQ', isHub: true };
+// Primary Core Hub in Nairobi, Kenya
+const primaryHub: TechHub = { lat: -1.2921, lng: 36.8219, name: 'Core HQ (Nairobi)', isHub: true };
 
 // Major global technology & financial hubs connected to AMLABS
 const techHubs: TechHub[] = [
@@ -69,14 +69,27 @@ export default function AnimatedGlobe() {
   useEffect(() => {
     if (globeEl.current) {
       globeEl.current.controls().autoRotate = true;
-      globeEl.current.controls().autoRotateSpeed = 0.7;
+      globeEl.current.controls().autoRotateSpeed = 0.8;
       globeEl.current.controls().enableZoom = false;
-      // Proportioned camera view focused near East Africa / Indian Ocean, giving comfortable clearance from headers
-      globeEl.current.pointOfView({ lat: 8, lng: 36, altitude: 1.85 }, 2000);
+      // Proportioned camera view centered near East Africa (lat 5, lng 38)
+      globeEl.current.pointOfView({ lat: 5, lng: 38, altitude: 1.85 }, 2000);
+
+      // Boost scene lighting so continents and map topography are clear, bright, and visible
+      const scene = globeEl.current.scene();
+      if (scene) {
+        scene.traverse((obj: any) => {
+          if (obj.isAmbientLight) {
+            obj.intensity = 1.8;
+          }
+          if (obj.isDirectionalLight) {
+            obj.intensity = 2.0;
+          }
+        });
+      }
     }
   }, [globeEl.current, dimensions]);
 
-  // Cybernetic data pipeline arcs connecting primary core to international tech nodes
+  // Cybernetic data pipeline arcs connecting Nairobi to international tech nodes
   const arcsData = techHubs
     .filter((h) => !h.isHub)
     .map((city) => ({
@@ -85,11 +98,11 @@ export default function AnimatedGlobe() {
       endLat: city.lat,
       endLng: city.lng,
       color: isDark
-        ? ['#00f0ff', '#3b82f6', '#a855f7']
-        : ['#0284c7', '#2563eb', '#7c3aed'],
+        ? ['#38bdf8', '#2563eb', '#60a5fa']
+        : ['#0284c7', '#2563eb', '#1d4ed8'],
     }));
 
-  // Concentric radar pulses radiating from Nairobi & secondary pings at partner hubs
+  // Concentric radar pulses radiating from Nairobi & partner nodes
   const ringsData = techHubs.map((city) => ({
     lat: city.lat,
     lng: city.lng,
@@ -102,7 +115,7 @@ export default function AnimatedGlobe() {
   const pointsData = techHubs.map((city) => ({
     lat: city.lat,
     lng: city.lng,
-    size: city.isHub ? 1.4 : 0.8,
+    size: city.isHub ? 1.5 : 0.9,
     color: city.isHub ? '#00f0ff' : isDark ? '#38bdf8' : '#2563eb',
     altitude: city.isHub ? 0.04 : 0.02,
   }));
@@ -114,20 +127,21 @@ export default function AnimatedGlobe() {
           ref={globeEl}
           width={dimensions.width}
           height={dimensions.height}
-          // Dark stylized tech map
-          globeImageUrl="//unpkg.com/three-globe/example/img/earth-dark.jpg"
+          
+          // High-clarity visible Earth map texture (NASA Blue Marble with crisp visible continents)
+          globeImageUrl="//unpkg.com/three-globe/example/img/earth-blue-marble.jpg"
           bumpImageUrl="//unpkg.com/three-globe/example/img/earth-topology.png"
           backgroundColor="rgba(0,0,0,0)"
           
-          // Futuristic coordinate grid (telemetry / radar look)
+          // Coordinate telemetry grid
           showGraticules={true}
           
-          // Cybernetic atmosphere halo
+          // Glowing cybernetic atmosphere
           showAtmosphere={true}
-          atmosphereColor={isDark ? '#00f0ff' : '#3b82f6'}
+          atmosphereColor={isDark ? '#60A5FA' : '#2563EB'}
           atmosphereAltitude={0.24}
           
-          // High-speed cyber data beams
+          // High-speed data arcs
           arcsData={arcsData}
           arcColor="color"
           arcDashLength={ARC_REL_LEN}
@@ -141,7 +155,7 @@ export default function AnimatedGlobe() {
           ringsData={ringsData}
           ringColor={() => (t: number) =>
             isDark
-              ? `rgba(0, 240, 255, ${(1 - t) * 0.95})`
+              ? `rgba(96, 165, 250, ${(1 - t) * 0.95})`
               : `rgba(37, 99, 235, ${(1 - t) * 0.95})`
           }
           ringMaxRadius="maxR"

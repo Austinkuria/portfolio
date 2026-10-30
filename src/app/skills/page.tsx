@@ -116,7 +116,7 @@ export default function SkillsPage() {
       <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         
         {/* Header */}
-        <div className="max-w-3xl mx-auto text-center mb-8 sm:mb-10">
+        <div className="max-w-4xl mx-auto text-center mb-8 sm:mb-10">
           <p className="text-xs font-mono font-medium tracking-widest uppercase text-primary mb-2">
             AMLABS Capabilities
           </p>

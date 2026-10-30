@@ -52,7 +52,7 @@ export default function Projects() {
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight mb-3">
               Case Studies & Production <span className="text-primary">Builds</span>
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground max-w-4xl mx-auto leading-relaxed">
               Real-world systems, payment workflows, and applications demonstrating architecture, stability, and measurable business outcomes.
             </p>
           </MotionDiv>

@@ -458,7 +458,7 @@ export default function Contact() {
     <>
       <RouteOptimizer pageName="contact" />
       <main id="contact" className="pt-24 pb-12 w-full">
-      <div className="container mx-auto px-4">
+      <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
         <MotionDiv
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1065,7 +1065,7 @@ export default function Contact() {
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
             {contactConfig.faq.map((faq, index) => (
               <div key={index} className="bg-card rounded-lg border border-border/30 overflow-hidden">
                 <button

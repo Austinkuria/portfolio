@@ -75,7 +75,7 @@ export default function AboutClient() {
             Software Engineering & <span className="text-primary">Technical Advisory</span>
           </h1>
 
-          <p className="reveal-up stagger-2 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
+          <p className="reveal-up stagger-2 text-base sm:text-lg text-muted-foreground leading-relaxed max-w-4xl mx-auto">
             AMLABS is an independent software studio founded by Austin Maina.
             We design, engineer, and deploy reliable digital systems, custom web applications, and integrated payment infrastructure with outright source code ownership.
           </p>
@@ -93,7 +93,7 @@ export default function AboutClient() {
             
             {/* Left: Founder Card */}
             <div className="reveal-left md:col-span-5 flex flex-col items-center">
-              <div className="w-full max-w-sm rounded-2xl border border-border/80 bg-card p-6 shadow-sm text-center">
+              <div className="w-full max-w-md rounded-2xl border border-border/80 bg-card p-6 shadow-sm text-center">
                 <div className="relative w-44 h-44 mx-auto mb-4 rounded-xl overflow-hidden border border-border/60">
                   <Image
                     src={personalInfo.image}
@@ -194,7 +194,7 @@ export default function AboutClient() {
         className="w-full py-8 sm:py-12 border-b border-border/50 bg-muted/20"
       >
         <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
-          <div className="max-w-2xl mb-8">
+          <div className="max-w-4xl mb-8">
             <p className="reveal-up text-xs font-mono font-medium tracking-wider text-muted-foreground uppercase mb-2">
               Working Standards
             </p>
@@ -206,7 +206,7 @@ export default function AboutClient() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {workingStandards.map((item, idx) => (
               <div
                 key={idx}
@@ -233,7 +233,7 @@ export default function AboutClient() {
         className="w-full py-8 sm:py-12 border-b border-border/50 bg-background"
       >
         <div className="w-full max-w-[1920px] mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 2xl:px-20">
-          <div className="max-w-2xl mb-8">
+          <div className="max-w-4xl mb-8">
             <p className="reveal-up text-xs font-mono font-medium tracking-wider text-muted-foreground uppercase mb-2">
               Partnerships
             </p>
