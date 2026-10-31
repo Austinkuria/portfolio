@@ -72,7 +72,7 @@ const steps: ProcessStep[] = [
       'Exact scope of work and features to be built',
       'Recommended tech stack and system architecture',
       'Clear delivery timeline broken into milestones',
-      'Transparent pricing and post-launch support options',
+      'Transparent milestone pricing (rate card aligned) & 3 months free support',
     ],
   },
   {

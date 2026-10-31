@@ -257,32 +257,36 @@ export const contactConfig = {
     ],
     faq: [
         {
-            question: "What types of projects do you work on?",
-            answer: "I create professional websites, online stores, mobile-responsive designs, and business automation solutions. I work on everything from simple business websites to complex custom applications that help grow your business."
+            question: "What types of systems and applications do you engineer?",
+            answer: "At AMLABS, we engineer high-performance business websites, full-stack web applications with native payment pipelines (Lipa na M-Pesa Daraja STK Push & Paystack), bespoke enterprise management platforms (MIS / ERP portals), automated Python data pipelines & BI dashboards, and applied AI workflows. Every platform is delivered with 100% full source code ownership—no per-seat software licenses or agency bloat."
         },
         {
-            question: "What is your typical project timeline?",
-            answer: "Project timelines vary based on complexity: Simple websites (1-2 weeks), Online stores and custom applications (4-8 weeks), Design projects (2-3 weeks), System integrations (2-4 weeks). I always provide detailed timelines during our initial consultation."
+            question: "How does your Commercial Rate Card work?",
+            answer: "We operate with transparent, scope-based pricing tailored for organizations and founders in Kenya: Business Websites & SEO start from KES 18,000 (Range: KES 15k–25k); Full-Stack Web Apps + Payments start from KES 38,000 (Range: KES 35k–55k); Custom Management Systems (MIS) start from KES 75,000 (Range: KES 70k–120k); and Standalone Payment & API Bridges start from KES 20,000 (Range: KES 20k–35k). Scope caps are clearly defined upfront to prevent hidden surprises."
         },
         {
-            question: "Do you offer ongoing maintenance and support?",
-            answer: "Yes! I provide ongoing maintenance packages including bug fixes, security updates, performance optimization, content updates, and feature enhancements. Maintenance plans are customized based on your specific needs."
+            question: "What is your milestone payment structure?",
+            answer: "All fixed-fee development engagements follow a disciplined 50/50 milestone split: a 50% upfront deposit to commence system architecture and staging environment setup, and the remaining 50% balance upon final staging approval, prior to production deployment or credential transfer. Timelines officially commence once at least 80% of required project content and assets are submitted."
         },
         {
-            question: "What is your development process?",
-            answer: "My process includes: 1) Discovery & Planning, 2) Design & Wireframing, 3) Development & Testing, 4) Review & Feedback, 5) Deployment & Launch, 6) Training & Handover. I maintain regular communication throughout each phase."
+            question: "What are your typical project delivery timelines?",
+            answer: "Delivery timelines vary with architectural scope: Business Websites take 5 – 10 business days; Full-Stack Web Apps with payments take 2 – 3 weeks; Custom MIS suites take 3 – 5 weeks; and Standalone Payment / API Bridges take 3 – 7 business days. You receive continuous visibility via private staging previews and direct engineering updates."
         },
         {
-            question: "How do you handle project pricing?",
-            answer: "I offer both fixed-price and hourly arrangements depending on project scope. For fixed-price projects, I provide detailed proposals after understanding your requirements. Hourly rates apply for ongoing maintenance and consultation work."
+            question: "Do you provide ongoing maintenance and technical support?",
+            answer: "Yes! Every system we build includes 3 months of free maintenance and 24/7 uptime monitoring. After the initial 3 months, you can continue with our System Care monthly retainer (KES 3,500 – 5,000/month), which covers 24/7 UptimeRobot monitoring, security patches, regular offsite backups, and up to 3 hours of developer labor per month for minor adjustments. Additional out-of-scope tasks default to KES 2,000/hour or a separate milestone project."
         },
         {
-            question: "What's the best way to contact you?",
-            answer: "For project inquiries, fill out the contact form on this page—it ensures I have all the details and context. For general questions or professional networking, email or LinkedIn work well too. I respond to all methods within 24 hours."
+            question: "Are third-party hosting, domain, and API costs included in the fees?",
+            answer: "Our package rates cover software engineering, database design, architecture, testing, and deployment. They explicitly exclude recurring third-party costs such as annual domain/hosting subscriptions (e.g., Truehost, Kenya Web Experts, AWS), bulk SMS API wallet balances (e.g., Africa's Talking), and AI token consumption (OpenAI, Anthropic, WhatsApp Cloud API). The client pays for and retains 100% direct administrative ownership of all third-party accounts."
         },
         {
-            question: "Do you work with international clients?",
-            answer: "Absolutely! I work with clients globally and am experienced in remote collaboration. I'm based in Nairobi (EAT, UTC+3) and maintain async-friendly workflows to accommodate different time zones. I typically respond within 24 hours and am flexible with scheduling for meetings."
+            question: "How do you handle confidentiality, security, and data protection?",
+            answer: "We take data governance seriously. We execute a mutual Non-Disclosure Agreement (NDA) before reviewing proprietary business workflows, databases, or internal documents. All applications are built to support compliance with Kenya's Data Protection Act (2019) and international GDPR standards, featuring Role-Based Access Control (RBAC), end-to-end TLS encryption, and immutable audit logging."
+        },
+        {
+            question: "Do you work with international clients and remote teams?",
+            answer: "Yes, we collaborate with founders, companies, and organizations worldwide. Headquartered in Nairobi (EAT, UTC+3), we maintain async-friendly development workflows, private staging servers, clear GitHub version control, and flexible scheduling for meetings across Pan-African, European, and North American time zones."
         }
     ]
 } as const;

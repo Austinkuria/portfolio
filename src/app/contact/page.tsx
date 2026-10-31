@@ -530,7 +530,12 @@ export default function Contact() {
               
               {/* Quick Intent Buttons */}
               <div className="mb-6 space-y-2 relative z-10">
-                <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold mb-3">What brings you here?</p>
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground font-semibold">What brings you here?</p>
+                  <a href="/services#rate-card" className="text-[11px] font-mono text-primary hover:underline">
+                    View Rate Card →
+                  </a>
+                </div>
                 <div className="grid grid-cols-4 gap-2">
                   <button
                     type="button"
@@ -1061,7 +1066,7 @@ export default function Contact() {
           <div className="text-center mb-12">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">Frequently Asked Questions</h3>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Common questions about my services, process, and collaboration approach
+              Common questions about AMLABS engineering practices, Commercial Rate Cards, and delivery policies
             </p>
           </div>
 
